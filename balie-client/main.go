@@ -16,11 +16,13 @@ type Configuration struct {
 	ListenAddress   string
 	FrontendAddress string
 	ServerAddress   string
+	MrtdUnpack      string
 	State           *State
 }
 
 type State struct {
-	Challenge *string
+	Challenge   *string
+	ScannedCard *string
 }
 
 type App struct {
@@ -44,13 +46,17 @@ func main() {
 	if cfg.ServerAddress == "" {
 		panic("option required: BALIE_CLIENT_SERVERADDRESS")
 	}
+	if cfg.MrtdUnpack == "" {
+		panic("option required: BALIE_CLIENT_MRTDUNPACK")
+	}
 
-	state := State{Challenge: nil}
+	state := State{Challenge: nil, ScannedCard: nil}
 	app := App{Cfg: cfg, State: state}
 
 	externalMux := http.NewServeMux()
 	// externalMux.HandleFunc("/", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
+	externalMux.HandleFunc("/scanned", app.handleScanned)
 
 	externalServer := http.Server{
 		Addr:    cfg.ListenAddress,

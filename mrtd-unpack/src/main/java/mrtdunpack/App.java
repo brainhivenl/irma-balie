@@ -27,7 +27,7 @@ public class App {
         }
 
         String path = args[0];
-        System.out.println("Opening " + path);
+        System.err.println("Opening " + path);
 
         Reader reader;
         if (path.equals("stdin")) {
