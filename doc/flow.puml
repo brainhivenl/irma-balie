@@ -1,0 +1,38 @@
+@startuml
+participant passport
+participant scanner
+participant frontend
+participant client
+participant yubikey
+participant server
+participant revocationlist
+participant irmago
+
+passport->scanner: elo
+scanner->client: challenge?
+client->server: challenge?
+server->client: JWT(challenge)!
+client->scanner: challenge!
+scanner->passport: sign challenge!
+passport->scanner: AA(challenge)
+scanner->passport: files?
+passport->scanner: files!
+scanner->client: AA(challenge), files!
+client->frontend: unpacked files!
+frontend->client: submit!
+client->yubikey: sign AA(challenge)?
+yubikey->yubikey: finger!
+yubikey->client: Sign(AA(challenge))
+client->server: JWT(challenge), AA(challenge), files, Sign(AA(challenge))!
+server->server: is challenge timely?
+server->server: is AA(challenge) correct?
+server->server: are files signed by state?
+server->server: is Sign(AA(challenge)) by employee?
+server->revocationlist: document nr?
+revocationlist->server: document nr OK!
+server->irmago: issue credentials!
+irmago->server: irma session!
+server->client: irma session!
+client->frontend: irma session!
+
+@enduml
