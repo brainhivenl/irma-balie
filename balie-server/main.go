@@ -40,6 +40,7 @@ func main() {
 	externalMux := http.NewServeMux()
 	// externalMux.HandleFunc("/", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
+	externalMux.HandleFunc("/submit", app.handleSubmit)
 
 	externalServer := http.Server{
 		Addr:    cfg.ListenAddress,
