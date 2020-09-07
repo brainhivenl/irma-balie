@@ -12,9 +12,14 @@ import (
 	// irma "github.com/privacybydesign/irmago"
 	// "github.com/privacybydesign/irmago/server"
 
+	"io/ioutil"
+
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
+// ChallengeClaims is a Challenge in the JWT claims-sense.
+// Acts as a challenge-response mechanism as the challenge will be signed by the MRTD using Active Authentication (AA).
+// Original signed JWT should be resent to the server.
 type ChallengeClaims struct {
 	Challenge string `json:"challenge"`
 	jwt.StandardClaims
@@ -29,24 +34,22 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := jwt.Parse(resp.Body);
-	// challenge := make([]byte, 8)
-	// rand.Read(challenge)
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bodyString := string(bodyBytes)
 
-	// duration, err := time.ParseDuration("2m")
-	// challengeClaims := ChallengeClaims{
-	// 	Challenge: base64.StdEncoding.EncodeToString(challenge),
-	// 	StandardClaims: jwt.StandardClaims{
-	// 		ExpiresAt: time.Now().Add(duration).Unix(),
-	// 	},
-	// }
+	parser := jwt.Parser{}
+	// We do not need to verify the claim; we will pass the original JWT back to the server.
+	token, _, err := parser.ParseUnverified(bodyString, &ChallengeClaims{})
+	if err != nil {
+		log.Println(fmt.Sprintf("server response invalid: %v", err))
+		w.WriteHeader(503)
+		io.WriteString(w, "503 upstream problem")
+		return
+	}
 
-	// token := jwt.NewWithClaims(jwt.SigningMethodHS256, challengeClaims)
-
-	// response, err := token.SignedString([]byte(app.Cfg.JwtSecret))
-
-	// if err != nil {
-	// 	panic(fmt.Sprintf("error signing challenge: %v", err))
-	// }
-	// io.WriteString(w, resp)
+	app.State.Challenge = &bodyString
+	io.WriteString(w, token.Claims.(*ChallengeClaims).Challenge)
 }

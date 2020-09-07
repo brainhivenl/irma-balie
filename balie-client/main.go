@@ -12,10 +12,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-type State struct {
-	Challenge string
-}
-
 type Configuration struct {
 	ListenAddress   string
 	FrontendAddress string
@@ -23,8 +19,13 @@ type Configuration struct {
 	State           *State
 }
 
+type State struct {
+	Challenge *string
+}
+
 type App struct {
-	Cfg Configuration
+	Cfg   Configuration
+	State State
 }
 
 func main() {
@@ -44,7 +45,8 @@ func main() {
 		panic("option required: BALIE_CLIENT_SERVERADDRESS")
 	}
 
-	app := App{Cfg: cfg}
+	state := State{Challenge: nil}
+	app := App{Cfg: cfg, State: state}
 
 	externalMux := http.NewServeMux()
 	// externalMux.HandleFunc("/", app.handleStatus)
