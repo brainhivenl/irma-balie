@@ -78,6 +78,7 @@ public class App {
     }
 
     private static ArrayList<X509Certificate> loadRoots() throws GeneralSecurityException, IOException {
+        // Try to read each file in roots/ as a trusted root certificate.
         File[] roots = new File("roots").listFiles();
         ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
         CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
@@ -89,7 +90,7 @@ public class App {
                 cer.checkValidity();
                 certs.add(cer);
             } catch (CertificateException e) {
-                // Skip expired certificates.
+                // Skip expired and otherwise invalid certificates.
             }
         }
         return certs;
@@ -138,16 +139,25 @@ public class App {
 
         boolean verified = false;
 
-        for (X509Certificate root : loadRoots()) {
-            if (!root.getSubjectX500Principal().equals(sodFile.getIssuerX500Principal())) {
+        // The signing certificate is what the passport uses to sign its data.
+        X509Certificate signingCert = sodFile.getDocSigningCertificate();
+
+        // The root certificates are what we trust to sign signing certificates.
+        for (X509Certificate rootCert : loadRoots()) {
+            // The X500Principal.equals method compares the principals according
+            // to RFC 5280. If this is the wrong root certificate, we skip it.
+            if (!rootCert.getSubjectX500Principal().equals(signingCert.getIssuerX500Principal())) {
                 continue;
             }
+
+            // Since some certificates have the same principal, we try each one.
             try {
-                sodFile.getDocSigningCertificate().verify(root.getPublicKey());
+                signingCert.verify(rootCert.getPublicKey());
             } catch (GeneralSecurityException e) {
                 System.err.println(e);
                 continue;
             }
+
             verified = true;
             System.err.println("root signature OK!");
             break;
