@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="186px" height="186px" viewBox="0 0 186 186" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="QR-code" transform="translate(-3.000000, -3.000000)" fill="#184B98" fill-rule="nonzero">
+            <g id="Group">
+                <g transform="translate(3.000000, 3.000000)">
+                    <path d="M31,0 L31,6 L7,6 C6.48716416,6 6.06449284,6.38604019 6.00672773,6.88337887 L6,7 L6,31 L0,31 L0,7 C0,3.21454828 3.00478338,0.130901317 6.75935025,0.0040590183 L7,0 L31,0 Z" id="Path-2"></path>
+                    <path d="M31,155 L31,161 L7,161 C6.48716416,161 6.06449284,161.38604 6.00672773,161.883379 L6,162 L6,186 L0,186 L0,162 C0,158.214548 3.00478338,155.130901 6.75935025,155.004059 L7,155 L31,155 Z" id="Path-2-Copy" transform="translate(15.500000, 170.500000) scale(1, -1) translate(-15.500000, -170.500000) "></path>
+                    <path d="M186,155 L186,161 L162,161 C161.487164,161 161.064493,161.38604 161.006728,161.883379 L161,162 L161,186 L155,186 L155,162 C155,158.214548 158.004783,155.130901 161.75935,155.004059 L162,155 L186,155 Z" id="Path-2-Copy-2" transform="translate(170.500000, 170.500000) scale(-1, -1) translate(-170.500000, -170.500000) "></path>
+                    <path d="M186,0 L186,6 L162,6 C161.487164,6 161.064493,6.38604019 161.006728,6.88337887 L161,7 L161,31 L155,31 L155,7 C155,3.21454828 158.004783,0.130901317 161.75935,0.0040590183 L162,0 L186,0 Z" id="Path-2-Copy-3" transform="translate(170.500000, 15.500000) scale(-1, 1) translate(-170.500000, -15.500000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

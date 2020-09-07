@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="627px" height="397px" viewBox="0 0 627 397" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Scanlijnen</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Instruction-driving-licence" transform="translate(-2049.000000, -758.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="Group-2" transform="translate(1003.000000, 367.000000)">
+                <g id="Group" transform="translate(195.000000, 178.000000)">
+                    <g id="Rijbewijs" transform="translate(851.000000, 213.000000)">
+                        <path d="M627,334 L627,397 L564,397 L564,391 L621,391 L621,334 L627,334 Z M6,331 L6,388 L63,388 L63,394 L0,394 L0,331 L6,331 Z M63,0 L63,6 L6,6 L6,63 L0,63 L0,0 L63,0 Z M624,0 L624,63 L618,63 L618,6 L561,6 L561,0 L624,0 Z" id="Scanlijnen"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

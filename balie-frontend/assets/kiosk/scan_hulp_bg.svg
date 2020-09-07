@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1531px" height="878px" viewBox="0 0 1531 878" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>ScanHulpBG</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Instruction-driving-licence" transform="translate(-1198.000000, -545.000000)" fill="#3C4B5A">
+            <g id="Group-2" transform="translate(1003.000000, 367.000000)">
+                <g id="Group" transform="translate(195.000000, 178.000000)">
+                    <path d="M459.871002,-326 L1188,-326 C1196.83656,-326 1204,-318.836556 1204,-310 L1204,1188 C1204,1196.83656 1196.83656,1204 1188,1204 L459.871002,1204 C451.034446,1204 443.871002,1196.83656 443.871002,1188 L443.871002,593.859456 L443.871002,593.859456 L327,446.617354 L443.871002,309.518811 L443.871002,-310 C443.871002,-318.836556 451.034446,-326 459.871002,-326 Z" id="ScanHulpBG" transform="translate(765.500000, 439.000000) scale(-1, -1) rotate(90.000000) translate(-765.500000, -439.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
