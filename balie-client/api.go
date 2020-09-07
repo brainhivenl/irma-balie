@@ -85,8 +85,7 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(fmt.Sprintf("server response invalid: %v", err))
-		w.WriteHeader(503)
-		io.WriteString(w, "503 upstream problem")
+		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 
@@ -107,9 +106,8 @@ func (app App) handleScanned(w http.ResponseWriter, r *http.Request) {
 
 	unpacked, err := state.unpackMrtd(app.Cfg)
 	if err != nil {
-		log.Println(fmt.Sprintf("failed to parse scanned: %v", err))
-		w.WriteHeader(400)
-		io.WriteString(w, "400 bad request")
+		log.Printf("failed to parse scanned: %v", err)
+		http.Error(w, "400 bad request", http.StatusBadRequest)
 		return
 	}
 
@@ -117,7 +115,7 @@ func (app App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	app.State = state
 
 	// TODO send state via websocket
-	log.Println(fmt.Sprintf("TODO to websocket %s", unpacked))
+	log.Printf("TODO to websocket %s", unpacked)
 
 	io.WriteString(w, "ok")
 }
