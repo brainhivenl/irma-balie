@@ -16,7 +16,11 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class App {
@@ -73,6 +77,24 @@ public class App {
         return signature.verify(sodFile.getEncryptedDigest());
     }
 
+    private static ArrayList<X509Certificate> loadRoots() throws GeneralSecurityException, IOException {
+        File[] roots = new File("roots").listFiles();
+        ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
+        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+        for (File file : roots) {
+            try {
+                FileInputStream inStream = new FileInputStream(file);
+                X509Certificate cer = (X509Certificate)certFactory.generateCertificate(inStream);
+                inStream.close();
+                cer.checkValidity();
+                certs.add(cer);
+            } catch (CertificateException e) {
+                // Skip expired certificates.
+            }
+        }
+        return certs;
+    }
+
     private static boolean validate(byte[] challenge, byte[] response, DG1File dg1File, DG2File dg2File, DG15File dg15File, SODFile sodFile) throws GeneralSecurityException, IOException {
         String sigAlg = "SHA256WithECDSA"; // TODO infer from certificate type
         String digAlg = Util.inferDigestAlgorithmFromSignatureAlgorithm(sigAlg);
@@ -114,12 +136,23 @@ public class App {
         }
         System.err.println("SOD signature OK!");
 
-        String principal = sodFile.getIssuerX500Principal().getName();
-        System.err.println(principal);
-        System.err.println(sodFile.getDocSigningCertificate().getIssuerX500Principal());
+        boolean verified = false;
 
-        // TODO check national cert chain.
+        for (X509Certificate root : loadRoots()) {
+            if (!root.getSubjectX500Principal().equals(sodFile.getIssuerX500Principal())) {
+                continue;
+            }
+            try {
+                sodFile.getDocSigningCertificate().verify(root.getPublicKey());
+            } catch (GeneralSecurityException e) {
+                System.err.println(e);
+                continue;
+            }
+            verified = true;
+            System.err.println("root signature OK!");
+            break;
+        }
 
-        return true;
+        return verified;
     }
 }
