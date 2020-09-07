@@ -86,9 +86,8 @@ func (state State) unpackMrtd(cfg Configuration) (string, error) {
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	resp, err := http.Get(fmt.Sprintf("%s/create", app.Cfg.ServerAddress))
 	if err != nil {
-		log.Println(fmt.Sprintf("failed to create new session: %v", err))
-		w.WriteHeader(503)
-		io.WriteString(w, "503 upstream problem")
+		log.Printf("failed to create new session: %v", err)
+		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 
@@ -103,7 +102,7 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	token, err := state.parseChallenge()
 
 	if err != nil {
-		log.Println(fmt.Sprintf("server response invalid: %v", err))
+		log.Printf("server response invalid: %v", err)
 		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
@@ -115,8 +114,7 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 
 func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	if app.State.Challenge == nil {
-		w.WriteHeader(400)
-		io.WriteString(w, "400 state challenge unset")
+		http.Error(w, "400 state challenge unset", http.StatusBadRequest)
 		return
 	}
 
@@ -132,17 +130,14 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	mrtdPrototype := MrtdPrototype{}
 	err = json.Unmarshal(bodyBytes, &mrtdPrototype)
 	if err != nil {
-		log.Println(fmt.Sprintf("failed to unmarshall: %s", err))
-		w.WriteHeader(400)
-		io.WriteString(w, "400 failed to unmarshall")
+		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
 	}
 
 	token, err := state.parseChallenge()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("current state invalid: %v", err))
-		w.WriteHeader(501)
-		io.WriteString(w, "501 logic error")
+		log.Printf("current state invalid: %v", err)
+		http.Error(w, "500 logic error", http.StatusInternalServerError)
 		return
 	}
 
@@ -150,25 +145,21 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		if app.Cfg.DebugMode {
 			log.Println("WARNING: challenge does not match, but disregarding due to debug mode")
 		} else {
-			w.WriteHeader(400)
-			io.WriteString(w, "400 inconsistent challenge")
+			http.Error(w, "400 inconsistent challenge", http.StatusBadRequest)
 			return
 		}
 	}
 
 	unpacked, err := state.unpackMrtd(app.Cfg)
 	if err != nil {
-		log.Printf("failed to parse scanned: %v", err)
-		http.Error(w, "400 bad request", http.StatusBadRequest)
+		http.Error(w, "400 unpack failed", http.StatusBadRequest)
 		return
 	}
 
 	unpackedPrototype := UnpackedPrototype{}
 	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
-		log.Println(fmt.Sprintf("failed to unmarshall: %s", err))
-		w.WriteHeader(400)
-		io.WriteString(w, "400 failed to unmarshall")
+		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
 	}
 
@@ -176,8 +167,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		if app.Cfg.DebugMode {
 			log.Println("WARNING: scanned document is not valid, but disregarding due to debug mode")
 		} else {
-			w.WriteHeader(400)
-			io.WriteString(w, "400 invalid document")
+			http.Error(w, "400 invalid document", http.StatusBadRequest)
 			return
 		}
 	}
@@ -194,8 +184,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	state := app.State
 	if state.Challenge == nil || state.ScannedDocument == nil {
-		w.WriteHeader(400)
-		io.WriteString(w, "400 state unset")
+		http.Error(w, "400 state unset", http.StatusBadRequest)
 		return
 	}
 
@@ -206,17 +195,15 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	marshalledRequest, err := json.Marshal(request)
 	if err != nil {
-		log.Println(fmt.Sprintf("failed to marshall: %s", err))
-		w.WriteHeader(500)
-		io.WriteString(w, "500 failed to marshall")
+		log.Printf("failed to marshall: %s", err)
+		http.Error(w, "500 failed to marshall", http.StatusInternalServerError)
 		return
 	}
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
 	if err != nil || resp.StatusCode != 200 {
-		log.Println(fmt.Sprintf("failed to submit for session: %d %v", resp.StatusCode, err))
-		w.WriteHeader(503)
-		io.WriteString(w, "503 upstream problem")
+		log.Printf("failed to submit for session: %d %v", resp.StatusCode, err)
+		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 
