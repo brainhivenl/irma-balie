@@ -22,7 +22,11 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	challenge := make([]byte, 8)
 	rand.Read(challenge)
 
-	duration, err := time.ParseDuration("2h")
+	var duration, _ = time.ParseDuration("2m")
+	if app.Cfg.DebugMode {
+		// Support longer duration for debug mode.
+		duration, _ = time.ParseDuration("2h")
+	}
 	challengeClaims := common.ChallengeClaims{
 		Challenge: base64.StdEncoding.EncodeToString(challenge),
 		StandardClaims: jwt.StandardClaims{
