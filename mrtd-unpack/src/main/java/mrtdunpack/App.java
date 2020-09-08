@@ -40,7 +40,12 @@ public class App {
             reader = new FileReader(new File(path));
         }
 
-        Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        Gson gson = new GsonBuilder()
+                .disableHtmlEscaping()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .setDateFormat("yyyy-MM-dd")
+                .create();
+
         IDExcerpt idExcerpt = gson.fromJson(reader, IDExcerpt.class);
 
         COMFile comFile = new COMFile(new ByteArrayInputStream(idExcerpt.com));
