@@ -2,13 +2,9 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"io"
 	"log"
-	"os/exec"
-	"strings"
-	"time"
 
 	"encoding/json"
 
@@ -18,34 +14,9 @@ import (
 	"io/ioutil"
 
 	jwt "github.com/dgrijalva/jwt-go"
+
+	"github.com/tweedegolf/irma-balie/common"
 )
-
-// ChallengeClaims is a Challenge in the JWT claims-sense.
-// Acts as a challenge-response mechanism as the challenge will be signed by the MRTD using Active Authentication (AA).
-// Original signed JWT should be resent to the server.
-type ChallengeClaims struct {
-	Challenge string `json:"challenge"`
-	jwt.StandardClaims
-}
-
-// MrtdPrototype is the set of fields in the Mrtd response which are of interest for the client.
-// We require the challenge to check whether it corresponds to our current state.
-type MrtdPrototype struct {
-	Challenge string `json:"challenge"`
-}
-
-// UnpackedPrototype is the set of fields in the unpacked Mrtd which are of interest to the client.
-// We require valid to check whether the Mrtd itself is valid.
-type UnpackedPrototype struct {
-	Valid          bool   `json:"valid"`
-	DocumentNumber string `json:"document_number"`
-}
-
-// IssuanceRequest is a request to the balie server for an issuance.
-type IssuanceRequest struct {
-	Challenge string          `json:"challenge"`
-	Document  json.RawMessage `json:"document"`
-}
 
 func (state State) parseChallenge() (*jwt.Token, error) {
 	if state.Challenge == nil {
@@ -56,7 +27,7 @@ func (state State) parseChallenge() (*jwt.Token, error) {
 
 	parser := jwt.Parser{}
 	// We do not need to verify the claim; we will pass the original JWT back to the server.
-	token, _, err := parser.ParseUnverified(challenge, &ChallengeClaims{})
+	token, _, err := parser.ParseUnverified(challenge, &common.ChallengeClaims{})
 	return token, err
 }
 
@@ -65,22 +36,7 @@ func (state State) unpackMrtd(cfg Configuration) (string, error) {
 		return "", errors.New("No scanned document was set in state")
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3000*time.Millisecond)
-	defer cancel()
-
-	cmdParts := strings.Split(cfg.MrtdUnpack, " ")
-	cmd := exec.CommandContext(ctx, cmdParts[0], cmdParts[1:]...)
-	cmd.Stdin = strings.NewReader(*state.ScannedDocument)
-
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
-
-	if err != nil {
-		return "", err
-	}
-
-	return out.String(), nil
+	return common.UnpackMrtd(cfg.MrtdUnpack, *state.ScannedDocument)
 }
 
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +65,7 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 
 	// Commit to new state
 	app.State = state
-	io.WriteString(w, token.Claims.(*ChallengeClaims).Challenge)
+	io.WriteString(w, token.Claims.(*common.ChallengeClaims).Challenge)
 }
 
 func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +83,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	state := app.State
 	state.ScannedDocument = &bodyString
 
-	mrtdPrototype := MrtdPrototype{}
+	mrtdPrototype := common.MrtdPrototype{}
 	err = json.Unmarshal(bodyBytes, &mrtdPrototype)
 	if err != nil {
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
@@ -141,7 +97,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if token.Claims.(*ChallengeClaims).Challenge != mrtdPrototype.Challenge {
+	if token.Claims.(*common.ChallengeClaims).Challenge != mrtdPrototype.Challenge {
 		if app.Cfg.DebugMode {
 			log.Println("WARNING: challenge does not match, but disregarding due to debug mode")
 		} else {
@@ -156,7 +112,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	unpackedPrototype := UnpackedPrototype{}
+	unpackedPrototype := common.UnpackedPrototype{}
 	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
@@ -188,7 +144,7 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	request := IssuanceRequest{
+	request := common.IssuanceRequest{
 		Challenge: *app.State.Challenge,
 		Document:  []byte(*app.State.ScannedDocument),
 	}
