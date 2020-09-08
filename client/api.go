@@ -2,16 +2,13 @@ package main
 
 import (
 	"bytes"
-	"errors"
-	"io"
-	"log"
-
 	"encoding/json"
-
+	"errors"
 	"fmt"
-	"net/http"
-
+	"io"
 	"io/ioutil"
+	"log"
+	"net/http"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
@@ -31,12 +28,17 @@ func (state State) parseChallenge() (*jwt.Token, error) {
 	return token, err
 }
 
-func (state State) unpackMrtd(cfg Configuration) (string, error) {
-	if state.ScannedDocument == nil {
-		return "", errors.New("No scanned document was set in state")
+func (state State) unpackMrtd(cfg Configuration) (*string, error) {
+	if state.Challenge == nil && state.ScannedDocument == nil {
+		return nil, errors.New("No scanned document nor challenge was set in state")
 	}
 
-	return common.UnpackMrtd(cfg.MrtdUnpack, *state.ScannedDocument)
+	request := common.MrtdRequest{
+		Challenge:  *state.Challenge,
+		RawMessage: []byte(*state.ScannedDocument),
+	}
+
+	return common.UnpackMrtd(cfg.MrtdUnpack, request)
 }
 
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -85,12 +87,13 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 
 	unpacked, err := state.unpackMrtd(app.Cfg)
 	if err != nil {
+		log.Printf("unpack failed %v", err)
 		http.Error(w, "400 unpack failed", http.StatusBadRequest)
 		return
 	}
 
 	unpackedPrototype := common.UnpackedPrototype{}
-	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
+	err = json.Unmarshal([]byte(*unpacked), &unpackedPrototype)
 	if err != nil {
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
@@ -134,9 +137,17 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
-	if err != nil || resp.StatusCode != 200 {
-		log.Printf("failed to submit for session: %d %v", resp.StatusCode, err)
-		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
+	if err != nil {
+
+		return
+	}
+	if resp.StatusCode != 200 {
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
+		} else {
+			http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
+		}
 		return
 	}
 
