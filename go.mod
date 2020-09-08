@@ -1,4 +1,4 @@
-module balie_client
+module github.com/tweedegolf/irma-balie
 
 go 1.14
 

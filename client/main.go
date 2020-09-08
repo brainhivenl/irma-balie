@@ -17,12 +17,12 @@ type Configuration struct {
 	FrontendAddress string
 	ServerAddress   string
 	MrtdUnpack      string
-	State           *State
+	DebugMode       bool
 }
 
 type State struct {
-	Challenge   *string
-	ScannedCard *string
+	Challenge       *string
+	ScannedDocument *string
 }
 
 type App struct {
@@ -50,13 +50,20 @@ func main() {
 		panic("option required: BALIE_CLIENT_MRTDUNPACK")
 	}
 
-	state := State{Challenge: nil, ScannedCard: nil}
+	if cfg.DebugMode {
+		log.Println("WARNING: debug mode enabled")
+	} else {
+		log.Println("Started in production mode")
+	}
+
+	state := State{Challenge: nil, ScannedDocument: nil}
 	app := App{Cfg: cfg, State: state}
 
 	externalMux := http.NewServeMux()
 	// externalMux.HandleFunc("/", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/scanned", app.handleScanned)
+	externalMux.HandleFunc("/submit", app.handleSubmit)
 
 	externalServer := http.Server{
 		Addr:    cfg.ListenAddress,

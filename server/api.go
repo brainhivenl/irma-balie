@@ -41,3 +41,8 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	io.WriteString(w, response)
 }
+
+func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
+	// TODO
+	io.WriteString(w, "ok")
+}
