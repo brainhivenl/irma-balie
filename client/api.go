@@ -83,29 +83,6 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	state := app.State
 	state.ScannedDocument = &bodyString
 
-	mrtdPrototype := common.MrtdPrototype{}
-	err = json.Unmarshal(bodyBytes, &mrtdPrototype)
-	if err != nil {
-		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
-		return
-	}
-
-	token, err := state.parseChallenge()
-	if err != nil {
-		log.Printf("current state invalid: %v", err)
-		http.Error(w, "500 logic error", http.StatusInternalServerError)
-		return
-	}
-
-	if token.Claims.(*common.ChallengeClaims).Challenge != mrtdPrototype.Challenge {
-		if app.Cfg.DebugMode {
-			log.Println("WARNING: challenge does not match, but disregarding due to debug mode")
-		} else {
-			http.Error(w, "400 inconsistent challenge", http.StatusBadRequest)
-			return
-		}
-	}
-
 	unpacked, err := state.unpackMrtd(app.Cfg)
 	if err != nil {
 		http.Error(w, "400 unpack failed", http.StatusBadRequest)

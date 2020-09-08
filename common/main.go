@@ -19,12 +19,6 @@ type ChallengeClaims struct {
 	jwt.StandardClaims
 }
 
-// MrtdPrototype is the set of fields in the Mrtd response which are of interest for the client.
-// We require the challenge to check whether it corresponds to our current state.
-type MrtdPrototype struct {
-	Challenge string `json:"challenge"`
-}
-
 // UnpackedPrototype is the set of fields in the unpacked Mrtd which are of interest to the client.
 // We require valid to check whether the Mrtd itself is valid.
 type UnpackedPrototype struct {
