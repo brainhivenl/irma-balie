@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
@@ -49,6 +50,14 @@ func (state State) unpackMrtd(cfg Configuration) (*string, error) {
 	return common.UnpackMrtd(cfg.MrtdUnpack, request)
 }
 
+func (app *App) handleDetected(w http.ResponseWriter, r *http.Request) {
+	app.Broadcaster.Notify(Message{
+		Type: NFCDetect,
+	})
+
+	io.WriteString(w, "ok")
+}
+
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	resp, err := http.Get(fmt.Sprintf("%s/create", app.Cfg.ServerAddress))
 	if err != nil {
@@ -72,6 +81,10 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
+
+	app.Broadcaster.Notify(Message{
+		Type: Created,
+	})
 
 	// Commit to new state
 	app.State = state
@@ -151,7 +164,6 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
 	if err != nil {
-
 		return
 	}
 	if resp.StatusCode != 200 {
@@ -168,28 +180,40 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
-	statusPipe := make(chan Message, 2)
+	msgPipe := make(chan Message, 2)
 
-	app.Broadcaster.Subscribe(statusPipe)
-	defer app.Broadcaster.Unsubscribe(statusPipe)
+	app.Broadcaster.Subscribe(msgPipe)
+	defer app.Broadcaster.Unsubscribe(msgPipe)
 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("failed to upgrade session status connection:", err)
 		return
 	}
-	defer ws.Close()
 
-	for msg := range statusPipe {
-		marshalledMsg, err := json.Marshal(msg)
-		if err != nil {
-			log.Printf("failed to marshall: %s", err)
-			continue
-		}
+	waitDuration := 100 * time.Millisecond
+	ticker := time.NewTicker(waitDuration)
+	defer func() {
+		ticker.Stop()
+		ws.Close()
+	}()
 
-		err = ws.WriteMessage(websocket.TextMessage, marshalledMsg)
-		if err != nil {
-			break
+	for {
+		select {
+		case msg := <-msgPipe:
+			if msg.Type == TerminateBus {
+				return
+			}
+
+			err = ws.WriteJSON(msg)
+			if err != nil {
+				break
+			}
+		case <-ticker.C:
+			ws.SetWriteDeadline(time.Now().Add(waitDuration))
+			if err := ws.WriteMessage(websocket.PingMessage, []byte("keepalive")); err != nil {
+				return
+			}
 		}
 	}
 }

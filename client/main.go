@@ -1,13 +1,10 @@
 package main
 
 import (
-	// "encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-
-	// "os"
-	// "time"
+	"time"
 
 	"github.com/kelseyhightower/envconfig"
 )
@@ -66,10 +63,14 @@ func main() {
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/scanned", app.handleScanned)
 	externalMux.HandleFunc("/submit", app.handleSubmit)
+	externalMux.HandleFunc("/socket", app.handleSocket)
 
 	externalServer := http.Server{
-		Addr:    cfg.ListenAddress,
-		Handler: externalMux,
+		Addr:         cfg.ListenAddress,
+		Handler:      externalMux,
+		IdleTimeout:  time.Second,
+		WriteTimeout: time.Second,
+		ReadTimeout:  time.Second,
 	}
 
 	go notifyDaemon(app)
