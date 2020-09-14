@@ -1,0 +1,14 @@
+<SchemeManager version="7">
+	<Id>tweedegolf-demo</Id>
+	<Demo>true</Demo>
+	<Name>
+		<en>Tweedegolf Demo</en>
+		<nl>Tweedegolf Demo</nl>
+	</Name>
+	<Description>
+		<en>Demo credentials within the Tweedegolf domain</en>
+		<nl>Demo Tweede golf-credentials</nl>
+	</Description>
+	<TimestampServer>https://keyshare.privacybydesign.foundation/atumd/</TimestampServer>
+	<Contact>https://tweedegolf.nl/</Contact>
+</SchemeManager>
