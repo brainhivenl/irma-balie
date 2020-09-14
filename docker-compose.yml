@@ -1,0 +1,69 @@
+version: '3.3'
+services:
+  irma:
+    build:
+      dockerfile: 'docker/irmago.Dockerfile'
+      context: .
+    expose: [8088]
+    networks:
+      - default
+    ports: ["0.0.0.0:8088:8088"]
+    command:
+      - "irma"
+      - "server"
+      - "--verbose"
+      - "--url=http://${HOST_LAN_IP}:8088"
+
+  nginx:
+    image: nginx:1.19
+    depends_on:
+      - client
+      - irma
+      - server
+    volumes:
+      - "./docker/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./docker/certificates/server.pem:/etc/ssl/server.pem:ro"
+      - "./docker/certificates/server.key:/etc/ssl/server.key:ro"
+    ports:
+      - 127.0.0.1:443:443
+      - 127.0.0.1:80:80
+    environment:
+      TZ: Europe/Amsterdam
+    networks:
+      default:
+        aliases:
+          - client.balie.test.tweede.golf
+          - irma.balie.test.tweede.golf
+          - server.balie.test.tweede.golf
+
+  server:
+    build:
+      dockerfile: 'docker/go.Dockerfile'
+      context: .
+    volumes:
+      - ".:/go/src/app:ro"
+    working_dir: /go/src/app/server
+    networks:
+      - default
+    environment:
+      BALIE_SERVER_DEBUGMODE: "true"
+      BALIE_SERVER_IRMASERVER: http://irma:8088
+      BALIE_SERVER_JWTSECRET: foo
+      BALIE_SERVER_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
+    expose: [8081]
+
+  client:
+    build:
+      dockerfile: 'docker/go.Dockerfile'
+      context: .
+    volumes:
+      - ".:/go/src/app:ro"
+    working_dir: /go/src/app/client
+    networks:
+      - default
+    environment:
+      BALIE_CLIENT_DEBUGMODE: "true"
+      BALIE_CLIENT_FRONTENDADDRESS: ${BALIE_CLIENT_FRONTENDADDRESS}
+      BALIE_CLIENT_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
+      BALIE_CLIENT_SERVERADDRESS: http://server:8081
+    expose: [8080]
