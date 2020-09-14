@@ -12,8 +12,16 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
+	"github.com/gorilla/websocket"
 	"github.com/tweedegolf/irma-balie/common"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	// Accept any origin
+	CheckOrigin: func(r *http.Request) bool { return true },
+}
 
 func (state State) parseChallenge() (*jwt.Token, error) {
 	if state.Challenge == nil {
@@ -111,7 +119,12 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	// Commit to new state
 	app.State = state
 
-	// TODO send state via websocket
+	// Send scanned document over websockets
+	app.Broadcaster.Notify(Message{
+		Type:  Scanned,
+		Value: []byte(*unpacked),
+	})
+
 	log.Println(fmt.Sprintf("Stored document for %s", unpackedPrototype.DocumentNumber))
 
 	io.WriteString(w, "ok")
@@ -152,4 +165,31 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	io.WriteString(w, "ok")
+}
+
+func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
+	statusPipe := make(chan Message, 2)
+
+	app.Broadcaster.Subscribe(statusPipe)
+	defer app.Broadcaster.Unsubscribe(statusPipe)
+
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println("failed to upgrade session status connection:", err)
+		return
+	}
+	defer ws.Close()
+
+	for msg := range statusPipe {
+		marshalledMsg, err := json.Marshal(msg)
+		if err != nil {
+			log.Printf("failed to marshall: %s", err)
+			continue
+		}
+
+		err = ws.WriteMessage(websocket.TextMessage, marshalledMsg)
+		if err != nil {
+			break
+		}
+	}
 }
