@@ -42,6 +42,8 @@ services:
       context: .
     volumes:
       - ".:/go/src/app:ro"
+      - "/go/src/app/mrtd-unpack/.gradle"
+      - "/go/src/app/mrtd-unpack/build"
     working_dir: /go/src/app/server
     networks:
       - default
@@ -58,6 +60,8 @@ services:
       context: .
     volumes:
       - ".:/go/src/app:ro"
+      - "/go/src/app/mrtd-unpack/.gradle"
+      - "/go/src/app/mrtd-unpack/build"
     working_dir: /go/src/app/client
     networks:
       - default
