@@ -13,6 +13,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// UniversalDateLayout is the layout for universal dates consumed by time.Parse.
+const UniversalDateLayout = "2006-01-02"
+
 // ChallengeClaims is a Challenge in the JWT claims-sense.
 // Acts as a challenge-response mechanism as the challenge will be signed by the MRTD using Active Authentication (AA).
 // Original signed JWT should be resent to the server.
@@ -117,8 +120,8 @@ func overAge(now time.Time, dateOfBirth time.Time, years int) string {
 
 // ToCredentialAttributes converts an UnpackedPrototype to the attributes intended for an IRMA credential.
 func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]string, error) {
-	// In time.Parse "2006-01-02" is the format string.
-	dateOfBirth, err := time.Parse("2006-01-02", up.DateOfBirth)
+
+	dateOfBirth, err := time.Parse(UniversalDateLayout, up.DateOfBirth)
 	if err != nil {
 		return nil, err
 	}
