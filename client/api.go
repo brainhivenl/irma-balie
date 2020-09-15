@@ -129,13 +129,25 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	attributes, err := unpackedPrototype.ToCredentialAttributes(time.Now())
+	if err != nil {
+		http.Error(w, "500 failed to convert to attributes", http.StatusInternalServerError)
+		return
+	}
+
+	attributesBytes, err := json.Marshal(attributes)
+	if err != nil {
+		http.Error(w, "500 failed to marshall", http.StatusInternalServerError)
+		return
+	}
+
 	// Commit to new state
 	app.State = state
 
 	// Send scanned document over websockets
 	go app.Broadcaster.Notify(Message{
 		Type:  Scanned,
-		Value: []byte(unpacked),
+		Value: attributesBytes,
 	})
 
 	log.Println(fmt.Sprintf("Stored document for %s", unpackedPrototype.DocumentNumber))
@@ -179,8 +191,6 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	sessionJwt := string(bodyBytes)
 	app.State.SessionJwt = &sessionJwt
-
-	log.Printf("session JWT: %s", sessionJwt)
 
 	parser := jwt.Parser{}
 	// We do not need to verify the claim; we will pass the original JWT back to the server.
