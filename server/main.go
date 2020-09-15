@@ -45,8 +45,8 @@ func main() {
 		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
 
-	if _, err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
-		log.Fatalf("Failed to run dry-run mrtd-unpack: %v", err)
+	if err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
+		log.Fatalf("Failed to dry-run mrtd-unpack: %v", err)
 		return
 	}
 	log.Println("Mrtd-unpack functionality verified")
