@@ -205,9 +205,8 @@ func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = ws.WriteJSON(msg)
-			if err != nil {
-				break
+			if err := ws.WriteJSON(msg); err != nil {
+				return
 			}
 		case <-ticker.C:
 			ws.SetWriteDeadline(time.Now().Add(waitDuration))
