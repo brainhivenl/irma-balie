@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
@@ -48,21 +49,21 @@ type IssuanceRequest struct {
 	Document  json.RawMessage `json:"document"`
 }
 
-func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, pipeStderr bool) (string, error) {
+func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, getVersion bool) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	cmdParts := strings.Split(mrtdCmd, " ")
 
-	if input != nil {
+	if getVersion {
+		cmdParts = append(cmdParts, "version")
+	} else {
 		cmdParts = append(cmdParts, "stdin")
 	}
 
 	cmd := exec.CommandContext(ctx, cmdParts[0], cmdParts[1:]...)
 	cmd.Stdin = bytes.NewReader(input)
-	if pipeStderr {
-		cmd.Stderr = os.Stderr
-	}
+	cmd.Stderr = os.Stderr
 
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -80,10 +81,20 @@ func UnpackMrtd(mrtdCmd string, request MrtdRequest) (string, error) {
 		return "", err
 	}
 
-	return runMrtd(3*time.Second, mrtdCmd, requestBytes, true)
+	return runMrtd(3*time.Second, mrtdCmd, requestBytes, false)
 }
 
 // TestMrtd runs the external mrtd-unpack utility, without any input, to verify the functionality.
-func TestMrtd(mrtdCmd string) (string, error) {
-	return runMrtd(30*time.Second, mrtdCmd, nil, false)
+func TestMrtd(mrtdCmd string) error {
+	version, err := runMrtd(30*time.Second, mrtdCmd, nil, true)
+
+	if err != nil {
+		return err
+	}
+
+	if strings.TrimSpace(version) != "1.0.0" {
+		return errors.New("Mrtd-unpack does not seem to be the correct version")
+	}
+
+	return nil
 }

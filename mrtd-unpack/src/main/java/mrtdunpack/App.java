@@ -30,6 +30,11 @@ public class App {
             return;
         }
 
+        if (args[0].equals("version")) {
+            System.out.println("1.0.0");
+            return;
+        }
+
         String path = args[0];
         System.err.println("Opening " + path);
 
