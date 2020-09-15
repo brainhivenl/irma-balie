@@ -21,7 +21,7 @@ func irmaPollerDaemon(app *App) {
 		sessionJwt := *app.State.SessionJwt
 
 		resp, err := http.Post(fmt.Sprintf("%s/status", app.Cfg.ServerAddress), "application/jsonwebtoken", bytes.NewBuffer([]byte(sessionJwt)))
-		if err != nil && resp.StatusCode != 200 {
+		if err != nil || resp.StatusCode != 200 {
 			log.Printf("Failed to contact upstream server in irmaPoller: %v", err)
 			continue
 		}
