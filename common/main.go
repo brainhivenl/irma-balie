@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -60,6 +61,7 @@ func UnpackMrtd(mrtdCmd string, request MrtdRequest) (*string, error) {
 	cmdParts := strings.Split(mrtdCmd, " ")
 	cmd := exec.CommandContext(ctx, cmdParts[0], cmdParts[1:]...)
 	cmd.Stdin = bytes.NewReader(requestBytes)
+	cmd.Stderr = os.Stderr
 
 	var out bytes.Buffer
 	cmd.Stdout = &out
