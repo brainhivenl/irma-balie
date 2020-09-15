@@ -22,6 +22,7 @@ type Configuration struct {
 type State struct {
 	Challenge       *string
 	ScannedDocument *string
+	SessionJwt      *string
 }
 
 type App struct {
@@ -76,9 +77,9 @@ func main() {
 	externalServer := http.Server{
 		Addr:         cfg.ListenAddress,
 		Handler:      externalMux,
-		IdleTimeout:  time.Second,
-		WriteTimeout: time.Second,
-		ReadTimeout:  time.Second,
+		IdleTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+		ReadTimeout:  5 * time.Second,
 	}
 
 	go notifyDaemon(app)

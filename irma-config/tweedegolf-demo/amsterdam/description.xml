@@ -11,5 +11,5 @@
 	<SchemeManager>tweedegolf-demo</SchemeManager>
 	<ContactAddress>https://amsterdam.nl</ContactAddress>
 	<ContactEMail>info@amsterdam.nl</ContactEMail>
-	<baseURL></baseURL>
+	<baseURL>https://irma-scheme.tweedegolf.nl/tweedegolf-demo/amsterdam</baseURL>
 </Issuer>

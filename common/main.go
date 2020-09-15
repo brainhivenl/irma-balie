@@ -39,6 +39,7 @@ type UnpackedPrototype struct {
 	PersonalNumber string `json:"personal_number"`
 	DateOfBirth    string `json:"date_of_birth"`
 	DateOfExpiry   string `json:"date_of_expiry"`
+	Issuer         string `json:"issuer"`
 	Gender         string `json:"gender"`
 	FaceImage      string `json:"face_image"`
 }
@@ -47,6 +48,13 @@ type UnpackedPrototype struct {
 type IssuanceRequest struct {
 	Challenge string          `json:"challenge"`
 	Document  json.RawMessage `json:"document"`
+}
+
+// IssuanceClaims is the response after an issuance request, to be signed in a JWT.
+type IssuanceClaims struct {
+	SessionPtr json.RawMessage `json:"session_ptr"`
+	Token      string          `json:"token"`
+	jwt.StandardClaims
 }
 
 func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, getVersion bool) (string, error) {

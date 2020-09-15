@@ -7,6 +7,7 @@ import org.jmrtd.lds.icao.DG2File;
 import org.jmrtd.lds.icao.MRZInfo;
 import org.jmrtd.lds.iso19794.FaceImageInfo;
 
+import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +39,7 @@ public class IDVerdict {
         this.lastName = mrzInfo.getPrimaryIdentifier();
         this.nationality = mrzInfo.getNationality();
         this.personalNumber = mrzInfo.getPersonalNumber();
-        this.issuer = sodFile.getIssuerX500Principal().getName();
+        this.issuer = sodFile.getIssuerX500Principal().getName(X500Principal.RFC1779);
         Gender enumGender = mrzInfo.getGender();
 
         this.dateOfBirth = new SimpleDateFormat("yyMMdd").parse(mrzInfo.getDateOfBirth());
@@ -53,8 +54,8 @@ public class IDVerdict {
 
         try {
             FaceImageInfo fii = dg2File.getFaceInfos().get(0).getFaceImageInfos().get(0);
-            this.faceImage = fii.getImageInputStream().readAllBytes();
-        } catch (IndexOutOfBoundsException _e) {
+            this.faceImage = JP2Convert.convert(fii.getImageInputStream());
+        } catch (IndexOutOfBoundsException | InterruptedException _e) {
             // Do nothing
         }
     }

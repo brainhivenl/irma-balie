@@ -14,10 +14,6 @@
 		<en>Your Dutch passport or identity card</en>
 		<nl>Uw Nederlandse paspoort of identiteitskaart, uitgelezen via de IRMA balie</nl>
 	</Description>
-	<IssueURL>
-		<en>https://privacybydesign.foundation/attribute-index/en/irma-demo.amsterdam.travelDocument.html</en>
-		<nl>https://privacybydesign.foundation/attribute-index/nl/irma-demo.amsterdam.travelDocument.html</nl>
-	</IssueURL>
 	<ShouldBeSingleton>false</ShouldBeSingleton>
 
 	<Attributes>

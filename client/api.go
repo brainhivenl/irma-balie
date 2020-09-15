@@ -133,7 +133,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	app.State = state
 
 	// Send scanned document over websockets
-	app.Broadcaster.Notify(Message{
+	go app.Broadcaster.Notify(Message{
 		Type:  Scanned,
 		Value: []byte(unpacked),
 	})
@@ -164,19 +164,35 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
 	if err != nil {
+		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
+		return
+	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 	if resp.StatusCode != 200 {
-		bodyBytes, err := ioutil.ReadAll(r.Body)
-		if err == nil {
-			http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
-		} else {
-			http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
-		}
+		http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
 		return
 	}
 
-	io.WriteString(w, "ok")
+	sessionJwt := string(bodyBytes)
+	app.State.SessionJwt = &sessionJwt
+
+	log.Printf("session JWT: %s", sessionJwt)
+
+	parser := jwt.Parser{}
+	// We do not need to verify the claim; we will pass the original JWT back to the server.
+	issuanceSession, _, err := parser.ParseUnverified(sessionJwt, &common.IssuanceClaims{})
+
+	if err != nil {
+		log.Printf("failed to parse issuanceSession JWT: %s", err)
+		http.Error(w, "500 failed to parse issuance session", http.StatusInternalServerError)
+		return
+	}
+
+	io.WriteString(w, string(issuanceSession.Claims.(*common.IssuanceClaims).SessionPtr))
 }
 
 func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
