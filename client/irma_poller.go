@@ -27,7 +27,7 @@ func irmaPollerDaemon(app *App) {
 
 		bodyBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("Failed to read bytes in irmaPoller: %v", err)
 			continue
 		}
 		status := string(bodyBytes)
