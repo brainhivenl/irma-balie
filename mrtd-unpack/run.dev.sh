@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-cd ../mrtd-unpack/
+cd `dirname "${BASH_SOURCE[0]}"`
 ./gradlew -q run --args=stdin

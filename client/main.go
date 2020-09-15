@@ -1,13 +1,10 @@
 package main
 
 import (
-	// "encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-
-	// "os"
-	// "time"
+	"time"
 
 	"github.com/kelseyhightower/envconfig"
 )
@@ -26,8 +23,9 @@ type State struct {
 }
 
 type App struct {
-	Cfg   Configuration
-	State State
+	Cfg         Configuration
+	State       State
+	Broadcaster Broadcaster
 }
 
 func main() {
@@ -57,18 +55,26 @@ func main() {
 	}
 
 	state := State{Challenge: nil, ScannedDocument: nil}
-	app := App{Cfg: cfg, State: state}
+	broadcaster := makeBroadcaster()
+	app := App{Cfg: cfg, State: state, Broadcaster: broadcaster}
 
 	externalMux := http.NewServeMux()
 	// externalMux.HandleFunc("/", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/scanned", app.handleScanned)
 	externalMux.HandleFunc("/submit", app.handleSubmit)
+	externalMux.HandleFunc("/socket", app.handleSocket)
 
 	externalServer := http.Server{
-		Addr:    cfg.ListenAddress,
-		Handler: externalMux,
+		Addr:         cfg.ListenAddress,
+		Handler:      externalMux,
+		IdleTimeout:  time.Second,
+		WriteTimeout: time.Second,
+		ReadTimeout:  time.Second,
 	}
+
+	go notifyDaemon(app)
+
 	log.Printf("Starting external HTTP server on %v", cfg.ListenAddress)
 	log.Fatal(externalServer.ListenAndServe())
 }

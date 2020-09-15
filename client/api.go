@@ -2,21 +2,27 @@ package main
 
 import (
 	"bytes"
-	"errors"
-	"io"
-	"log"
-
 	"encoding/json"
-
+	"errors"
 	"fmt"
-	"net/http"
-
+	"io"
 	"io/ioutil"
+	"log"
+	"net/http"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
+	"github.com/gorilla/websocket"
 	"github.com/tweedegolf/irma-balie/common"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	// Accept any origin
+	CheckOrigin: func(r *http.Request) bool { return true },
+}
 
 func (state State) parseChallenge() (*jwt.Token, error) {
 	if state.Challenge == nil {
@@ -32,11 +38,24 @@ func (state State) parseChallenge() (*jwt.Token, error) {
 }
 
 func (state State) unpackMrtd(cfg Configuration) (string, error) {
-	if state.ScannedDocument == nil {
-		return "", errors.New("No scanned document was set in state")
+	if state.Challenge == nil || state.ScannedDocument == nil {
+		return "", errors.New("No scanned document or challenge was set in state")
 	}
 
-	return common.UnpackMrtd(cfg.MrtdUnpack, *state.ScannedDocument)
+	request := common.MrtdRequest{
+		Challenge:  *state.Challenge,
+		RawMessage: []byte(*state.ScannedDocument),
+	}
+
+	return common.UnpackMrtd(cfg.MrtdUnpack, request)
+}
+
+func (app *App) handleDetected(w http.ResponseWriter, r *http.Request) {
+	app.Broadcaster.Notify(Message{
+		Type: NFCDetect,
+	})
+
+	io.WriteString(w, "ok")
 }
 
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +82,10 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.Broadcaster.Notify(Message{
+		Type: Created,
+	})
+
 	// Commit to new state
 	app.State = state
 	io.WriteString(w, token.Claims.(*common.ChallengeClaims).Challenge)
@@ -83,31 +106,9 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	state := app.State
 	state.ScannedDocument = &bodyString
 
-	mrtdPrototype := common.MrtdPrototype{}
-	err = json.Unmarshal(bodyBytes, &mrtdPrototype)
-	if err != nil {
-		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
-		return
-	}
-
-	token, err := state.parseChallenge()
-	if err != nil {
-		log.Printf("current state invalid: %v", err)
-		http.Error(w, "500 logic error", http.StatusInternalServerError)
-		return
-	}
-
-	if token.Claims.(*common.ChallengeClaims).Challenge != mrtdPrototype.Challenge {
-		if app.Cfg.DebugMode {
-			log.Println("WARNING: challenge does not match, but disregarding due to debug mode")
-		} else {
-			http.Error(w, "400 inconsistent challenge", http.StatusBadRequest)
-			return
-		}
-	}
-
 	unpacked, err := state.unpackMrtd(app.Cfg)
 	if err != nil {
+		log.Printf("unpack failed %v", err)
 		http.Error(w, "400 unpack failed", http.StatusBadRequest)
 		return
 	}
@@ -131,7 +132,12 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	// Commit to new state
 	app.State = state
 
-	// TODO send state via websocket
+	// Send scanned document over websockets
+	app.Broadcaster.Notify(Message{
+		Type:  Scanned,
+		Value: []byte(unpacked),
+	})
+
 	log.Println(fmt.Sprintf("Stored document for %s", unpackedPrototype.DocumentNumber))
 
 	io.WriteString(w, "ok")
@@ -157,11 +163,56 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
-	if err != nil || resp.StatusCode != 200 {
-		log.Printf("failed to submit for session: %d %v", resp.StatusCode, err)
-		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
+	if err != nil {
+		return
+	}
+	if resp.StatusCode != 200 {
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err == nil {
+			http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
+		} else {
+			http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
+		}
 		return
 	}
 
 	io.WriteString(w, "ok")
+}
+
+func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
+	msgPipe := make(chan Message, 2)
+
+	app.Broadcaster.Subscribe(msgPipe)
+	defer app.Broadcaster.Unsubscribe(msgPipe)
+
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println("failed to upgrade session status connection:", err)
+		return
+	}
+
+	waitDuration := 100 * time.Millisecond
+	ticker := time.NewTicker(waitDuration)
+	defer func() {
+		ticker.Stop()
+		ws.Close()
+	}()
+
+	for {
+		select {
+		case msg := <-msgPipe:
+			if msg.Type == TerminateBus {
+				return
+			}
+
+			if err := ws.WriteJSON(msg); err != nil {
+				return
+			}
+		case <-ticker.C:
+			ws.SetWriteDeadline(time.Now().Add(waitDuration))
+			if err := ws.WriteMessage(websocket.PingMessage, []byte("keepalive")); err != nil {
+				return
+			}
+		}
+	}
 }

@@ -12,6 +12,8 @@ type Configuration struct {
 	ListenAddress string
 	IrmaServer    string
 	JwtSecret     string
+	MrtdUnpack    string
+	DebugMode     bool
 }
 
 type App struct {
@@ -20,7 +22,7 @@ type App struct {
 
 func main() {
 	var cfg Configuration
-	err := envconfig.Process("BALIE_CLIENT", &cfg)
+	err := envconfig.Process("BALIE_SERVER", &cfg)
 	if err != nil {
 		panic(fmt.Sprintf("could not parse environment: %v", err))
 	}
@@ -29,10 +31,10 @@ func main() {
 		cfg.ListenAddress = "0.0.0.0:8081"
 	}
 	if cfg.IrmaServer == "" {
-		panic("option required: BALIE_CLIENT_IRMASERVER")
+		panic("option required: BALIE_SERVER_IRMASERVER")
 	}
 	if cfg.JwtSecret == "" {
-		panic("option required: BALIE_CLIENT_JWTSECRET")
+		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
 
 	app := App{Cfg: cfg}
