@@ -131,6 +131,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 
 	attributes, err := unpackedPrototype.ToCredentialAttributes(time.Now())
 	if err != nil {
+		log.Println("failed to convert to attributes")
 		http.Error(w, "500 failed to convert to attributes", http.StatusInternalServerError)
 		return
 	}

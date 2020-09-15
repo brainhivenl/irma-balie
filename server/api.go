@@ -116,7 +116,8 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	attributes, err := up.ToCredentialAttributes(now)
 	if err != nil {
-		http.Error(w, "400 failed to convert to attributes", http.StatusBadRequest)
+		log.Println("failed to convert to attributes")
+		http.Error(w, "500 failed to convert to attributes", http.StatusInternalServerError)
 		return
 	}
 	credentialRequest := irma.CredentialRequest{
