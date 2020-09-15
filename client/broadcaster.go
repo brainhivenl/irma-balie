@@ -80,12 +80,10 @@ func notifyDaemon(app App) {
 		case op := <-app.Broadcaster.unregisterOps:
 			log.Printf("Unregistered channel")
 			op.listener <- Message{Type: TerminateBus}
-			subscribers := channels
-			for i, l := range subscribers {
+			for i, l := range channels {
 				if l == op.listener {
-					subscribers[i] = subscribers[len(subscribers)-1]
-					subscribers = subscribers[:len(subscribers)-1]
-					channels = subscribers
+					channels[i] = channels[len(channels)-1]
+					channels = channels[:len(channels)-1]
 					break
 				}
 			}
