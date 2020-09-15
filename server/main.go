@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/tweedegolf/irma-balie/common"
 )
 
 type Configuration struct {
@@ -43,6 +44,12 @@ func main() {
 	if cfg.JwtSecret == "" {
 		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
+
+	if _, err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
+		log.Fatalf("Failed to run dry-run mrtd-unpack: %v", err)
+		return
+	}
+	log.Println("Mrtd-unpack functionality verified")
 
 	app := App{Cfg: cfg}
 

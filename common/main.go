@@ -48,28 +48,42 @@ type IssuanceRequest struct {
 	Document  json.RawMessage `json:"document"`
 }
 
-// UnpackMrtd calls the external mrtd-unpack utility to unpack a document JSON.
-func UnpackMrtd(mrtdCmd string, request MrtdRequest) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3000*time.Millisecond)
+func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, pipeStderr bool) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
+	cmdParts := strings.Split(mrtdCmd, " ")
+
+	if input != nil {
+		cmdParts = append(cmdParts, "stdin")
+	}
+
+	cmd := exec.CommandContext(ctx, cmdParts[0], cmdParts[1:]...)
+	cmd.Stdin = bytes.NewReader(input)
+	if pipeStderr {
+		cmd.Stderr = os.Stderr
+	}
+
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return "", err
+	}
+
+	return out.String(), nil
+}
+
+// UnpackMrtd calls the external mrtd-unpack utility to unpack a document JSON.
+func UnpackMrtd(mrtdCmd string, request MrtdRequest) (string, error) {
 	requestBytes, err := json.Marshal(request)
 	if err != nil {
 		return "", err
 	}
 
-	cmdParts := strings.Split(mrtdCmd, " ")
-	cmd := exec.CommandContext(ctx, cmdParts[0], cmdParts[1:]...)
-	cmd.Stdin = bytes.NewReader(requestBytes)
-	cmd.Stderr = os.Stderr
+	return runMrtd(3*time.Second, mrtdCmd, requestBytes, true)
+}
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err = cmd.Run()
-
-	if err != nil {
-		return "", err
-	}
-
-	return out.String(), nil
+// TestMrtd runs the external mrtd-unpack utility, without any input, to verify the functionality.
+func TestMrtd(mrtdCmd string) (string, error) {
+	return runMrtd(30*time.Second, mrtdCmd, nil, false)
 }

@@ -8,10 +8,16 @@ services:
     networks:
       - default
     ports: ["0.0.0.0:8088:8088"]
+    volumes:
+      - ".:/app"
     command:
       - "irma"
       - "server"
       - "--verbose"
+      - "--schemes-path=/app/.docker-irma-configuration"
+      # Add later when irma-config is created
+      # - "--schemes-assets-path=/app/irma-config"
+      - "--schemes-update=0"
       - "--url=http://${HOST_LAN_IP}:8088"
 
   nginx:

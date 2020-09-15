@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/tweedegolf/irma-balie/common"
+
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -53,6 +55,12 @@ func main() {
 	} else {
 		log.Println("Started in production mode")
 	}
+
+	if _, err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
+		log.Fatalf("Failed to run dry-run mrtd-unpack: %v", err)
+		return
+	}
+	log.Println("Mrtd-unpack functionality verified")
 
 	state := State{Challenge: nil, ScannedDocument: nil}
 	broadcaster := makeBroadcaster()
