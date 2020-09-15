@@ -49,13 +49,13 @@ type IssuanceRequest struct {
 }
 
 // UnpackMrtd calls the external mrtd-unpack utility to unpack a document JSON.
-func UnpackMrtd(mrtdCmd string, request MrtdRequest) (*string, error) {
+func UnpackMrtd(mrtdCmd string, request MrtdRequest) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3000*time.Millisecond)
 	defer cancel()
 
 	requestBytes, err := json.Marshal(request)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	cmdParts := strings.Split(mrtdCmd, " ")
@@ -68,9 +68,8 @@ func UnpackMrtd(mrtdCmd string, request MrtdRequest) (*string, error) {
 	err = cmd.Run()
 
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	result := out.String()
-	return &result, nil
+	return out.String(), nil
 }

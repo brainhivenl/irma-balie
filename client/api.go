@@ -37,9 +37,9 @@ func (state State) parseChallenge() (*jwt.Token, error) {
 	return token, err
 }
 
-func (state State) unpackMrtd(cfg Configuration) (*string, error) {
+func (state State) unpackMrtd(cfg Configuration) (string, error) {
 	if state.Challenge == nil || state.ScannedDocument == nil {
-		return nil, errors.New("No scanned document or challenge was set in state")
+		return "", errors.New("No scanned document or challenge was set in state")
 	}
 
 	request := common.MrtdRequest{
@@ -114,7 +114,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	}
 
 	unpackedPrototype := common.UnpackedPrototype{}
-	err = json.Unmarshal([]byte(*unpacked), &unpackedPrototype)
+	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
@@ -135,7 +135,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	// Send scanned document over websockets
 	app.Broadcaster.Notify(Message{
 		Type:  Scanned,
-		Value: []byte(*unpacked),
+		Value: []byte(unpacked),
 	})
 
 	log.Println(fmt.Sprintf("Stored document for %s", unpackedPrototype.DocumentNumber))

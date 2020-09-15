@@ -88,7 +88,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	unpackedPrototype := common.UnpackedPrototype{}
-	err = json.Unmarshal([]byte(*unpacked), &unpackedPrototype)
+	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
