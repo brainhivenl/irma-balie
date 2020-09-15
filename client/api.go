@@ -38,8 +38,8 @@ func (state State) parseChallenge() (*jwt.Token, error) {
 }
 
 func (state State) unpackMrtd(cfg Configuration) (*string, error) {
-	if state.Challenge == nil && state.ScannedDocument == nil {
-		return nil, errors.New("No scanned document nor challenge was set in state")
+	if state.Challenge == nil || state.ScannedDocument == nil {
+		return nil, errors.New("No scanned document or challenge was set in state")
 	}
 
 	request := common.MrtdRequest{
