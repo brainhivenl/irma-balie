@@ -2,8 +2,8 @@ version: '3.3'
 services:
   irma:
     build:
-      dockerfile: 'docker/irmago.Dockerfile'
-      context: .
+      dockerfile: './irmago.Dockerfile'
+      context: 'docker'
     expose: [8088]
     networks:
       - default
@@ -15,10 +15,9 @@ services:
       - "server"
       - "--verbose"
       - "--schemes-path=/app/.docker-irma-configuration"
-      # Add later when irma-config is created
-      # - "--schemes-assets-path=/app/irma-config"
+      - "--schemes-assets-path=/app/irma-config"
       - "--schemes-update=0"
-      - "--url=http://${HOST_LAN_IP}:8088"
+      - "--url=${IRMA_URL}"
 
   nginx:
     image: nginx:1.19
@@ -44,8 +43,8 @@ services:
 
   server:
     build:
-      dockerfile: 'docker/go.Dockerfile'
-      context: .
+      dockerfile: './go.Dockerfile'
+      context: 'docker'
     volumes:
       - ".:/go/src/app:ro"
       - "/go/src/app/mrtd-unpack/.gradle"
@@ -58,12 +57,13 @@ services:
       BALIE_SERVER_IRMASERVER: http://irma:8088
       BALIE_SERVER_JWTSECRET: foo
       BALIE_SERVER_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
+      BALIE_SERVER_CREDENTIALID: "tweedegolf-demo.amsterdam.travelDocument"
     expose: [8081]
 
   client:
     build:
-      dockerfile: 'docker/go.Dockerfile'
-      context: .
+      dockerfile: './go.Dockerfile'
+      context: 'docker'
     volumes:
       - ".:/go/src/app:ro"
       - "/go/src/app/mrtd-unpack/.gradle"

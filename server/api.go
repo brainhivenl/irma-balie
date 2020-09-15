@@ -9,10 +9,11 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 
-	// irma "github.com/privacybydesign/irmago"
-	// "github.com/privacybydesign/irmago/server"
+	irma "github.com/privacybydesign/irmago"
+	"github.com/privacybydesign/irmago/server"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/tweedegolf/irma-balie/common"
@@ -49,7 +50,8 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "400 could not get bytes", http.StatusBadRequest)
+		return
 	}
 
 	request := common.IssuanceRequest{}
@@ -103,10 +105,104 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// TODO check document expiry in unpackedPrototype.DateOfExpiry.
+	up := unpackedPrototype
+	now := time.Now()
 
-	// TODO create IRMA issuance for this prototype.
-	log.Printf("TODO %v", unpackedPrototype)
+	dateOfExpiry, err := time.Parse("2006-01-02", up.DateOfExpiry)
+	if err != nil || now.After(dateOfExpiry) {
+		http.Error(w, "400 invalid dateofexpiry", http.StatusBadRequest)
+		return
+	}
 
-	io.WriteString(w, "ok")
+	attributes, err := up.ToCredentialAttributes(now)
+	if err != nil {
+		log.Println("failed to convert to attributes")
+		http.Error(w, "500 failed to convert to attributes", http.StatusInternalServerError)
+		return
+	}
+	credentialRequest := irma.CredentialRequest{
+		CredentialTypeID: irma.NewCredentialTypeIdentifier(app.Cfg.CredentialID),
+		Attributes:       attributes,
+	}
+
+	issuanceRequest := irma.NewIssuanceRequest([]*irma.CredentialRequest{&credentialRequest})
+
+	transport := irma.NewHTTPTransport(app.Cfg.IrmaServer, !app.Cfg.DebugMode)
+
+	var pkg server.SessionPackage
+	err = transport.Post("session", &pkg, issuanceRequest)
+	if err != nil {
+		log.Printf("failed to request irma session: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	sessionPtr, err := json.Marshal(pkg.SessionPtr)
+	if err != nil {
+		log.Printf("failed to marshall: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	var duration, _ = time.ParseDuration("2m")
+	if app.Cfg.DebugMode {
+		// Support longer duration for debug mode.
+		duration, _ = time.ParseDuration("2h")
+	}
+	claims := common.IssuanceClaims{
+		SessionPtr: sessionPtr,
+		Token:      pkg.Token,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(duration).Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	response, err := token.SignedString([]byte(app.Cfg.JwtSecret))
+
+	if err != nil {
+		log.Printf("error signing challenge: %v", err)
+		http.Error(w, "500 failed to sign challenge", http.StatusInternalServerError)
+		return
+	}
+
+	io.WriteString(w, response)
+}
+
+func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "400 could not get bytes", http.StatusBadRequest)
+		return
+	}
+
+	issuance := common.IssuanceClaims{}
+	_, err = jwt.ParseWithClaims(string(bodyBytes), &issuance, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(app.Cfg.JwtSecret), nil
+	})
+	if err != nil {
+		if verr, ok := err.(*jwt.ValidationError); ok && verr.Errors == jwt.ValidationErrorExpired {
+			http.Error(w, "403 issuance expired", http.StatusForbidden)
+		} else {
+			http.Error(w, "403 issuance not valid", http.StatusForbidden)
+		}
+		return
+	}
+
+	transport := irma.NewHTTPTransport(fmt.Sprintf("%s/session/%s/", app.Cfg.IrmaServer, issuance.Token), !app.Cfg.DebugMode)
+
+	var status string
+	err = transport.Get("status", &status)
+
+	if err != nil {
+		http.Error(w, "503 upstream irma failure", http.StatusServiceUnavailable)
+		return
+	}
+
+	io.WriteString(w, strings.Trim(status, `"`))
 }

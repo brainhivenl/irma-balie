@@ -18,6 +18,7 @@ type Configuration struct {
 	IrmaServer    string
 	JwtSecret     string
 	MrtdUnpack    string
+	CredentialID  string
 	DebugMode     bool
 }
 
@@ -44,6 +45,9 @@ func main() {
 	if cfg.JwtSecret == "" {
 		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
+	if cfg.CredentialID == "" {
+		panic("option required: BALIE_SERVER_CREDENTIALID")
+	}
 
 	if err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
 		log.Fatalf("Failed to dry-run mrtd-unpack: %v", err)
@@ -57,6 +61,7 @@ func main() {
 	// externalMux.HandleFunc("/", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/submit", app.handleSubmit)
+	externalMux.HandleFunc("/status", app.handleStatus)
 
 	externalServer := http.Server{
 		Addr:    cfg.ListenAddress,

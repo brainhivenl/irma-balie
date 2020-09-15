@@ -17,6 +17,12 @@ const (
 	// Scanned signifies that a document was scanned successfully, and contains the unpacked MRTD to be displayed.
 	Scanned = "scanned"
 
+	// Submitted signifies that a document has been submitted for issuance.
+	Submitted = "submitted"
+
+	// IrmaInProgress signifies that the IRMA Go daemon is processing your session. Includes the IRMA status in the body.
+	IrmaInProgress = "irma-in-progress"
+
 	// TerminateBus signifies that the socket should stop listening.
 	TerminateBus = "terminate-bus"
 )
@@ -24,7 +30,7 @@ const (
 // Message is a short string passed through the messageBus to all listening frontends
 type Message struct {
 	Type  MessageType     `json:"type"`
-	Value json.RawMessage `json:"value"`
+	Value json.RawMessage `json:"value,omitempty"`
 }
 
 type subscription struct {
@@ -60,24 +66,24 @@ func (b Broadcaster) Notify(msg Message) {
 	b.messageBus <- msg
 }
 
-func notifyDaemon(app App) {
-	log.Printf("Starting notifyDaemon")
+func broadcasterDaemon(broadcaster Broadcaster) {
+	log.Printf("Starting broadcasterDaemon")
 
 	channels := make([]chan<- Message, 0)
 	for {
 		select {
-		case msg := <-app.Broadcaster.messageBus:
+		case msg := <-broadcaster.messageBus:
 			for _, l := range channels {
 				if l != nil {
 					l <- msg
 				}
 			}
 
-		case op := <-app.Broadcaster.registerOps:
+		case op := <-broadcaster.registerOps:
 			log.Printf("Registered channel")
 			channels = append(channels, op.listener)
 
-		case op := <-app.Broadcaster.unregisterOps:
+		case op := <-broadcaster.unregisterOps:
 			log.Printf("Unregistered channel")
 			op.listener <- Message{Type: TerminateBus}
 			for i, l := range channels {

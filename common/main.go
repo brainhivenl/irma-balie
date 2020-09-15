@@ -13,6 +13,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// UniversalDateLayout is the layout for universal dates consumed by time.Parse.
+const UniversalDateLayout = "2006-01-02"
+
 // ChallengeClaims is a Challenge in the JWT claims-sense.
 // Acts as a challenge-response mechanism as the challenge will be signed by the MRTD using Active Authentication (AA).
 // Original signed JWT should be resent to the server.
@@ -33,12 +36,13 @@ type UnpackedPrototype struct {
 	Valid          bool   `json:"valid"`
 	DocumentCode   string `json:"document_code"`
 	DocumentNumber string `json:"document_number"`
-	FirstNames     string `json:"first_name"`
+	FirstNames     string `json:"first_names"`
 	LastName       string `json:"last_name"`
 	Nationality    string `json:"nationality"`
 	PersonalNumber string `json:"personal_number"`
 	DateOfBirth    string `json:"date_of_birth"`
 	DateOfExpiry   string `json:"date_of_expiry"`
+	Issuer         string `json:"issuer"`
 	Gender         string `json:"gender"`
 	FaceImage      string `json:"face_image"`
 }
@@ -47,6 +51,13 @@ type UnpackedPrototype struct {
 type IssuanceRequest struct {
 	Challenge string          `json:"challenge"`
 	Document  json.RawMessage `json:"document"`
+}
+
+// IssuanceClaims is the response after an issuance request, to be signed in a JWT.
+type IssuanceClaims struct {
+	SessionPtr json.RawMessage `json:"session_ptr"`
+	Token      string          `json:"token"`
+	jwt.StandardClaims
 }
 
 func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, getVersion bool) (string, error) {
@@ -97,4 +108,41 @@ func TestMrtd(mrtdCmd string) error {
 	}
 
 	return nil
+}
+
+func overAge(now time.Time, dateOfBirth time.Time, years int) string {
+	if now.Before(dateOfBirth.AddDate(years, 0, 0)) {
+		return "no"
+	}
+
+	return "yes"
+}
+
+// ToCredentialAttributes converts an UnpackedPrototype to the attributes intended for an IRMA credential.
+func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]string, error) {
+
+	dateOfBirth, err := time.Parse(UniversalDateLayout, up.DateOfBirth)
+	if err != nil {
+		return nil, err
+	}
+
+	result := map[string]string{
+		"kind":           up.DocumentCode,
+		"number":         up.DocumentNumber,
+		"dateofexpiry":   up.DateOfExpiry,
+		"gender":         up.Gender,
+		"firstnames":     up.FirstNames,
+		"surname":        up.LastName,
+		"dateofbirth":    up.DateOfBirth,
+		"nationality":    up.Nationality,
+		"over12":         overAge(now, dateOfBirth, 12),
+		"over16":         overAge(now, dateOfBirth, 16),
+		"over18":         overAge(now, dateOfBirth, 18),
+		"over21":         overAge(now, dateOfBirth, 21),
+		"over65":         overAge(now, dateOfBirth, 65),
+		"personalnumber": up.PersonalNumber,
+		"photo":          up.FaceImage,
+	}
+
+	return result, nil
 }
