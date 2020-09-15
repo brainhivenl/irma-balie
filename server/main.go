@@ -1,11 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/tweedegolf/irma-balie/common"
 )
 
 type Configuration struct {
@@ -21,6 +26,9 @@ type App struct {
 }
 
 func main() {
+	exit := make(chan os.Signal, 1)
+	signal.Notify(exit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
 	var cfg Configuration
 	err := envconfig.Process("BALIE_SERVER", &cfg)
 	if err != nil {
@@ -37,6 +45,12 @@ func main() {
 		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
 
+	if _, err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
+		log.Fatalf("Failed to run dry-run mrtd-unpack: %v", err)
+		return
+	}
+	log.Println("Mrtd-unpack functionality verified")
+
 	app := App{Cfg: cfg}
 
 	externalMux := http.NewServeMux()
@@ -49,5 +63,16 @@ func main() {
 		Handler: externalMux,
 	}
 	log.Printf("Starting external HTTP server on %v", cfg.ListenAddress)
-	log.Fatal(externalServer.ListenAndServe())
+
+	go func() {
+		err := externalServer.ListenAndServe()
+		log.Printf("listen and serve returned")
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatal(err)
+		}
+	}()
+
+	<-exit
+	log.Printf("received exit signal")
+	externalServer.Shutdown(context.Background())
 }

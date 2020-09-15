@@ -26,7 +26,7 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) throws ParseException, IOException {
         if (args.length != 1) {
-            System.err.println("Expected a single arguments <file> or the string \"stdin\"");
+            System.err.println("Expected a single argument <file> or the string \"stdin\"");
             return;
         }
 
