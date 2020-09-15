@@ -15,6 +15,14 @@
 		<nl>Uw Nederlandse paspoort of identiteitskaart, uitgelezen via de IRMA balie</nl>
 	</Description>
 	<ShouldBeSingleton>false</ShouldBeSingleton>
+	<ForegroundColor>#ffffff</ForegroundColor>
+	<BackgroundGradientStart>#014483</BackgroundGradientStart>
+	<BackgroundGradientEnd>#2574A6</BackgroundGradientEnd>
+	<IsInCredentialStore>true</IsInCredentialStore>
+	<Category>
+		<en>Personal</en>
+		<nl>Persoonlijk</nl>
+	</Category>
 
 	<Attributes>
 		<Attribute id="kind">
@@ -47,24 +55,24 @@
 				<nl>Verloopdatum van het reisdocument</nl>
 			</Description>
 		</Attribute>
-		<Attribute id="documentissuer" optional="true">
+		<Attribute id="personalnumber">
 			<Name>
-				<en>Document issuer</en>
-				<nl>Uitgever</nl>
+				<en>Personal Identification Number</en>
+				<nl>Persoonlijk identificatienummer</nl>
 			</Name>
 			<Description>
-				<en>Issuer of the travel document</en>
-				<nl>Autoriteit van afgifte reisdocument</nl>
+				<en>Your Personal Identification Number. For Dutch travel documents your Dutch Citizen service number (BSN)</en>
+				<nl>Je persoonlijk identificatienummber. Voor Nederlandse reisdocumenten je Burgerservicenummer (BSN)</nl>
 			</Description>
 		</Attribute>
-		<Attribute id="gender">
+		<Attribute id="firstnames">
 			<Name>
-				<en>Gender</en>
-				<nl>Geslacht</nl>
+				<en>First names</en>
+				<nl>Voornamen</nl>
 			</Name>
 			<Description>
-				<en>Your gender</en>
-				<nl>Je geslacht</nl>
+				<en>All your first names</en>
+				<nl>Al je voornamen</nl>
 			</Description>
 		</Attribute>
 		<Attribute id="surname">
@@ -95,6 +103,16 @@
 			<Description>
 				<en>Your nationality</en>
 				<nl>Je nationaliteit</nl>
+			</Description>
+		</Attribute>
+		<Attribute id="gender">
+			<Name>
+				<en>Gender</en>
+				<nl>Geslacht</nl>
+			</Name>
+			<Description>
+				<en>Your gender</en>
+				<nl>Je geslacht</nl>
 			</Description>
 		</Attribute>
 		<Attribute id="over12">
@@ -145,16 +163,6 @@
 			<Description>
 				<en>Whether you are over 65</en>
 				<nl>Of je ouder dan 65 bent</nl>
-			</Description>
-		</Attribute>
-		<Attribute id="personalnumber">
-			<Name>
-				<en>Personal Identification Number</en>
-				<nl>Persoonlijk identificatienummer</nl>
-			</Name>
-			<Description>
-				<en>Your Personal Identification Number. For Dutch travel documents your Dutch Citizen service number (BSN)</en>
-				<nl>Je persoonlijk identificatienummber. Voor Nederlandse reisdocumenten je Burgerservicenummer (BSN)</nl>
 			</Description>
 		</Attribute>
 		<Attribute id="photo" displayHint="portraitPhoto">

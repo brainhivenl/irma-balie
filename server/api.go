@@ -54,9 +54,9 @@ func overAge(now time.Time, dateOfBirth time.Time, years int) string {
 
 	if dateOfBirth.After(time.Date(nowY-years, dobM, dobD, 0, 0, 0, 0, time.UTC)) {
 		return "no"
-	} else {
-		return "yes"
 	}
+
+	return "yes"
 }
 
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
@@ -132,8 +132,8 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 			"kind":           up.DocumentCode,
 			"number":         up.DocumentNumber,
 			"dateofexpiry":   up.DateOfExpiry,
-			"documentissuer": up.Issuer,
 			"gender":         up.Gender,
+			"firstnames":     up.FirstNames,
 			"surname":        up.LastName,
 			"dateofbirth":    up.DateOfBirth,
 			"nationality":    up.Nationality,

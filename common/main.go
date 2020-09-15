@@ -33,7 +33,7 @@ type UnpackedPrototype struct {
 	Valid          bool   `json:"valid"`
 	DocumentCode   string `json:"document_code"`
 	DocumentNumber string `json:"document_number"`
-	FirstNames     string `json:"first_name"`
+	FirstNames     string `json:"first_names"`
 	LastName       string `json:"last_name"`
 	Nationality    string `json:"nationality"`
 	PersonalNumber string `json:"personal_number"`
