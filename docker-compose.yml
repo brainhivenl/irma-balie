@@ -2,8 +2,8 @@ version: '3.3'
 services:
   irma:
     build:
-      dockerfile: 'docker/irmago.Dockerfile'
-      context: .
+      dockerfile: './irmago.Dockerfile'
+      context: 'docker'
     expose: [8088]
     networks:
       - default
@@ -43,8 +43,8 @@ services:
 
   server:
     build:
-      dockerfile: 'docker/go.Dockerfile'
-      context: .
+      dockerfile: './go.Dockerfile'
+      context: 'docker'
     volumes:
       - ".:/go/src/app:ro"
       - "/go/src/app/mrtd-unpack/.gradle"
@@ -62,8 +62,8 @@ services:
 
   client:
     build:
-      dockerfile: 'docker/go.Dockerfile'
-      context: .
+      dockerfile: './go.Dockerfile'
+      context: 'docker'
     volumes:
       - ".:/go/src/app:ro"
       - "/go/src/app/mrtd-unpack/.gradle"

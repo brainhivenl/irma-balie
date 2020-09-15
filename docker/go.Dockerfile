@@ -14,6 +14,7 @@ RUN set -eux; \
         wget \
         unzip \
         openjdk-11-jdk \
+        libopenjp2-tools \
     ; \
     rm -rf /var/lib/apt/lists/*;
 
