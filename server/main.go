@@ -18,6 +18,7 @@ type Configuration struct {
 	IrmaServer    string
 	JwtSecret     string
 	MrtdUnpack    string
+	CredentialID  string
 	DebugMode     bool
 }
 
@@ -43,6 +44,9 @@ func main() {
 	}
 	if cfg.JwtSecret == "" {
 		panic("option required: BALIE_SERVER_JWTSECRET")
+	}
+	if cfg.CredentialID == "" {
+		panic("option required: BALIE_SERVER_CREDENTIALID")
 	}
 
 	if err := common.TestMrtd(cfg.MrtdUnpack); err != nil {

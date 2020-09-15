@@ -106,3 +106,42 @@ func TestMrtd(mrtdCmd string) error {
 
 	return nil
 }
+
+func overAge(now time.Time, dateOfBirth time.Time, years int) string {
+	_, dobM, dobD := dateOfBirth.Date()
+	nowY, _, _ := time.Now().Date()
+
+	if dateOfBirth.After(time.Date(nowY-years, dobM, dobD, 0, 0, 0, 0, time.UTC)) {
+		return "no"
+	}
+
+	return "yes"
+}
+
+// ToCredentialAttributes converts an UnpackedPrototype to the attributes intended for an IRMA credential.
+func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]string, error) {
+	dateOfBirth, err := time.Parse("2006-01-02", up.DateOfBirth)
+	if err != nil {
+		return nil, err
+	}
+
+	result := map[string]string{
+		"kind":           up.DocumentCode,
+		"number":         up.DocumentNumber,
+		"dateofexpiry":   up.DateOfExpiry,
+		"gender":         up.Gender,
+		"firstnames":     up.FirstNames,
+		"surname":        up.LastName,
+		"dateofbirth":    up.DateOfBirth,
+		"nationality":    up.Nationality,
+		"over12":         overAge(now, dateOfBirth, 12),
+		"over16":         overAge(now, dateOfBirth, 16),
+		"over18":         overAge(now, dateOfBirth, 18),
+		"over21":         overAge(now, dateOfBirth, 21),
+		"over65":         overAge(now, dateOfBirth, 65),
+		"personalnumber": up.PersonalNumber,
+		"photo":          up.FaceImage,
+	}
+
+	return result, nil
+}

@@ -48,17 +48,6 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, response)
 }
 
-func overAge(now time.Time, dateOfBirth time.Time, years int) string {
-	_, dobM, dobD := dateOfBirth.Date()
-	nowY, _, _ := time.Now().Date()
-
-	if dateOfBirth.After(time.Date(nowY-years, dobM, dobD, 0, 0, 0, 0, time.UTC)) {
-		return "no"
-	}
-
-	return "yes"
-}
-
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -125,31 +114,14 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dateOfBirth, err := time.Parse("2006-01-02", up.DateOfBirth)
+	attributes, err := up.ToCredentialAttributes(now)
 	if err != nil {
-		http.Error(w, "400 invalid dateofbirth", http.StatusBadRequest)
+		http.Error(w, "400 failed to convert to attributes", http.StatusBadRequest)
 		return
 	}
-
 	credentialRequest := irma.CredentialRequest{
-		CredentialTypeID: irma.NewCredentialTypeIdentifier("tweedegolf-demo.amsterdam.travelDocument"),
-		Attributes: map[string]string{
-			"kind":           up.DocumentCode,
-			"number":         up.DocumentNumber,
-			"dateofexpiry":   up.DateOfExpiry,
-			"gender":         up.Gender,
-			"firstnames":     up.FirstNames,
-			"surname":        up.LastName,
-			"dateofbirth":    up.DateOfBirth,
-			"nationality":    up.Nationality,
-			"over12":         overAge(now, dateOfBirth, 12),
-			"over16":         overAge(now, dateOfBirth, 16),
-			"over18":         overAge(now, dateOfBirth, 18),
-			"over21":         overAge(now, dateOfBirth, 21),
-			"over65":         overAge(now, dateOfBirth, 65),
-			"personalnumber": up.PersonalNumber,
-			"photo":          up.FaceImage,
-		},
+		CredentialTypeID: irma.NewCredentialTypeIdentifier(app.Cfg.CredentialID),
+		Attributes:       attributes,
 	}
 
 	issuanceRequest := irma.NewIssuanceRequest([]*irma.CredentialRequest{&credentialRequest})
