@@ -16,7 +16,7 @@ public class JP2Convert {
 
         try {
             ProcessBuilder convertProcessBuilder = new ProcessBuilder();
-            convertProcessBuilder.command("bash", "-c", String.format("opj_decompress -i %s -OutFor PNG -o %s", faceJP2File.getAbsolutePath(), outFile.toAbsolutePath()));
+            convertProcessBuilder.command("opj_decompress", "-i", faceJP2File.getAbsolutePath(), "-OutFor", "PNG", "-o", outFile.toAbsolutePath().toString());
             Process convertProcess = convertProcessBuilder.start();
             convertProcess.waitFor();
 
