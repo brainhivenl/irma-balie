@@ -66,24 +66,24 @@ func (b Broadcaster) Notify(msg Message) {
 	b.messageBus <- msg
 }
 
-func broadcasterDaemon(app *App) {
+func broadcasterDaemon(broadcaster Broadcaster) {
 	log.Printf("Starting broadcasterDaemon")
 
 	channels := make([]chan<- Message, 0)
 	for {
 		select {
-		case msg := <-app.Broadcaster.messageBus:
+		case msg := <-broadcaster.messageBus:
 			for _, l := range channels {
 				if l != nil {
 					l <- msg
 				}
 			}
 
-		case op := <-app.Broadcaster.registerOps:
+		case op := <-broadcaster.registerOps:
 			log.Printf("Registered channel")
 			channels = append(channels, op.listener)
 
-		case op := <-app.Broadcaster.unregisterOps:
+		case op := <-broadcaster.unregisterOps:
 			log.Printf("Unregistered channel")
 			op.listener <- Message{Type: TerminateBus}
 			for i, l := range channels {

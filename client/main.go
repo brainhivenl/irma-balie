@@ -82,7 +82,7 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 	}
 
-	go broadcasterDaemon(&app)
+	go broadcasterDaemon(app.Broadcaster)
 	go irmaPollerDaemon(&app)
 
 	log.Printf("Starting external HTTP server on %v", cfg.ListenAddress)
