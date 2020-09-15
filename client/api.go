@@ -168,7 +168,7 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	if resp.StatusCode != 200 {
 		bodyBytes, err := ioutil.ReadAll(r.Body)
-		if err != nil {
+		if err == nil {
 			http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
 		} else {
 			http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
