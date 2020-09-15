@@ -202,6 +202,10 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.Broadcaster.Notify(Message{
+		Type: Submitted,
+	})
+
 	io.WriteString(w, string(issuanceSession.Claims.(*common.IssuanceClaims).SessionPtr))
 }
 

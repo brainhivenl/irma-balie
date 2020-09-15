@@ -17,6 +17,12 @@ const (
 	// Scanned signifies that a document was scanned successfully, and contains the unpacked MRTD to be displayed.
 	Scanned = "scanned"
 
+	// Submitted signifies that a document has been submitted for issuance.
+	Submitted = "submitted"
+
+	// IrmaInProgress signifies that the IRMA Go daemon is processing your session. Includes the IRMA status in the body.
+	IrmaInProgress = "irma-in-progress"
+
 	// TerminateBus signifies that the socket should stop listening.
 	TerminateBus = "terminate-bus"
 )
@@ -24,7 +30,7 @@ const (
 // Message is a short string passed through the messageBus to all listening frontends
 type Message struct {
 	Type  MessageType     `json:"type"`
-	Value json.RawMessage `json:"value"`
+	Value json.RawMessage `json:"value,omitempty"`
 }
 
 type subscription struct {
@@ -60,8 +66,8 @@ func (b Broadcaster) Notify(msg Message) {
 	b.messageBus <- msg
 }
 
-func notifyDaemon(app App) {
-	log.Printf("Starting notifyDaemon")
+func broadcasterDaemon(app *App) {
+	log.Printf("Starting broadcasterDaemon")
 
 	channels := make([]chan<- Message, 0)
 	for {
