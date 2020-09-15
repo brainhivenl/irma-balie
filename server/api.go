@@ -9,12 +9,11 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 
 	irma "github.com/privacybydesign/irmago"
 	"github.com/privacybydesign/irmago/server"
-
-	// "github.com/privacybydesign/irmago/server"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/tweedegolf/irma-balie/common"
@@ -51,7 +50,8 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "400 could not get bytes", http.StatusBadRequest)
+		return
 	}
 
 	request := common.IssuanceRequest{}
@@ -167,4 +167,41 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	io.WriteString(w, response)
+}
+
+func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "400 could not get bytes", http.StatusBadRequest)
+		return
+	}
+
+	issuance := common.IssuanceClaims{}
+	_, err = jwt.ParseWithClaims(string(bodyBytes), &issuance, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(app.Cfg.JwtSecret), nil
+	})
+	if err != nil {
+		if verr, ok := err.(*jwt.ValidationError); ok && verr.Errors == jwt.ValidationErrorExpired {
+			http.Error(w, "403 issuance expired", http.StatusForbidden)
+		} else {
+			http.Error(w, "403 issuance not valid", http.StatusForbidden)
+		}
+		return
+	}
+
+	transport := irma.NewHTTPTransport(fmt.Sprintf("%s/session/%s/", app.Cfg.IrmaServer, issuance.Token), !app.Cfg.DebugMode)
+
+	var status string
+	err = transport.Get("status", &status)
+
+	if err != nil {
+		http.Error(w, "503 upstream irma failure", http.StatusServiceUnavailable)
+		return
+	}
+
+	io.WriteString(w, strings.Trim(status, `"`))
 }
