@@ -116,15 +116,20 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// TODO check document expiry in unpackedPrototype.DateOfExpiry.
-
 	up := unpackedPrototype
+	now := time.Now()
+
+	dateOfExpiry, err := time.Parse("2006-01-02", up.DateOfExpiry)
+	if err != nil || now.After(dateOfExpiry) {
+		http.Error(w, "400 invalid dateofexpiry", http.StatusBadRequest)
+		return
+	}
+
 	dateOfBirth, err := time.Parse("2006-01-02", up.DateOfBirth)
 	if err != nil {
 		http.Error(w, "400 invalid dateofbirth", http.StatusBadRequest)
 		return
 	}
-	now := time.Now()
 
 	credentialRequest := irma.CredentialRequest{
 		CredentialTypeID: irma.NewCredentialTypeIdentifier("tweedegolf-demo.amsterdam.travelDocument"),
