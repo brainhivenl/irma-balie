@@ -12,11 +12,10 @@ import (
 )
 
 type Configuration struct {
-	ListenAddress   string
-	FrontendAddress string
-	ServerAddress   string
-	MrtdUnpack      string
-	DebugMode       bool
+	ListenAddress string
+	ServerAddress string
+	MrtdUnpack    string
+	DebugMode     bool
 }
 
 type State struct {
@@ -40,9 +39,6 @@ func main() {
 
 	if cfg.ListenAddress == "" {
 		cfg.ListenAddress = "0.0.0.0:8080"
-	}
-	if cfg.FrontendAddress == "" {
-		panic("option required: BALIE_CLIENT_FRONTENDADDRESS")
 	}
 	if cfg.ServerAddress == "" {
 		panic("option required: BALIE_CLIENT_SERVERADDRESS")
