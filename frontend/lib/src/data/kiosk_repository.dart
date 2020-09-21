@@ -40,11 +40,13 @@ class KioskRepository {
     // Create a lookup of unmarshallers
     _eventUnmarshallerLookup.addAll(
       _eventUnmarshallers.map(
-        (Type t, EventUnmarshaller u) => MapEntry<String, EventUnmarshaller>(t.toString(), u),
+        (Type t, EventUnmarshaller u) =>
+            MapEntry<String, EventUnmarshaller>(t.toString(), u),
       ),
     );
 
-    _websocketChannel = WebSocketChannel.connect(Uri.parse('wss://noisy-bronzed-yogurt.glitch.me'));
+    _websocketChannel =
+        WebSocketChannel.connect(Uri.parse('ws://localhost:8080'));
     _listenToWebsocket();
   }
 
@@ -64,13 +66,15 @@ class KioskRepository {
 
         final eventName = data["type"];
         if (eventName == null) {
-          debugPrint("Received websocket message without type and payload $jsonString");
+          debugPrint(
+              "Received websocket message without type and payload $jsonString");
           return;
         }
 
         final unmarshaller = _eventUnmarshallerLookup[eventName];
         if (unmarshaller == null) {
-          debugPrint("Unrecognized bridge event received: $eventName with payload $jsonString");
+          debugPrint(
+              "Unrecognized bridge event received: $eventName with payload $jsonString");
           return;
         }
 
