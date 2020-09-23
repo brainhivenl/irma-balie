@@ -12,47 +12,47 @@ import 'package:irmabalie/src/models/event.dart';
 import 'package:irmabalie/src/models/kiosk_events.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:http/http.dart' as http;
 
 typedef EventUnmarshaller = Event Function(Map<String, dynamic>);
 
 class KioskRepository {
   static KioskRepository _instance;
   IdState idState = IdState();
+  String _hostBase;
+  bool _hostSecure;
 
   factory KioskRepository() {
     return _instance ??= KioskRepository._internal();
   }
 
-  final Map<Type, EventUnmarshaller> _eventUnmarshallers = {
-    PassportReadEvent: (j) => PassportReadEvent.fromJson(j),
-    IdCardReadEvent: (j) => IdCardReadEvent.fromJson(j),
-    DriversLicenseReadEvent: (j) => DriversLicenseReadEvent.fromJson(j),
-    MrzEvent: (j) => MrzEvent.fromJson(j),
-    ErrorEvent: (j) => ErrorEvent.fromJson(j),
+  final Map<String, EventUnmarshaller> _eventUnmarshallers = {
+    // PassportReadEvent: (j) => PassportReadEvent.fromJson(j),
+    // IdCardReadEvent: (j) => IdCardReadEvent.fromJson(j),
+    // DriversLicenseReadEvent: (j) => DriversLicenseReadEvent.fromJson(j),
+    // MrzEvent: (j) => MrzEvent.fromJson(j),
+    // ErrorEvent: (j) => ErrorEvent.fromJson(j),
+    SessionCreatedEvent.type: (j) => SessionCreatedEvent.fromJson(j),
+    ScannedEvent.type: (j) => ScannedEvent.fromJson(j),
+    IrmaInProgressEvent.type: (j) => IrmaInProgressEvent.fromJson(j),
   };
 
-  final Map<String, EventUnmarshaller> _eventUnmarshallerLookup = {};
   final _eventSubject = PublishSubject<Event>();
 
   WebSocketChannel _websocketChannel;
 
   KioskRepository._internal() {
-    // Create a lookup of unmarshallers
-    _eventUnmarshallerLookup.addAll(
-      _eventUnmarshallers.map(
-        (Type t, EventUnmarshaller u) =>
-            MapEntry<String, EventUnmarshaller>(t.toString(), u),
-      ),
-    );
-
-    _websocketChannel =
-        WebSocketChannel.connect(Uri.parse('ws://localhost:8080'));
+    _hostBase = "localhost:8080";
+    _hostSecure = false;
+    _websocketChannel = WebSocketChannel.connect(
+        Uri.parse('${_hostSecure ? 'wss' : 'ws'}://$_hostBase/socket'));
     _listenToWebsocket();
   }
 
-  // PingEvent is only for testing, for triggering the backend
-  void sendPingEvent() {
-    bridgedDispatch(PingEvent());
+  Future<void> submitId() async {
+    final result = await http.get(
+        Uri.parse('${_hostSecure ? 'https' : 'http'}://$_hostBase/submit'));
+    print(result);
   }
 
   void _listenToWebsocket() {
@@ -60,7 +60,7 @@ class KioskRepository {
       try {
         final jsonString = json as String;
 
-//        print(jsonString);
+        print(jsonString);
 
         final data = jsonDecode(jsonString) as Map<String, dynamic>;
 
@@ -71,7 +71,7 @@ class KioskRepository {
           return;
         }
 
-        final unmarshaller = _eventUnmarshallerLookup[eventName];
+        final unmarshaller = _eventUnmarshallers[eventName];
         if (unmarshaller == null) {
           debugPrint(
               "Unrecognized bridge event received: $eventName with payload $jsonString");
@@ -89,30 +89,17 @@ class KioskRepository {
 
   void handleEvents(GlobalKey<NavigatorState> navigatorKey) {
     _eventSubject.stream.listen((event) {
-      if (event is MrzEvent) {
+      if (event is SessionCreatedEvent) {
+        navigatorKey.currentState.pushNamed(Scanning.routeName);
+      } else if (event is ScannedEvent) {
+        idState.setPayload(event.value);
+        navigatorKey.currentState.pushReplacementNamed(Succeeded.routeName);
+        Future.delayed(const Duration(milliseconds: 1500)).then((_) {
+          navigatorKey.currentState.pushReplacementNamed(Transfer.routeName);
+        });
+      } else if (event is MrzEvent) {
         print("--Pong event");
         navigatorKey.currentState.pushNamed(Scanning.routeName);
-      } else if (event is PassportReadEvent) {
-        print("--PassportReadEvent event");
-        idState.setPassportScanState(event);
-        navigatorKey.currentState.pushNamed(Succeeded.routeName);
-        Future.delayed(const Duration(milliseconds: 1500)).then((_) {
-          navigatorKey.currentState.pushNamed(Transfer.routeName);
-        });
-      } else if (event is IdCardReadEvent) {
-        print("--IdCardReadEvent event");
-        idState.setIdCardScanState(event);
-        navigatorKey.currentState.pushNamed(Succeeded.routeName);
-        Future.delayed(const Duration(milliseconds: 1500)).then((_) {
-          navigatorKey.currentState.pushNamed(Transfer.routeName);
-        });
-      } else if (event is DriversLicenseReadEvent) {
-        print("--DriversLicenseReadEvent event");
-        idState.setDriversLicenseScanState(event);
-        navigatorKey.currentState.pushNamed(Succeeded.routeName);
-        Future.delayed(const Duration(milliseconds: 1500)).then((_) {
-          navigatorKey.currentState.pushNamed(Transfer.routeName);
-        });
       } else if (event is ErrorEvent) {
         print("--ErrorEvent event");
         switch (event.errorCode) {

@@ -12,7 +12,8 @@ class IrmaClientMock {
   static final SchemeManager mySchemeManager = SchemeManager(
     id: mySchemeManagerId,
     name: TranslatedValue({'nl': "My Scheme Manager"}),
-    description: TranslatedValue({'nl': "Mocked scheme manager using fake data to render the app."}),
+    description: TranslatedValue(
+        {'nl': "Mocked scheme manager using fake data to render the app."}),
   );
   static final String myIssuerId = mySchemeManagerId + ".myIssuer";
   static final myIssuer = Issuer(
@@ -147,7 +148,7 @@ class IrmaClientMock {
     },
   );
 
-  Credential getPassportCredential(PassportReadEvent data, String id) {
+  Credential getPassportCredential(ScanPayload data, String id) {
     return Credential(
       id: id,
       issuer: Issuer(
@@ -155,26 +156,31 @@ class IrmaClientMock {
         name: TranslatedValue({'nl': id}),
       ),
       schemeManager: irmaConfiguration.schemeManagers[mySchemeManagerId],
-      signedOn: data.signedOn,
-      expires: data.expires,
+      signedOn: DateTime.now(),
+      expires: data.dateOfExpiry,
       attributes: Attributes({
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".firstnames"]: TranslatedValue({'nl': data.firstnames}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".surname"]: TranslatedValue({'nl': data.surname}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]: TranslatedValue({'nl': data.nationality}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".firstnames"]:
+            TranslatedValue({'nl': data.firstNames}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".surname"]:
+            TranslatedValue({'nl': data.surname}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]:
+            TranslatedValue({'nl': data.nationality}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue({'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue(
+                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
             TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]: TranslatedValue({'nl': data.image}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
+            TranslatedValue({'nl': data.photo}),
       }),
       hash: "foobar",
       credentialType: myPassportCredentialType,
     );
   }
 
-  Credential getIdCardCredential(IdCardReadEvent data, String id) {
+  Credential getIdCardCredential(ScanPayload data, String id) {
     return Credential(
       id: id,
       issuer: Issuer(
@@ -182,25 +188,29 @@ class IrmaClientMock {
         name: TranslatedValue({'nl': id}),
       ),
       schemeManager: irmaConfiguration.schemeManagers[mySchemeManagerId],
-      signedOn: data.signedOn,
-      expires: data.expires,
+      signedOn: DateTime.now(),
+      expires: data.dateOfExpiry,
       attributes: Attributes({
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".firstnames"]: TranslatedValue({'nl': data.firstnames}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".surname"]: TranslatedValue({'nl': data.surname}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".firstnames"]:
+            TranslatedValue({'nl': data.firstNames}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".surname"]:
+            TranslatedValue({'nl': data.surname}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue({'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue(
+                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
             TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]: TranslatedValue({'nl': data.image}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
+            TranslatedValue({'nl': data.photo}),
       }),
       hash: "foobar",
       credentialType: myIdCardCredentialType,
     );
   }
 
-  Credential getDriversLicenseCredential(DriversLicenseReadEvent data, String id) {
+  Credential getDriversLicenseCredential(ScanPayload data, String id) {
     return Credential(
       id: id,
       issuer: Issuer(
@@ -208,18 +218,22 @@ class IrmaClientMock {
         name: TranslatedValue({'nl': id}),
       ),
       schemeManager: irmaConfiguration.schemeManagers[mySchemeManagerId],
-      signedOn: data.signedOn,
-      expires: data.expires,
+      signedOn: DateTime.now(),
+      expires: data.dateOfExpiry,
       attributes: Attributes({
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".fullname"]: TranslatedValue({'nl': data.fullname}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]: TranslatedValue({'nl': data.nationality}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".fullname"]:
+            TranslatedValue({'nl': data.firstNames}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]:
+            TranslatedValue({'nl': data.nationality}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue({'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue(
+                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".licenseNumber"]:
-            TranslatedValue({'nl': data.licenseNumber}),
+            TranslatedValue({'nl': data.documentNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
             TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
-        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]: TranslatedValue({'nl': data.image}),
+        irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
+            TranslatedValue({'nl': data.photo}),
       }),
       hash: "foobar",
       credentialType: myDriversLicenseCredentialType,

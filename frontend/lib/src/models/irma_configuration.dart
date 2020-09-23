@@ -7,19 +7,25 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'irma_configuration.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class IrmaConfigurationEvent extends Event {
   IrmaConfigurationEvent({this.irmaConfiguration});
 
   @JsonKey(name: 'IrmaConfiguration')
   final IrmaConfiguration irmaConfiguration;
 
-  factory IrmaConfigurationEvent.fromJson(Map<String, dynamic> json) => _$IrmaConfigurationEventFromJson(json);
+  factory IrmaConfigurationEvent.fromJson(Map<String, dynamic> json) =>
+      _$IrmaConfigurationEventFromJson(json);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class IrmaConfiguration {
-  IrmaConfiguration({this.schemeManagers, this.issuers, this.credentialTypes, this.attributeTypes, this.path});
+  IrmaConfiguration(
+      {this.schemeManagers,
+      this.issuers,
+      this.credentialTypes,
+      this.attributeTypes,
+      this.path});
 
   @JsonKey(name: 'SchemeManagers')
   final Map<String, SchemeManager> schemeManagers;
@@ -36,10 +42,11 @@ class IrmaConfiguration {
   @JsonKey(name: 'Path')
   final String path;
 
-  factory IrmaConfiguration.fromJson(Map<String, dynamic> json) => _$IrmaConfigurationFromJson(json);
+  factory IrmaConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$IrmaConfigurationFromJson(json);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class SchemeManager {
   SchemeManager(
       {this.id,
@@ -79,10 +86,11 @@ class SchemeManager {
   @JsonKey(name: 'Timestamp')
   final int timestamp;
 
-  factory SchemeManager.fromJson(Map<String, dynamic> json) => _$SchemeManagerFromJson(json);
+  factory SchemeManager.fromJson(Map<String, dynamic> json) =>
+      _$SchemeManagerFromJson(json);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class AppVersion {
   AppVersion({this.android, this.iOS});
 
@@ -92,14 +100,21 @@ class AppVersion {
   @JsonKey(name: 'IOS')
   final int iOS;
 
-  factory AppVersion.fromJson(Map<String, dynamic> json) => _$AppVersionFromJson(json);
+  factory AppVersion.fromJson(Map<String, dynamic> json) =>
+      _$AppVersionFromJson(json);
 }
 
 // TODO: move to a RawIssuer type and re-introduce the issuer type which has
 // colors and backgrounds (not from irma scheme right now).
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class Issuer {
-  Issuer({this.id, this.name, this.shortName, this.schemeManagerId, this.contactAddress, this.contactEmail});
+  Issuer(
+      {this.id,
+      this.name,
+      this.shortName,
+      this.schemeManagerId,
+      this.contactAddress,
+      this.contactEmail});
 
   @JsonKey(name: 'ID')
   final String id;
@@ -128,7 +143,7 @@ class Issuer {
   }
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class CredentialType {
   CredentialType({
     this.id,
@@ -209,7 +224,8 @@ class CredentialType {
   @JsonKey(name: 'FAQHowto', nullable: true)
   final TranslatedValue faqHowto;
 
-  factory CredentialType.fromJson(Map<String, dynamic> json) => _$CredentialTypeFromJson(json);
+  factory CredentialType.fromJson(Map<String, dynamic> json) =>
+      _$CredentialTypeFromJson(json);
 
   String get fullId => "$schemeManagerId.$issuerId.$id";
   String get fullIssuerId => "$schemeManagerId.$issuerId";
@@ -221,7 +237,7 @@ class CredentialType {
 
 // TODO: Change this to RawAttributeType and move to a new AttributeType that
 // has TranslatedValues for `name` and `description`.
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, createToJson: false)
 class AttributeType {
   AttributeType({
     this.id,
@@ -266,7 +282,8 @@ class AttributeType {
   @JsonKey(name: 'SchemeManagerID')
   final String schemeManagerId;
 
-  factory AttributeType.fromJson(Map<String, dynamic> json) => _$AttributeTypeFromJson(json);
+  factory AttributeType.fromJson(Map<String, dynamic> json) =>
+      _$AttributeTypeFromJson(json);
 
   String get fullId => "$schemeManagerId.$issuerId.$credentialTypeId.$id";
   String get fullCredentialId => "$schemeManagerId.$issuerId.$credentialTypeId";

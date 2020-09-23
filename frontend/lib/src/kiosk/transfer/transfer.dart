@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/data/kiosk_repository.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/kiosk/transfer/mock.dart';
 import 'package:irmabalie/src/theme/theme.dart';
@@ -29,11 +30,11 @@ class _TransferState extends State<Transfer> {
   void initState() {
     super.initState();
 
-    switch (id.idType) {
+    switch (id.getIdType()) {
       case Id.passport:
         card = IrmaCard(
           credential: IrmaClientMock().getPassportCredential(
-            id.getPassportScanData(),
+            id.getPayload(),
             "Amsterdam",
           ),
           largeFonts: true,
@@ -42,7 +43,7 @@ class _TransferState extends State<Transfer> {
       case Id.idCard:
         card = IrmaCard(
           credential: IrmaClientMock().getIdCardCredential(
-            id.getIdCardScanData(),
+            id.getPayload(),
             "Amsterdam",
           ),
           largeFonts: true,
@@ -51,7 +52,7 @@ class _TransferState extends State<Transfer> {
       case Id.driversLicense:
         card = IrmaCard(
           credential: IrmaClientMock().getDriversLicenseCredential(
-            id.getDriversLicenseScanData(),
+            id.getPayload(),
             "Amsterdam",
           ),
           largeFonts: true,
@@ -68,7 +69,10 @@ class _TransferState extends State<Transfer> {
               children: <Widget>[
                 KioskTitle(
                   text: FlutterI18n.translate(context, 'kiosk.transfer.title',
-                      translationParams: {"id": FlutterI18n.translate(context, 'kiosk.id_type.${idState.getCode()}.nameCapitalized')}),
+                      translationParams: {
+                        "id": FlutterI18n.translate(context,
+                            'kiosk.id_type.${idState.getCode()}.nameCapitalized')
+                      }),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -94,8 +98,12 @@ class _TransferState extends State<Transfer> {
                           Padding(
                             padding: const EdgeInsets.all(75.0),
                             child: Text(
-                              FlutterI18n.translate(context, 'kiosk.transfer.body',
-                                  translationParams: {"id": FlutterI18n.translate(context, 'kiosk.id_type.${idState.getCode()}.name')}),
+                              FlutterI18n.translate(
+                                  context, 'kiosk.transfer.body',
+                                  translationParams: {
+                                    "id": FlutterI18n.translate(context,
+                                        'kiosk.id_type.${idState.getCode()}.name')
+                                  }),
                               style: IrmaTheme.of(context).kioskBody,
                             ),
                           ),
@@ -105,7 +113,8 @@ class _TransferState extends State<Transfer> {
                                 minWidth: 420,
                                 size: IrmaButtonSize.kioskBig,
                                 label: 'kiosk.transfer.no',
-                                textStyle: IrmaTheme.of(context).kioskButtonTextLargeDark,
+                                textStyle: IrmaTheme.of(context)
+                                    .kioskButtonTextLargeDark,
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/no_transfer');
                                 },
@@ -116,9 +125,11 @@ class _TransferState extends State<Transfer> {
                                   minWidth: 420,
                                   size: IrmaButtonSize.kioskBig,
                                   label: 'kiosk.transfer.yes',
-                                  textStyle: IrmaTheme.of(context).kioskButtonTextLarge,
+                                  textStyle: IrmaTheme.of(context)
+                                      .kioskButtonTextLarge,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/qr_scan');
+                                    KioskRepository().submitId();
+                                    // Navigator.pushNamed(context, '/qr_scan');
                                   },
                                 ),
                               )

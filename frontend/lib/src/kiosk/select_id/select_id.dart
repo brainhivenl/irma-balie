@@ -53,17 +53,11 @@ class SelectId extends StatelessWidget {
                               minWidth: 420,
                               size: IrmaButtonSize.kioskBig,
                               label: 'kiosk.select.driver',
-                              textStyle: IrmaTheme.of(context).kioskButtonTextNormal,
+                              textStyle:
+                                  IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
-                                idState.setId(Id.driversLicense);
+                                idState.setIdType(Id.driversLicense);
                                 Navigator.pushNamed(context, '/scan');
-
-                                /*
-                                TODO
-                                sendPingEvent() here is for debugging purposes only!
-                                Remove in production!
-                                 */
-                                kioskRepository.sendPingEvent();
                               },
                             ),
                           ),
@@ -87,17 +81,11 @@ class SelectId extends StatelessWidget {
                               minWidth: 420,
                               size: IrmaButtonSize.kioskBig,
                               label: 'kiosk.select.id',
-                              textStyle: IrmaTheme.of(context).kioskButtonTextNormal,
+                              textStyle:
+                                  IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
-                                idState.setId(Id.idCard);
+                                idState.setIdType(Id.idCard);
                                 Navigator.pushNamed(context, '/scan');
-
-                                /*
-                                TODO
-                                sendPingEvent() here is for debugging purposes only!
-                                Remove in production!
-                                 */
-                                kioskRepository.sendPingEvent();
                               },
                             ),
                           ),
@@ -121,17 +109,11 @@ class SelectId extends StatelessWidget {
                               minWidth: 420,
                               size: IrmaButtonSize.kioskBig,
                               label: 'kiosk.select.passport',
-                              textStyle: IrmaTheme.of(context).kioskButtonTextNormal,
+                              textStyle:
+                                  IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
-                                idState.setId(Id.passport);
+                                idState.setIdType(Id.passport);
                                 Navigator.pushNamed(context, '/scan');
-
-                                /*
-                                TODO
-                                sendPingEvent() here is for debugging purposes only!
-                                Remove in production!
-                                 */
-                                kioskRepository.sendPingEvent();
                               },
                             ),
                           ),
