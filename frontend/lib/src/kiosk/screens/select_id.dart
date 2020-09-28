@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_id.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/kiosk/widgets/kiosk_title.dart';
@@ -57,7 +58,7 @@ class SelectId extends StatelessWidget {
                                   IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
                                 idState.setIdType(Id.driversLicense);
-                                Navigator.pushNamed(context, '/scan');
+                                Navigator.pushNamed(context, ScanId.routeName);
                               },
                             ),
                           ),
@@ -85,7 +86,7 @@ class SelectId extends StatelessWidget {
                                   IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
                                 idState.setIdType(Id.idCard);
-                                Navigator.pushNamed(context, '/scan');
+                                Navigator.pushNamed(context, ScanId.routeName);
                               },
                             ),
                           ),
@@ -113,7 +114,7 @@ class SelectId extends StatelessWidget {
                                   IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
                                 idState.setIdType(Id.passport);
-                                Navigator.pushNamed(context, '/scan');
+                                Navigator.pushNamed(context, ScanId.routeName);
                               },
                             ),
                           ),

@@ -5,6 +5,18 @@ import 'package:json_annotation/json_annotation.dart';
 part 'kiosk_events.g.dart';
 
 @JsonSerializable(createToJson: false)
+class WebsocketConnectedEvent extends Event {
+  WebsocketConnectedEvent();
+
+  static String type = "connected";
+
+  factory WebsocketConnectedEvent.fromJson(Map<String, dynamic> json) =>
+      _$WebsocketConnectedEventFromJson(json);
+}
+
+class WebsocketDisconnectedEvent extends Event {}
+
+@JsonSerializable(createToJson: false)
 class SessionCreatedEvent extends Event {
   SessionCreatedEvent();
 
@@ -96,6 +108,32 @@ class ScanPayload {
 
   factory ScanPayload.fromJson(Map<String, dynamic> json) =>
       _$ScanPayloadFromJson(json);
+}
+
+class IrmaTransferRequestedEvent extends Event {}
+
+class IrmaSessionReceivedEvent extends Event {
+  IrmaSessionReceivedEvent({this.data});
+
+  final String data;
+}
+
+@JsonSerializable(createToJson: false)
+class IrmaSessionSubmittedEvent extends Event {
+  IrmaSessionSubmittedEvent();
+
+  static String type = "submitted";
+
+  factory IrmaSessionSubmittedEvent.fromJson(Map<String, dynamic> json) =>
+      _$IrmaSessionSubmittedEventFromJson(json);
+}
+
+class IrmaSessionSubmitFailedEvent extends Event {
+  IrmaSessionSubmitFailedEvent();
+}
+
+class WebsocketErrorEvent extends Event {
+  WebsocketErrorEvent();
 }
 
 @JsonSerializable(createToJson: false)

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_help.dart';
+import 'package:irmabalie/src/kiosk/screens/welcome.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/kiosk/widgets/kiosk_title.dart';
@@ -22,7 +24,8 @@ class InvalidId extends StatelessWidget {
             return Column(
               children: <Widget>[
                 KioskTitle(
-                  text: FlutterI18n.translate(context, 'kiosk.invalid_id.title'),
+                  text:
+                      FlutterI18n.translate(context, 'kiosk.invalid_id.title'),
                 ),
                 Column(
                   children: <Widget>[
@@ -36,7 +39,9 @@ class InvalidId extends StatelessWidget {
                     ),
                     Text(
                       FlutterI18n.translate(context, 'kiosk.invalid_id.body'),
-                      style: IrmaTheme.of(context).kioskBodyHigh.copyWith(fontWeight: FontWeight.bold),
+                      style: IrmaTheme.of(context)
+                          .kioskBodyHigh
+                          .copyWith(fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     Padding(
@@ -48,9 +53,10 @@ class InvalidId extends StatelessWidget {
                             minWidth: 550,
                             size: IrmaButtonSize.kioskBig,
                             label: 'kiosk.invalid_id.button_help',
-                            textStyle: IrmaTheme.of(context).kioskButtonTextDark,
+                            textStyle:
+                                IrmaTheme.of(context).kioskButtonTextDark,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/scan_help');
+                              Navigator.pushNamed(context, ScanHelp.routeName);
                             },
                           ),
                           Padding(
@@ -59,9 +65,11 @@ class InvalidId extends StatelessWidget {
                               minWidth: 550,
                               size: IrmaButtonSize.kioskBig,
                               label: 'kiosk.invalid_id.button_close',
-                              textStyle: IrmaTheme.of(context).kioskButtonTextNormal,
+                              textStyle:
+                                  IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/');
+                                Navigator.popUntil(context,
+                                    ModalRoute.withName(Welcome.routeName));
                               },
                             ),
                           ),

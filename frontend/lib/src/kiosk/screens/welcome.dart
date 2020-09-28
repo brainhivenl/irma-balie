@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/kiosk/screens/select_id.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/util/platform_svg.dart';
 import 'package:irmabalie/src/widgets/irma_button.dart';
 import 'package:irmabalie/src/widgets/irma_themed_button.dart';
 
-// 1920, 1080
-
-class WelcomeScreen extends StatelessWidget {
+class Welcome extends StatelessWidget {
   static const routeName = '/';
 
   @override
@@ -53,8 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                     label: 'kiosk.main.start_button',
                     textStyle: IrmaTheme.of(context).kioskButtonTextLarge,
                     onPressed: () {
-                      print("start!");
-                      Navigator.pushNamed(context, '/select_id');
+                      Navigator.pushNamed(context, SelectId.routeName);
                     },
                   ),
                   const Spacer(flex: 1),

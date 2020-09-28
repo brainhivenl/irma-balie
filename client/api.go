@@ -222,6 +222,16 @@ func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// send this websocket a message that we have established a connection
+	err = ws.WriteJSON(Message{
+		Connected,
+		nil,
+	})
+	if err != nil {
+		log.Println("failed to send connected message", err)
+		return
+	}
+
 	waitDuration := 100 * time.Millisecond
 	ticker := time.NewTicker(waitDuration)
 	defer func() {

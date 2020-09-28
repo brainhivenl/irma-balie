@@ -11,6 +11,9 @@ const (
 	// NFCDetect signifies that we have detected an NFC client, hinting on user interaction with the kiosk.
 	NFCDetect MessageType = "nfc-detect"
 
+	// Connected indicates to the client that a connection is established.
+	Connected = "connected"
+
 	// Created signifies that a session was created, hinting that the OCR process has completed successfully.
 	Created = "created"
 

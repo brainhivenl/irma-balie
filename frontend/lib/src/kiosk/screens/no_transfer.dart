@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/kiosk/screens/welcome.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/kiosk/widgets/toast.dart';
 import 'package:irmabalie/src/theme/theme.dart';
@@ -22,8 +23,12 @@ class NoTransfer extends StatelessWidget {
             return Column(
               children: <Widget>[
                 KioskTitle(
-                  text: FlutterI18n.translate(context, 'kiosk.no_transfer.title',
-                      translationParams: {"id": FlutterI18n.translate(context, 'kiosk.id_type.${idState.getCode()}.propertyCapitalized')}),
+                  text: FlutterI18n.translate(
+                      context, 'kiosk.no_transfer.title',
+                      translationParams: {
+                        "id": FlutterI18n.translate(context,
+                            'kiosk.id_type.${idState.getCode()}.propertyCapitalized')
+                      }),
                 ),
                 Column(
                   children: <Widget>[
@@ -36,7 +41,10 @@ class NoTransfer extends StatelessWidget {
                     ),
                     Text(
                       FlutterI18n.translate(context, 'kiosk.no_transfer.body',
-                          translationParams: {"id": FlutterI18n.translate(context, 'kiosk.id_type.${idState.getCode()}.property')}),
+                          translationParams: {
+                            "id": FlutterI18n.translate(context,
+                                'kiosk.id_type.${idState.getCode()}.property')
+                          }),
                       style: IrmaTheme.of(context).kioskBody,
                     ),
                     Padding(
@@ -45,15 +53,20 @@ class NoTransfer extends StatelessWidget {
                         minWidth: 420,
                         size: IrmaButtonSize.kioskBig,
                         label: 'kiosk.no_transfer.button',
-                        textStyle: IrmaTheme.of(context).kioskButtonTextLargeDark,
+                        textStyle:
+                            IrmaTheme.of(context).kioskButtonTextLargeDark,
                         onPressed: () {
-                          Navigator.pushNamed(context, '/');
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(Welcome.routeName));
                         },
                       ),
                     ),
                     KioskToast(
-                      text: FlutterI18n.translate(context, 'kiosk.no_transfer.warning',
-                          translationParams: {"id": FlutterI18n.translate(context, 'kiosk.id_type.${idState.getCode()}.name')}),
+                      text: FlutterI18n.translate(context,
+                          'kiosk.no_transfer.warning', translationParams: {
+                        "id": FlutterI18n.translate(
+                            context, 'kiosk.id_type.${idState.getCode()}.name')
+                      }),
                     )
                   ],
                 )

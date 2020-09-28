@@ -452,13 +452,22 @@
     },
     "succeeded": {
       "title": "{id} scannen",
-      "body": "Gelukt"
+      "body": "Gelukt",
+      "button": "Sluiten"
     },
     "transfer": {
       "title": "{id} overzetten",
       "body": "Wil je je {id} in de IRMA-app zetten?",
       "no": "Nee",
       "yes": "Ja"
+    },
+    "submitting": {
+      "title": "Communiceren met de IRMA server",
+      "body": "Er wordt een sessie aangemaakt voor je IRMA-app"
+    },
+    "transfer_in_progress": {
+      "title": "{id} overzetten",
+      "body": "Het overzetten van je {id} gaat verder via je IRMA-app"
     },
     "qr_scan": {
       "title": "{id} overzetten",

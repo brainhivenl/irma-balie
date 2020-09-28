@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
+import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
-import 'package:irmabalie/src/kiosk/transfer/mock.dart';
+import 'package:irmabalie/src/kiosk/screens/transfer/mock.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/kiosk/widgets/kiosk_title.dart';
 import 'package:irmabalie/src/util/platform_svg.dart';
@@ -116,7 +117,8 @@ class _TransferState extends State<Transfer> {
                                 textStyle: IrmaTheme.of(context)
                                     .kioskButtonTextLargeDark,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/no_transfer');
+                                  Navigator.pushNamed(
+                                      context, NoTransfer.routeName);
                                 },
                               ),
                               Padding(
@@ -129,7 +131,6 @@ class _TransferState extends State<Transfer> {
                                       .kioskButtonTextLarge,
                                   onPressed: () {
                                     KioskRepository().submitId();
-                                    // Navigator.pushNamed(context, '/qr_scan');
                                   },
                                 ),
                               )

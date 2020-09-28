@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_help.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_id.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/kiosk/widgets/kiosk_title.dart';
@@ -47,9 +49,10 @@ class ScanFail extends StatelessWidget {
                             minWidth: 550,
                             size: IrmaButtonSize.kioskBig,
                             label: 'kiosk.scan_fail.button_help',
-                            textStyle: IrmaTheme.of(context).kioskButtonTextDark,
+                            textStyle:
+                                IrmaTheme.of(context).kioskButtonTextDark,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/scan_help');
+                              Navigator.pushNamed(context, ScanHelp.routeName);
                             },
                           ),
                           Padding(
@@ -58,9 +61,10 @@ class ScanFail extends StatelessWidget {
                               minWidth: 550,
                               size: IrmaButtonSize.kioskBig,
                               label: 'kiosk.scan_fail.button_again',
-                              textStyle: IrmaTheme.of(context).kioskButtonTextNormal,
+                              textStyle:
+                                  IrmaTheme.of(context).kioskButtonTextNormal,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/scan');
+                                Navigator.pushNamed(context, ScanId.routeName);
                               },
                             ),
                           ),

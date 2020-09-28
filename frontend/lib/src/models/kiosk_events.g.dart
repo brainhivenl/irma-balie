@@ -6,6 +6,11 @@ part of 'kiosk_events.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+WebsocketConnectedEvent _$WebsocketConnectedEventFromJson(
+    Map<String, dynamic> json) {
+  return WebsocketConnectedEvent();
+}
+
 SessionCreatedEvent _$SessionCreatedEventFromJson(Map<String, dynamic> json) {
   return SessionCreatedEvent();
 }
@@ -36,6 +41,11 @@ ScanPayload _$ScanPayloadFromJson(Map<String, dynamic> json) {
     personalNumber: json['personalnumber'] as String,
     photo: json['photo'] as String,
   );
+}
+
+IrmaSessionSubmittedEvent _$IrmaSessionSubmittedEventFromJson(
+    Map<String, dynamic> json) {
+  return IrmaSessionSubmittedEvent();
 }
 
 IrmaInProgressEvent _$IrmaInProgressEventFromJson(Map<String, dynamic> json) {

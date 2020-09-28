@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:irmabalie/src/kiosk/screens/welcome.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/kiosk/widgets/kiosk_title.dart';
 import 'package:irmabalie/src/util/platform_svg.dart';
@@ -31,7 +32,9 @@ class ScanHelp extends StatelessWidget {
                 ),
                 Text(
                   FlutterI18n.translate(context, 'kiosk.scan_help.header'),
-                  style: IrmaTheme.of(context).kioskBodyHigh.copyWith(fontWeight: FontWeight.bold),
+                  style: IrmaTheme.of(context)
+                      .kioskBodyHigh
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
                 Text(
                   FlutterI18n.translate(context, 'kiosk.scan_help.body1'),
@@ -43,25 +46,36 @@ class ScanHelp extends StatelessWidget {
                     style: IrmaTheme.of(context).kioskBodyHigh,
                     children: <TextSpan>[
                       TextSpan(
-                        text: FlutterI18n.translate(context, 'kiosk.scan_help.body2'),
-                        style: IrmaTheme.of(context).kioskBodyHigh.copyWith(fontWeight: FontWeight.bold),
+                        text: FlutterI18n.translate(
+                            context, 'kiosk.scan_help.body2'),
+                        style: IrmaTheme.of(context)
+                            .kioskBodyHigh
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
-                        text: FlutterI18n.translate(context, 'kiosk.scan_help.bullet1'),
+                        text: FlutterI18n.translate(
+                            context, 'kiosk.scan_help.bullet1'),
                       ),
                       TextSpan(
-                        text: FlutterI18n.translate(context, 'kiosk.scan_help.bullet1_bold'),
-                        style: IrmaTheme.of(context).kioskBodyHigh.copyWith(fontWeight: FontWeight.bold),
+                        text: FlutterI18n.translate(
+                            context, 'kiosk.scan_help.bullet1_bold'),
+                        style: IrmaTheme.of(context)
+                            .kioskBodyHigh
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
                         text: '\n',
                       ),
                       TextSpan(
-                        text: FlutterI18n.translate(context, 'kiosk.scan_help.bullet2'),
+                        text: FlutterI18n.translate(
+                            context, 'kiosk.scan_help.bullet2'),
                       ),
                       TextSpan(
-                        text: FlutterI18n.translate(context, 'kiosk.scan_help.bullet2_bold'),
-                        style: IrmaTheme.of(context).kioskBodyHigh.copyWith(fontWeight: FontWeight.bold),
+                        text: FlutterI18n.translate(
+                            context, 'kiosk.scan_help.bullet2_bold'),
+                        style: IrmaTheme.of(context)
+                            .kioskBodyHigh
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -74,7 +88,7 @@ class ScanHelp extends StatelessWidget {
                     label: 'kiosk.scan_help.button',
                     textStyle: IrmaTheme.of(context).kioskButtonTextDark,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/');
+                      Navigator.pushNamed(context, Welcome.routeName);
                     },
                   ),
                 ),
