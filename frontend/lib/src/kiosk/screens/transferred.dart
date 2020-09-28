@@ -56,7 +56,8 @@ class Transferred extends StatelessWidget {
                         textStyle:
                             IrmaTheme.of(context).kioskButtonTextLargeDark,
                         onPressed: () {
-                          Navigator.pushNamed(context, Welcome.routeName);
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(Welcome.routeName));
                         },
                       ),
                     ),

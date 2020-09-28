@@ -8,6 +8,7 @@ import 'package:irmabalie/src/kiosk/screens/qr_scan.dart';
 import 'package:irmabalie/src/kiosk/screens/scan_fail.dart';
 import 'package:irmabalie/src/kiosk/screens/scanning.dart';
 import 'package:irmabalie/src/kiosk/screens/transfer_in_progress.dart';
+import 'package:irmabalie/src/kiosk/screens/transferred.dart';
 import 'package:irmabalie/src/kiosk/screens/welcome.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/kiosk/state/qr_state.dart';
@@ -133,11 +134,7 @@ class KioskRepository {
           }
         } else if (event.value.status == 'DONE') {
           qrState.setIsTransfering(false);
-          navigatorKey.currentState.pushReplacementNamed(Succeeded.routeName);
-          Future.delayed(const Duration(milliseconds: 5000)).then((_) {
-            navigatorKey.currentState
-                .popUntil(ModalRoute.withName(Welcome.routeName));
-          });
+          navigatorKey.currentState.pushReplacementNamed(Transferred.routeName);
         } else if (event.value.status == 'CANCELLED') {
           qrState.setIsTransfering(false);
           navigatorKey.currentState.pushReplacementNamed(NoTransfer.routeName);
@@ -160,19 +157,6 @@ class KioskRepository {
         Future.delayed(const Duration(milliseconds: 1500)).then((_) {
           navigatorKey.currentState.pushReplacementNamed(Transfer.routeName);
         });
-      } else if (event is ErrorEvent) {
-        print("--ErrorEvent event");
-        switch (event.errorCode) {
-          case "no_internet":
-            navigatorKey.currentState.pushNamed(NoInternet.routeName);
-            break;
-          case "scan_error":
-            navigatorKey.currentState.pushNamed(ScanFail.routeName);
-            break;
-          case "invalid_id":
-            navigatorKey.currentState.pushNamed(InvalidId.routeName);
-            break;
-        }
       } else if (event is WebsocketConnectedEvent) {
         // only if the UI is loaded (because the UI assumes that it is connected by default)
         if (navigatorKey.currentState != null) {

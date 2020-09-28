@@ -171,7 +171,7 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
-            TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
+            TranslatedValue({'nl': data.gender.toIrmaString()}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
             TranslatedValue({'nl': data.photo}),
       }),
@@ -201,7 +201,7 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
-            TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
+            TranslatedValue({'nl': data.gender.toIrmaString()}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
             TranslatedValue({'nl': data.photo}),
       }),
@@ -231,7 +231,7 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".licenseNumber"]:
             TranslatedValue({'nl': data.documentNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
-            TranslatedValue({'nl': PassportReadEvent.getGender(data.gender)}),
+            TranslatedValue({'nl': data.gender.toIrmaString()}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".portraitPhoto"]:
             TranslatedValue({'nl': data.photo}),
       }),
