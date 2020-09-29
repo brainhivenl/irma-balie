@@ -77,7 +77,6 @@ services:
       - default
     environment:
       BALIE_CLIENT_DEBUGMODE: "true"
-      BALIE_CLIENT_FRONTENDADDRESS: ${BALIE_CLIENT_FRONTENDADDRESS}
       BALIE_CLIENT_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
       BALIE_CLIENT_SERVERADDRESS: http://server:8081
       TZ: Europe/Amsterdam
