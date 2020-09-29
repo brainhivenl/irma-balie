@@ -78,8 +78,8 @@ func main() {
 		Addr:         cfg.ListenAddress,
 		Handler:      externalMux,
 		IdleTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
-		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		ReadTimeout:  30 * time.Second,
 	}
 
 	go broadcasterDaemon(app.Broadcaster)

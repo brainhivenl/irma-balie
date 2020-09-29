@@ -5,6 +5,8 @@ services:
       dockerfile: './irmago.Dockerfile'
       context: 'docker'
     expose: [8088]
+    environment:
+      TZ: Europe/Amsterdam
     networks:
       - default
     ports: ["0.0.0.0:8088:8088"]
@@ -32,6 +34,7 @@ services:
     ports:
       - 127.0.0.1:443:443
       - 127.0.0.1:80:80
+      - 127.0.0.1:8080:8080
     environment:
       TZ: Europe/Amsterdam
     networks:
@@ -58,6 +61,7 @@ services:
       BALIE_SERVER_JWTSECRET: foo
       BALIE_SERVER_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
       BALIE_SERVER_CREDENTIALID: "tweedegolf-demo.amsterdam.travelDocument"
+      TZ: Europe/Amsterdam
     expose: [8081]
 
   client:
@@ -76,4 +80,5 @@ services:
       BALIE_CLIENT_FRONTENDADDRESS: ${BALIE_CLIENT_FRONTENDADDRESS}
       BALIE_CLIENT_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
       BALIE_CLIENT_SERVERADDRESS: http://server:8081
+      TZ: Europe/Amsterdam
     expose: [8080]

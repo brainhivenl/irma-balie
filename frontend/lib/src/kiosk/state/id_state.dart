@@ -5,55 +5,36 @@ import 'package:irmabalie/src/models/kiosk_events.dart';
 
 class IdState extends ChangeNotifier {
   static final IdState _instance = IdState._internal();
-  Id idType = Id.idCard;
-  PassportReadEvent _passportData = null;
-  IdCardReadEvent _idCardData = null;
-  DriversLicenseReadEvent _driversLicenseData = null;
+  ScanPayload _payload;
+  Id _idType = Id.passport;
 
   factory IdState() {
     return _instance;
   }
 
-  IdState._internal() {}
+  IdState._internal();
 
-  setPassportScanState(PassportReadEvent newData) {
-    _passportData = newData;
-    idType = Id.passport;
+  setPayload(ScanPayload payload) {
+    _payload = payload;
+    _idType = payload.kind;
     notifyListeners();
   }
 
-  PassportReadEvent getPassportScanData() {
-    return _passportData;
+  ScanPayload getPayload() {
+    return _payload;
   }
 
-  setIdCardScanState(IdCardReadEvent newData) {
-    _idCardData = newData;
-    idType = Id.idCard;
-    notifyListeners();
+  setIdType(Id idType) {
+    _idType = idType;
   }
 
-  IdCardReadEvent getIdCardScanData() {
-    return _idCardData;
-  }
-
-  setDriversLicenseScanState(DriversLicenseReadEvent newData) {
-    _driversLicenseData = newData;
-    idType = Id.driversLicense;
-    notifyListeners();
-  }
-
-  DriversLicenseReadEvent getDriversLicenseScanData() {
-    return _driversLicenseData;
-  }
-
-  setId(Id newId) {
-    idType = newId;
-    notifyListeners();
+  Id getIdType() {
+    return _idType;
   }
 
   String getCode() {
     String result;
-    switch (idType) {
+    switch (_idType) {
       case Id.idCard:
         result = "idCard";
         break;

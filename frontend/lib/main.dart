@@ -5,20 +5,24 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
-import 'package:irmabalie/src/kiosk/invalid_id/invalid_id.dart';
-import 'package:irmabalie/src/kiosk/no_internet/no_internet.dart';
-import 'package:irmabalie/src/kiosk/no_transfer/no_transfer.dart';
-import 'package:irmabalie/src/kiosk/qr_scan/qr_scan.dart';
-import 'package:irmabalie/src/kiosk/scan_fail/scan_fail.dart';
-import 'package:irmabalie/src/kiosk/scan_help/scan_help.dart';
-import 'package:irmabalie/src/kiosk/scan_id/scan_id.dart';
-import 'package:irmabalie/src/kiosk/scanning/scanning.dart';
-import 'package:irmabalie/src/kiosk/select_id/select_id.dart';
+import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
+import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
+import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
+import 'package:irmabalie/src/kiosk/screens/qr_scan.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_fail.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_help.dart';
+import 'package:irmabalie/src/kiosk/screens/scan_id.dart';
+import 'package:irmabalie/src/kiosk/screens/scanning.dart';
+import 'package:irmabalie/src/kiosk/screens/select_id.dart';
+import 'package:irmabalie/src/kiosk/screens/transfer_in_progress.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
-import 'package:irmabalie/src/kiosk/succeeded/succeeded.dart';
-import 'package:irmabalie/src/kiosk/transfer/transfer.dart';
-import 'package:irmabalie/src/kiosk/transferred/transferred.dart';
-import 'package:irmabalie/src/kiosk/welcome/welcome_screen.dart';
+import 'package:irmabalie/src/kiosk/state/qr_state.dart';
+import 'package:irmabalie/src/kiosk/screens/submitting.dart';
+import 'package:irmabalie/src/kiosk/screens/succeeded.dart';
+import 'package:irmabalie/src/kiosk/screens/transfer/transfer.dart';
+import 'package:irmabalie/src/kiosk/screens/transferred.dart';
+import 'package:irmabalie/src/kiosk/screens/welcome.dart';
+import 'package:irmabalie/src/kiosk/state/websocket_state.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +31,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => IdState(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<IdState>(create: (_) => IdState()),
+        ChangeNotifierProvider<QrState>(create: (_) => QrState()),
+        ChangeNotifierProvider<WebsocketState>(create: (_) => WebsocketState()),
+      ],
       child: App(),
     ),
   );
@@ -36,7 +44,7 @@ Future<void> main() async {
 
 class KioskRouting {
   static Map<String, WidgetBuilder> simpleRoutes = {
-    WelcomeScreen.routeName: (context) => WelcomeScreen(),
+    Welcome.routeName: (context) => Welcome(),
     SelectId.routeName: (context) => SelectId(),
     ScanId.routeName: (context) => ScanId(),
     Scanning.routeName: (context) => Scanning(),
@@ -49,6 +57,8 @@ class KioskRouting {
     ScanFail.routeName: (context) => ScanFail(),
     ScanHelp.routeName: (context) => ScanHelp(),
     InvalidId.routeName: (context) => InvalidId(),
+    Submitting.routeName: (context) => Submitting(),
+    TransferInProgress.routeName: (context) => TransferInProgress(),
   };
 
   static Route generateRoute(RouteSettings settings) {
@@ -84,7 +94,8 @@ class AppState extends State<App> {
     kioskRepository.handleEvents(_navigatorKey);
   }
 
-  static List<LocalizationsDelegate> defaultLocalizationsDelegates([Locale forcedLocale]) {
+  static List<LocalizationsDelegate> defaultLocalizationsDelegates(
+      [Locale forcedLocale]) {
     return [
       FlutterI18nDelegate(
         translationLoader: FileTranslationLoader(
@@ -113,10 +124,11 @@ class AppState extends State<App> {
           key: const Key("app"),
           title: 'IRMA Kiosk',
           theme: IrmaTheme.of(context).themeData,
-          localizationsDelegates: defaultLocalizationsDelegates(const Locale('nl', 'NL')),
+          localizationsDelegates:
+              defaultLocalizationsDelegates(const Locale('nl', 'NL')),
           supportedLocales: defaultSupportedLocales(),
           navigatorKey: _navigatorKey,
-          initialRoute: '/',
+          initialRoute: Welcome.routeName,
           onGenerateRoute: KioskRouting.generateRoute,
 
           // Set showSemanticsDebugger to true to view semantics in emulator.

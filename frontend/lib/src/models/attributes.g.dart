@@ -14,7 +14,8 @@ AttributeRequest _$AttributeRequestFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AttributeRequestToJson(AttributeRequest instance) => <String, dynamic>{
+Map<String, dynamic> _$AttributeRequestToJson(AttributeRequest instance) =>
+    <String, dynamic>{
       'Type': instance.type,
       'Value': instance.value,
       'NotNull': instance.notNull,
@@ -27,7 +28,9 @@ AttributeIdentifier _$AttributeIdentifierFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AttributeIdentifierToJson(AttributeIdentifier instance) => <String, dynamic>{
+Map<String, dynamic> _$AttributeIdentifierToJson(
+        AttributeIdentifier instance) =>
+    <String, dynamic>{
       'Type': instance.type,
       'CredentialHash': instance.credentialHash,
     };
@@ -35,14 +38,17 @@ Map<String, dynamic> _$AttributeIdentifierToJson(AttributeIdentifier instance) =
 DisclosedAttribute _$DisclosedAttributeFromJson(Map<String, dynamic> json) {
   return DisclosedAttribute(
     rawValue: json['rawValue'] as String,
-    value: json['value'] == null ? null : TranslatedValue.fromJson(json['value'] as Map<String, dynamic>),
+    value: json['value'] == null
+        ? null
+        : TranslatedValue.fromJson(json['value'] as Map<String, dynamic>),
     identifier: json['id'] as String,
     status: json['status'] as String,
     issuanceTime: json['issuancetime'] as int,
   );
 }
 
-Map<String, dynamic> _$DisclosedAttributeToJson(DisclosedAttribute instance) => <String, dynamic>{
+Map<String, dynamic> _$DisclosedAttributeToJson(DisclosedAttribute instance) =>
+    <String, dynamic>{
       'rawValue': instance.rawValue,
       'value': instance.value,
       'id': instance.identifier,
