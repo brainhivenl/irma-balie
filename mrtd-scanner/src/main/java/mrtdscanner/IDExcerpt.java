@@ -4,8 +4,6 @@ import com.google.gson.annotations.JsonAdapter;
 
 public class IDExcerpt {
     @JsonAdapter(HexAdapter.class)
-    public byte[] challenge;
-    @JsonAdapter(HexAdapter.class)
     public byte[] response;
 
     @JsonAdapter(HexAdapter.class)

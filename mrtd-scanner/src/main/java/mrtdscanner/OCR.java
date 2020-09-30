@@ -2,7 +2,6 @@ package mrtdscanner;
 
 import com.fazecast.jSerialComm.SerialPort;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -44,7 +43,7 @@ public class OCR {
             return false;
         }
 
-        for(int i = 0; i < prefix.length; ++i) {
+        for (int i = 0; i < prefix.length; ++i) {
             if (src[i] != prefix[i]) {
                 return false;
             }

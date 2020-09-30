@@ -29,11 +29,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) throws InterruptedException, CardException {
+    public static void main(String[] args) throws InterruptedException, CardException, IOException {
         Config config = Config.readFromEnv();
 
         System.err.println("Using OCR reader " + config.ocrPath);
         System.err.println("Using client " + config.clientHost);
+
+        BalieClient client = new BalieClient(config.clientHost);
+        byte[] challenge = client.create();
 
         boolean warned = false;
         while (true) {
@@ -95,6 +98,7 @@ public class App {
     }
 
     private static void attemptReadAndIssue(Config config, CardTerminal terminal) throws CardException, CardServiceException, ParseException, IOException, FileNotFoundException, InterruptedException, GeneralSecurityException, OCRException {
+        BalieClient client = new BalieClient(config.clientHost);
         CardService cardService = CardService.getInstance(terminal);
 
         try {
@@ -152,13 +156,13 @@ public class App {
             String sigAlg = "SHA256WithECDSA";
             String digAlg = Util.inferDigestAlgorithmFromSignatureAlgorithm(sigAlg);
             System.out.println("Performing AA with " + sigAlg + " / " + digAlg);
-            byte[] challenge = {0x13, 0x37, 0x42, 0x04, 0x05, 0x06, 0x07, 0x08};
+
+            byte[] challenge = client.create();
             PublicKey publicKey = dg15File.getPublicKey();
             AAResult aaResult = passportService.doAA(publicKey, digAlg, sigAlg, challenge);
             byte[] challengeResponse = aaResult.getResponse();
 
             IDExcerpt idExcerpt = new IDExcerpt();
-            idExcerpt.challenge = challenge;
             idExcerpt.response = challengeResponse;
 
             idExcerpt.com = comFile.getEncoded();
@@ -167,9 +171,7 @@ public class App {
             idExcerpt.dg15 = dg15File.getEncoded();
             idExcerpt.sod = sodFile.getEncoded();
 
-            Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-            String jsonRepresentation = gson.toJson(idExcerpt);
-            System.out.println(jsonRepresentation);
+            client.scanned(idExcerpt);
         } finally {
             cardService.close();
         }

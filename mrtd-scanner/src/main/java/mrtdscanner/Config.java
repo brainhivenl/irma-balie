@@ -15,7 +15,7 @@ public class Config {
         }
 
         if (config.clientHost == null) {
-            config.clientHost = "http://client.balie.test.tweede.golf";
+            config.clientHost = "http://client.balie.test.tweede.golf:8080";
         }
 
         return config;
