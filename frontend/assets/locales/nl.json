@@ -481,7 +481,7 @@
     },
     "transferred": {
       "title": "{id} overgezet",
-      "body": "Gelukt, je rijbewijs is overgezet naar je IRMA-app",
+      "body": "Gelukt, je {id} is overgezet naar je IRMA-app",
       "button": "Sluiten",
       "warning": "Vergeet niet je {id} mee te nemen"
     },
