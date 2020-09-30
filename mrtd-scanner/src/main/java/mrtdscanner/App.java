@@ -30,6 +30,11 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws InterruptedException, CardException {
+        Config config = Config.readFromEnv();
+
+        System.err.println("Using OCR reader " + config.ocrPath);
+        System.err.println("Using client " + config.clientHost);
+
         boolean warned = false;
         while (true) {
             CardTerminal terminal = getCardTerminal();
@@ -54,7 +59,7 @@ public class App {
                     continue;
                 }
 
-                attemptReadAndIssue(terminal);
+                attemptReadAndIssue(config, terminal);
             } catch (Exception e) {
                 System.out.println("An unknown error occurred: " + e.toString());
                 e.printStackTrace(System.out);
@@ -89,7 +94,7 @@ public class App {
         return Arrays.copyOf(tmp, j);
     }
 
-    private static void attemptReadAndIssue(CardTerminal terminal) throws CardException, CardServiceException, ParseException, IOException, FileNotFoundException, InterruptedException, GeneralSecurityException, OCRException {
+    private static void attemptReadAndIssue(Config config, CardTerminal terminal) throws CardException, CardServiceException, ParseException, IOException, FileNotFoundException, InterruptedException, GeneralSecurityException, OCRException {
         CardService cardService = CardService.getInstance(terminal);
 
         try {
@@ -98,7 +103,7 @@ public class App {
             return;
         }
 
-        byte[] mrzBuffer = OCR.read();
+        byte[] mrzBuffer = OCR.read(config.ocrPath);
 
         if (mrzBuffer == null) {
             return;

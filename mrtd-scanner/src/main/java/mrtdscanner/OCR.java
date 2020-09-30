@@ -24,7 +24,7 @@ public class OCR {
 
     private static void assertCommand(SerialPort sp, byte[] cmd, byte[] assertion) throws OCRException, InterruptedException {
         sp.writeBytes(cmd, cmd.length);
-        Thread.sleep(50);
+        Thread.sleep(100);
 
         byte[] readBuffer = new byte[assertion.length];
         int numRead = sp.readBytes(readBuffer, readBuffer.length);
@@ -53,10 +53,8 @@ public class OCR {
         return true;
     }
 
-    public static byte[] read() throws OCRException, InterruptedException {
+    public static byte[] read(String path) throws OCRException, InterruptedException {
         byte[] result = null;
-        String path = "/dev/serial/by-id/usb-ELYCTIS_IDBOX_ONE_0000-if01";
-
         if (!Files.isReadable(Path.of(path))) {
             throw new OCRException("OCR serial interface is not readable");
         }
