@@ -1,8 +1,5 @@
 package mrtdscanner;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.sf.scuba.smartcards.CardService;
 import net.sf.scuba.smartcards.CardServiceException;
 import org.jmrtd.BACKey;
@@ -34,9 +31,6 @@ public class App {
 
         System.err.println("Using OCR reader " + config.ocrPath);
         System.err.println("Using client " + config.clientHost);
-
-        BalieClient client = new BalieClient(config.clientHost);
-        byte[] challenge = client.create();
 
         boolean warned = false;
         while (true) {
@@ -126,6 +120,7 @@ public class App {
         PACEKeySpec passportPACEKey = PACEKeySpec.createMRZKey(passportBACKey);
 
         PassportService passportService = new PassportService(cardService, 16000, 16000, false, true);
+        byte[] challenge = client.create();
 
         try {
             System.out.println("Sending");
@@ -157,7 +152,6 @@ public class App {
             String digAlg = Util.inferDigestAlgorithmFromSignatureAlgorithm(sigAlg);
             System.out.println("Performing AA with " + sigAlg + " / " + digAlg);
 
-            byte[] challenge = client.create();
             PublicKey publicKey = dg15File.getPublicKey();
             AAResult aaResult = passportService.doAA(publicKey, digAlg, sigAlg, challenge);
             byte[] challengeResponse = aaResult.getResponse();

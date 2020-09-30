@@ -6,9 +6,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class BalieClient {
@@ -33,7 +31,7 @@ public class BalieClient {
     public void scanned(IDExcerpt idExcerpt) throws IOException {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         String jsonRepresentation = gson.toJson(idExcerpt);
-        
+
         URL url = new URL(this.host + "/scanned");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
