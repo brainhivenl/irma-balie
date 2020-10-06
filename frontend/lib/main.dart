@@ -23,6 +23,7 @@ import 'package:irmabalie/src/kiosk/screens/transfer/transfer.dart';
 import 'package:irmabalie/src/kiosk/screens/transferred.dart';
 import 'package:irmabalie/src/kiosk/screens/welcome.dart';
 import 'package:irmabalie/src/kiosk/state/websocket_state.dart';
+import 'package:irmabalie/src/kiosk/widgets/no_animation_material_page_route.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +68,7 @@ class KioskRouting {
         final builder = simpleRoutes[settings.name];
         assert(builder != null);
 
-        return MaterialPageRoute(
+        return NoAnimationMaterialPageRoute(
           builder: builder,
           settings: settings,
         );
