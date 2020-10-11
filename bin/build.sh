@@ -17,8 +17,8 @@ echo -n " @ "
 git rev-parse --short HEAD
 
 echo "-- Removing any pre-existing distributions"
-rm -rf ./dist
-mkdir ./dist
+mkdir -p ./dist
+rm -rf ./dist/*
 
 echo "-- Building client"
 pushd client > /dev/null
@@ -48,14 +48,14 @@ echo "-- Building frontend"
 pushd frontend > /dev/null
 rm -rf build
 flutter build bundle
-pushd build > /dev/null
-tar -cf ../../dist/frontend.tar *
+pushd build/flutter_assets/ > /dev/null
+tar -cf ../../../dist/frontend.tar *
 popd > /dev/null
+tar -rf ../dist/frontend.tar app.so
 popd > /dev/null
 
 echo "-- Compressing artifacts"
 bzip2 -z ./dist/*
-chmod -x ./dist/*
 
 sha256sum dist/*
 
