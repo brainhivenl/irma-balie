@@ -61,6 +61,7 @@ public class App {
                 System.out.println("An unknown error occurred: " + e.toString());
                 e.printStackTrace(System.out);
                 Thread.sleep(500);
+                // TODO Push ERROR
                 continue;
             }
             System.err.println("Card read, sleeping");
@@ -101,6 +102,8 @@ public class App {
             return;
         }
 
+        // TODO Push DETECT
+
         byte[] mrzBuffer = OCR.read(config.ocrPath);
 
         if (mrzBuffer == null) {
@@ -119,10 +122,10 @@ public class App {
 
         PACEKeySpec passportPACEKey = PACEKeySpec.createMRZKey(passportBACKey);
 
-        PassportService passportService = new PassportService(cardService, 16000, 16000, false, true);
-        byte[] challenge = client.create();
-
         try {
+            PassportService passportService = new PassportService(cardService, 16000, 16000, false, true);
+            byte[] challenge = client.create();
+
             System.out.println("Sending");
 
             cardService.open();
@@ -168,6 +171,10 @@ public class App {
             client.scanned(idExcerpt);
         } finally {
             cardService.close();
+            System.out.println("Waiting for absent card...");
+            terminal.waitForCardAbsent(120000);
+            System.out.println("Card is absent (or timeout)");
+            // TODO Push reset
         }
     }
 
