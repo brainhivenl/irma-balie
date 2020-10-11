@@ -26,8 +26,8 @@ type ChallengeClaims struct {
 
 // MrtdRequest is a request that is sent to MrtdUnpack.
 type MrtdRequest struct {
-	Challenge string `json:"challenge"`
-	json.RawMessage
+	Challenge string          `json:"challenge"`
+	Document  json.RawMessage `json:"document"`
 }
 
 // UnpackedPrototype is the set of fields in the unpacked Mrtd which are of interest to the client or server.

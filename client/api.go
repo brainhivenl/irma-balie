@@ -42,9 +42,18 @@ func (state State) unpackMrtd(cfg Configuration) (string, error) {
 		return "", errors.New("No scanned document or challenge was set in state")
 	}
 
+	challenge := common.ChallengeClaims{}
+	parser := jwt.Parser{}
+	// We do not need to verify the claim; we will pass the original JWT back to the server.
+	_, _, err := parser.ParseUnverified(*state.Challenge, &challenge)
+
+	if err != nil {
+		return "", err
+	}
+
 	request := common.MrtdRequest{
-		Challenge:  *state.Challenge,
-		RawMessage: []byte(*state.ScannedDocument),
+		Challenge: challenge.Challenge,
+		Document:  []byte(*state.ScannedDocument),
 	}
 
 	return common.UnpackMrtd(cfg.MrtdUnpack, request)

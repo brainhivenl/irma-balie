@@ -51,7 +51,8 @@ public class App {
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
-        IDExcerpt idExcerpt = gson.fromJson(reader, IDExcerpt.class);
+        Request request = gson.fromJson(reader, Request.class);
+        IDExcerpt idExcerpt = request.document;
 
         COMFile comFile = new COMFile(new ByteArrayInputStream(idExcerpt.com));
         DG1File dg1File = new DG1File(new ByteArrayInputStream(idExcerpt.dg1));
@@ -62,7 +63,7 @@ public class App {
         MRZInfo mrzInfo = dg1File.getMRZInfo();
         boolean valid = false;
         try {
-            valid = validate(idExcerpt.challenge, idExcerpt.response, dg1File, dg2File, dg15File, sodFile);
+            valid = validate(request.challenge, idExcerpt.response, dg1File, dg2File, dg15File, sodFile);
         } catch (Exception _e) {
             // Do nothing.
         }

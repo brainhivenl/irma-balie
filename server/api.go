@@ -79,8 +79,8 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mrtdRequest := common.MrtdRequest{
-		Challenge:  challenge.Challenge,
-		RawMessage: request.Document,
+		Challenge: challenge.Challenge,
+		Document:  request.Document,
 	}
 
 	unpacked, err := common.UnpackMrtd(app.Cfg.MrtdUnpack, mrtdRequest)
