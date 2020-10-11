@@ -41,6 +41,13 @@ Then in a REST API tester you can perform the following requests:
 2. Push your document as a `application/json` POST message: [https://client.balie.test.tweede.golf/scanned](https://client.balie.test.tweede.golf/scanned)
 3. Press the submit button as a GET to receive your IRMA session: [https://client.balie.test.tweede.golf/submit](https://client.balie.test.tweede.golf/submit)
 
+## Build release artifacts
+
+Run from the project root:
+```bash
+bin/build.sh
+```
+
 ## Known issues
 For unknown reasons IRMAgo might crash with the following Go problem:
 ```

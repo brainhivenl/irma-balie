@@ -1,16 +1,13 @@
-# irmabalie
+# irmabalie Frontend
 
-A new Flutter project.
+For debugging on your development machine fetch Hover and run
 
-## Getting Started
+```bash
+hover run
+```
 
-This project is a starting point for a Flutter application.
+In order to build a package that can run directly on the Raspberry Pi package with flutter:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter build bundle
+```
