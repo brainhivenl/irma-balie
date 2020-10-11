@@ -127,7 +127,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	issuanceRequest := irma.NewIssuanceRequest([]*irma.CredentialRequest{&credentialRequest})
 
-	transport := irma.NewHTTPTransport(app.Cfg.IrmaServer, !app.Cfg.DebugMode)
+	transport := irma.NewHTTPTransport(app.Cfg.IrmaServer, false)
 
 	var pkg server.SessionPackage
 	err = transport.Post("session", &pkg, issuanceRequest)
@@ -194,7 +194,7 @@ func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transport := irma.NewHTTPTransport(fmt.Sprintf("%s/session/%s/", app.Cfg.IrmaServer, issuance.Token), !app.Cfg.DebugMode)
+	transport := irma.NewHTTPTransport(fmt.Sprintf("%s/session/%s/", app.Cfg.IrmaServer, issuance.Token), false)
 
 	var status string
 	err = transport.Get("status", &status)
