@@ -60,10 +60,8 @@ public class App {
             } catch (Exception e) {
                 System.out.println("An unknown error occurred: " + e.toString());
                 e.printStackTrace(System.out);
-                Thread.sleep(500);
-                // TODO Push ERROR
-                continue;
             }
+            Thread.sleep(200);
         }
     }
 
@@ -109,18 +107,19 @@ public class App {
         }
 
         System.out.println("Document MRZ found");
-
         mrzBuffer = filterNewlines(mrzBuffer);
-        MRZInfo visualMRZ = new MRZInfo(new ByteArrayInputStream(mrzBuffer), mrzBuffer.length);
-
-        System.out.println(visualMRZ);
-        System.out.println(String.format("'%s' '%s' '%s'", visualMRZ.getDocumentNumber(), visualMRZ.getDateOfBirth(), visualMRZ.getDateOfExpiry()));
-
-        BACKey passportBACKey = new BACKey(visualMRZ.getDocumentNumber(), visualMRZ.getDateOfBirth(), visualMRZ.getDateOfExpiry());
-
-        PACEKeySpec passportPACEKey = PACEKeySpec.createMRZKey(passportBACKey);
+        System.out.println("Read MRZ as "+ new String(mrzBuffer));
 
         try {
+            MRZInfo visualMRZ = new MRZInfo(new ByteArrayInputStream(mrzBuffer), mrzBuffer.length);
+
+            System.out.println(visualMRZ);
+            System.out.println(String.format("'%s' '%s' '%s'", visualMRZ.getDocumentNumber(), visualMRZ.getDateOfBirth(), visualMRZ.getDateOfExpiry()));
+
+            BACKey passportBACKey = new BACKey(visualMRZ.getDocumentNumber(), visualMRZ.getDateOfBirth(), visualMRZ.getDateOfExpiry());
+
+            PACEKeySpec passportPACEKey = PACEKeySpec.createMRZKey(passportBACKey);
+
             PassportService passportService = new PassportService(cardService, 16000, 16000, false, true);
             byte[] challenge = client.create();
 
@@ -174,10 +173,12 @@ public class App {
         } catch (Exception e) {
             client.reinsert();
 
+            System.out.println("An scanning error occurred: " + e.toString());
+            e.printStackTrace(System.out);
+
             System.out.println("Waiting for absent card due to error...");
             terminal.waitForCardAbsent(120000);
             System.out.println("Card is absent (or timeout)");
-            throw e;
         } finally {
             cardService.close();
         }
