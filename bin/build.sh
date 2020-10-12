@@ -23,13 +23,13 @@ rm -rf ./dist/*
 echo "-- Building client"
 pushd client > /dev/null
 env GOARCH=arm go build -o ../dist/client_arm
-env GOARCH=amd64 go build -o ../dist/client_amd64
+# env GOARCH=amd64 go build -o ../dist/client_amd64
 popd > /dev/null
 
 echo "-- Building server"
 pushd server > /dev/null
 env GOARCH=arm go build -o ../dist/server_arm
-env GOARCH=amd64 go build -o ../dist/server_amd64
+# env GOARCH=amd64 go build -o ../dist/server_amd64
 popd > /dev/null
 
 echo "-- Building mrtd-scanner"
