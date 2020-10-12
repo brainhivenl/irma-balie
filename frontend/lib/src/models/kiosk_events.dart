@@ -17,6 +17,16 @@ class WebsocketConnectedEvent extends Event {
 class WebsocketDisconnectedEvent extends Event {}
 
 @JsonSerializable(createToJson: false)
+class DetectedEvent extends Event {
+  DetectedEvent();
+
+  static String type = "nfc-detect";
+
+  factory DetectedEvent.fromJson(Map<String, dynamic> json) =>
+      _$DetectedEventFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class SessionCreatedEvent extends Event {
   SessionCreatedEvent();
 

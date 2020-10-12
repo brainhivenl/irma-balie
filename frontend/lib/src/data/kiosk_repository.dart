@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:irmabalie/src/kiosk/screens/detected.dart';
 import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
 import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
 import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
@@ -38,6 +39,7 @@ class KioskRepository {
 
   final Map<String, EventUnmarshaller> _eventUnmarshallers = {
     WebsocketConnectedEvent.type: (j) => WebsocketConnectedEvent.fromJson(j),
+    DetectedEvent.type: (j) => DetectedEvent.fromJson(j),
     SessionCreatedEvent.type: (j) => SessionCreatedEvent.fromJson(j),
     ScannedEvent.type: (j) => ScannedEvent.fromJson(j),
     IrmaSessionSubmittedEvent.type: (j) =>
@@ -151,6 +153,8 @@ class KioskRepository {
         navigatorKey.currentState.pushReplacementNamed(QrScan.routeName);
       } else if (event is SessionCreatedEvent) {
         navigatorKey.currentState.pushNamed(Scanning.routeName);
+      } else if (event is DetectedEvent) {
+        navigatorKey.currentState.pushNamed(Detected.routeName);
       } else if (event is ScannedEvent) {
         idState.setPayload(event.value);
         navigatorKey.currentState.pushReplacementNamed(Succeeded.routeName);

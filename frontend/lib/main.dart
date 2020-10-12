@@ -5,6 +5,7 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
+import 'package:irmabalie/src/kiosk/screens/detected.dart';
 import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
 import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
 import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
@@ -48,6 +49,7 @@ class KioskRouting {
     Welcome.routeName: (context) => Welcome(),
     SelectId.routeName: (context) => SelectId(),
     ScanId.routeName: (context) => ScanId(),
+    Detected.routeName: (context) => Detected(),
     Scanning.routeName: (context) => Scanning(),
     Succeeded.routeName: (context) => Succeeded(),
     Transfer.routeName: (context) => Transfer(),

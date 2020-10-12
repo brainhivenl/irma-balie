@@ -446,6 +446,10 @@
         "driversLicense": "1. Houd je rijbewijs vast met de foto naar onder.\n2. Leg je rijbewijs in de gleuf.\n3. Wacht tot de scan klaar is."
       }
     },
+    "detected": {
+      "title": "{id} zoeken",
+      "body": "Je {id} wordt gezocht…"
+    },
     "scanning": {
       "title": "{id} scannen",
       "body": "Je {id} wordt gescand…"

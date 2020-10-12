@@ -11,6 +11,10 @@ WebsocketConnectedEvent _$WebsocketConnectedEventFromJson(
   return WebsocketConnectedEvent();
 }
 
+DetectedEvent _$DetectedEventFromJson(Map<String, dynamic> json) {
+  return DetectedEvent();
+}
+
 SessionCreatedEvent _$SessionCreatedEventFromJson(Map<String, dynamic> json) {
   return SessionCreatedEvent();
 }
