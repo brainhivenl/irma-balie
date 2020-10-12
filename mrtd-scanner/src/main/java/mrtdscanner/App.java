@@ -103,6 +103,8 @@ public class App {
         byte[] mrzBuffer = OCR.read(config.ocrPath);
 
         if (mrzBuffer == null) {
+            client.reinsert();
+            System.out.println("OCR failed");
             return;
         }
 
@@ -173,7 +175,7 @@ public class App {
         } catch (Exception e) {
             client.reinsert();
 
-            System.out.println("An scanning error occurred: " + e.toString());
+            System.out.println("A scanning error occurred: " + e.toString());
             e.printStackTrace(System.out);
 
             System.out.println("Waiting for absent card due to error...");

@@ -40,6 +40,7 @@ class KioskRepository {
   final Map<String, EventUnmarshaller> _eventUnmarshallers = {
     WebsocketConnectedEvent.type: (j) => WebsocketConnectedEvent.fromJson(j),
     DetectedEvent.type: (j) => DetectedEvent.fromJson(j),
+    ReinsertEvent.type: (j) => ReinsertEvent.fromJson(j),
     SessionCreatedEvent.type: (j) => SessionCreatedEvent.fromJson(j),
     ScannedEvent.type: (j) => ScannedEvent.fromJson(j),
     IrmaSessionSubmittedEvent.type: (j) =>
@@ -155,6 +156,8 @@ class KioskRepository {
         navigatorKey.currentState.pushNamed(Scanning.routeName);
       } else if (event is DetectedEvent) {
         navigatorKey.currentState.pushNamed(Detected.routeName);
+      } else if (event is ReinsertEvent) {
+        navigatorKey.currentState.pushNamed(ScanFail.routeName);
       } else if (event is ScannedEvent) {
         idState.setPayload(event.value);
         navigatorKey.currentState.pushReplacementNamed(Succeeded.routeName);

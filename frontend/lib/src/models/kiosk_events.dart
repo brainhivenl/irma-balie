@@ -27,6 +27,16 @@ class DetectedEvent extends Event {
 }
 
 @JsonSerializable(createToJson: false)
+class ReinsertEvent extends Event {
+  ReinsertEvent();
+
+  static String type = "reinsert";
+
+  factory ReinsertEvent.fromJson(Map<String, dynamic> json) =>
+      _$ReinsertEventFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class SessionCreatedEvent extends Event {
   SessionCreatedEvent();
 

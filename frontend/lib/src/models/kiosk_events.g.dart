@@ -15,6 +15,10 @@ DetectedEvent _$DetectedEventFromJson(Map<String, dynamic> json) {
   return DetectedEvent();
 }
 
+ReinsertEvent _$ReinsertEventFromJson(Map<String, dynamic> json) {
+  return ReinsertEvent();
+}
+
 SessionCreatedEvent _$SessionCreatedEventFromJson(Map<String, dynamic> json) {
   return SessionCreatedEvent();
 }

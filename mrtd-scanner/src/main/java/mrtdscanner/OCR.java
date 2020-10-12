@@ -91,8 +91,6 @@ public class OCR {
                 result = Arrays.copyOfRange(readBuffer, 3, numRead);
                 break;
             }
-
-            System.out.println(Arrays.toString(result));
         } finally {
             sp.closePort();
         }
