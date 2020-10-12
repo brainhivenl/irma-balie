@@ -64,8 +64,6 @@ public class App {
                 // TODO Push ERROR
                 continue;
             }
-            System.err.println("Card read, sleeping");
-            Thread.sleep(10000);
         }
     }
 
@@ -102,7 +100,7 @@ public class App {
             return;
         }
 
-        // TODO Push DETECT
+        client.detected();
 
         byte[] mrzBuffer = OCR.read(config.ocrPath);
 
@@ -169,12 +167,19 @@ public class App {
             idExcerpt.sod = sodFile.getEncoded();
 
             client.scanned(idExcerpt);
-        } finally {
-            cardService.close();
-            System.out.println("Waiting for absent card...");
+
+            System.out.println("READ OK! Waiting for absent card...");
             terminal.waitForCardAbsent(120000);
             System.out.println("Card is absent (or timeout)");
-            // TODO Push reset
+        } catch (Exception e) {
+            client.reinsert();
+
+            System.out.println("Waiting for absent card due to error...");
+            terminal.waitForCardAbsent(120000);
+            System.out.println("Card is absent (or timeout)");
+            throw e;
+        } finally {
+            cardService.close();
         }
     }
 

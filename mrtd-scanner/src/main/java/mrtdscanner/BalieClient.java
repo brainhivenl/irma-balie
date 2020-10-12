@@ -28,6 +28,24 @@ public class BalieClient {
         return Base64.getDecoder().decode(challenge);
     }
 
+    public void detected() throws IOException {
+        URL url = new URL(this.host + "/detected");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        if (connection.getResponseCode() != 200) {
+            throw new IOException(String.format("Client returned code %d", connection.getResponseCode()));
+        }
+    }
+
+    public void reinsert() throws IOException {
+        URL url = new URL(this.host + "/reinsert");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        if (connection.getResponseCode() != 200) {
+            throw new IOException(String.format("Client returned code %d", connection.getResponseCode()));
+        }
+    }
+
     public void scanned(IDExcerpt idExcerpt) throws IOException {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         String jsonRepresentation = gson.toJson(idExcerpt);

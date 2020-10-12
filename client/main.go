@@ -64,7 +64,8 @@ func main() {
 	app := App{Cfg: cfg, State: state, Broadcaster: broadcaster}
 
 	externalMux := http.NewServeMux()
-	// externalMux.HandleFunc("/", app.handleStatus)
+	externalMux.HandleFunc("/detected", app.handleDetected)
+	externalMux.HandleFunc("/reinsert", app.handleReinsert)
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/scanned", app.handleScanned)
 	externalMux.HandleFunc("/submit", app.handleSubmit)

@@ -67,6 +67,14 @@ func (app *App) handleDetected(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "ok")
 }
 
+func (app *App) handleReinsert(w http.ResponseWriter, r *http.Request) {
+	app.Broadcaster.Notify(Message{
+		Type: Reinsert,
+	})
+
+	io.WriteString(w, "ok")
+}
+
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 	resp, err := http.Get(fmt.Sprintf("%s/create", app.Cfg.ServerAddress))
 	if err != nil {

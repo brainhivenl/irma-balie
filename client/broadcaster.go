@@ -8,11 +8,14 @@ import (
 type MessageType string
 
 const (
+	// Connected indicates to the frontend that a websocket connection is established.
+	Connected = "connected"
+
 	// NFCDetect signifies that we have detected an NFC client, hinting on user interaction with the kiosk.
 	NFCDetect MessageType = "nfc-detect"
 
-	// Connected indicates to the client that a connection is established.
-	Connected = "connected"
+	// Reinsert indicates that the card should be re-inserted into the slot.
+	Reinsert = "reinsert"
 
 	// Created signifies that a session was created, hinting that the OCR process has completed successfully.
 	Created = "created"
