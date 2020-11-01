@@ -64,6 +64,8 @@ func main() {
 	app := App{Cfg: cfg, State: state, Broadcaster: broadcaster}
 
 	externalMux := http.NewServeMux()
+	externalMux.HandleFunc("/", app.handleStatus)
+	externalMux.HandleFunc("/status", app.handleStatus)
 	externalMux.HandleFunc("/detected", app.handleDetected)
 	externalMux.HandleFunc("/reinsert", app.handleReinsert)
 	externalMux.HandleFunc("/create", app.handleCreate)
@@ -81,6 +83,7 @@ func main() {
 
 	go broadcasterDaemon(app.Broadcaster)
 	go irmaPollerDaemon(&app)
+	go statusPollerDaemon(&app)
 
 	log.Printf("Starting external HTTP server on %v", cfg.ListenAddress)
 	log.Fatal(externalServer.ListenAndServe())

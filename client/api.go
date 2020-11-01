@@ -227,10 +227,51 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, string(issuanceSession.Claims.(*common.IssuanceClaims).SessionPtr))
 }
 
+func (app App) getUpstreamStatus() bool {
+	resp, err := http.Get(fmt.Sprintf("%s/status", app.Cfg.ServerAddress))
+
+	return err == nil && resp.StatusCode == 200
+}
+
+func (app App) getClockStatus() bool {
+	return time.Now().After(time.Date(2000, time.January, 0, 0, 0, 0, 0, time.UTC))
+}
+
+func (app App) getStatus() common.StatusResponse {
+	return common.StatusResponse{
+		Upstream: app.getUpstreamStatus(),
+		Clock:    app.getClockStatus(),
+	}
+}
+
+func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
+	response := app.getStatus()
+	responseJSON, err := json.Marshal(response)
+
+	if err != nil {
+		http.Error(w, "500 marshal failed", http.StatusInternalServerError)
+		return
+	}
+
+	if !response.IsOK() {
+		w.WriteHeader(http.StatusTooEarly)
+	}
+
+	w.Write(responseJSON)
+}
+
 func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("failed to upgrade session status connection:", err)
+		return
+	}
+
+	if !app.getStatus().IsOK() {
+		_ = ws.WriteJSON(Message{
+			NotReady,
+			nil,
+		})
 		return
 	}
 
@@ -263,6 +304,10 @@ func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if err := ws.WriteJSON(msg); err != nil {
+				return
+			}
+
+			if msg.Type == NotReady {
 				return
 			}
 		case <-ticker.C:

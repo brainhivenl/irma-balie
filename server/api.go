@@ -218,13 +218,8 @@ func (app App) getClockStatus() bool {
 	return time.Now().After(time.Date(2000, time.January, 0, 0, 0, 0, 0, time.UTC))
 }
 
-type statusResponse struct {
-	Upstream bool `json:"upstream"`
-	Clock    bool `json:"clock"`
-}
-
 func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
-	response := statusResponse{
+	response := common.StatusResponse{
 		Upstream: app.getUpstreamStatus(),
 		Clock:    app.getClockStatus(),
 	}

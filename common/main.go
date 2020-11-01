@@ -60,6 +60,17 @@ type IssuanceClaims struct {
 	jwt.StandardClaims
 }
 
+// StatusResponse is the response resulting from a service status request. If any fields are valued false, the service not ready.
+type StatusResponse struct {
+	Upstream bool `json:"upstream"`
+	Clock    bool `json:"clock"`
+}
+
+// IsOK yields whether all status messages are OK.
+func (status StatusResponse) IsOK() bool {
+	return status.Upstream && status.Clock
+}
+
 func runMrtd(timeout time.Duration, mrtdCmd string, input []byte, getVersion bool) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
