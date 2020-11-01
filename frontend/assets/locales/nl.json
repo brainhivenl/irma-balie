@@ -60,12 +60,12 @@
     "header": "Jezelf bekend maken",
     "slogan": "Met IRMA heb je het zelf in de hand.",
     "who_is_behind_irma_item": "Wie zit er achter de IRMA-app?",
-    "who_is_behind_irma_explanation": "IRMA wordt gemaakt door de stichting **Privacy by Design**.  Deze stichting is in 2016 voortgekomen uit de Digital Security onderzoeksgroep van de Radboud Universiteit in Nijmegen. De stichting is onafhankelijk en maakt geen winst.\n\nDe IRMA-app wordt open source ontwikkeld in samenwerking met SIDN, de beheerder van het .nl-domein. Bij de ontwikkeling wordt ook samengewerkt met verschillende overheden en met de zorg. Zo zijn er zo'n 30 gemeenten betrokken, waaronder Nijmegen, Amsterdam en Leiden. IRMA is winnaar van de Nederlandse Privacy Awards 2018.",
+    "who_is_behind_irma_explanation": "IRMA wordt gemaakt door de stichting **Privacy by Design**.  Deze stichting is in 2016 voortgekomen uit de Digital Security onderzoeksgroep van de Radboud Universiteit in Nijmegen. De stichting is onafhankelijk en maakt geen winst.\n\nDe IRMA-app wordt open source ontwikkeld in samenwerking met SIDN, de beheerder van het .nl-domein. Bij de ontwikkeling wordt ook samengewerkt met verschillende overheden en met de zorg. Zo zijn er zo'n 30 gemeenten betrokken, waaronder Nijmegen, Amsterdam en Leiden. IRMA is winnaar van de Nederlandse Privacy Awards 2018.",
     "check_out": "Bekijk ook: ",
     "award": "Nederlandse Privacy Awards",
     "award_link": "https://privacyawards.nl/2018-2/",
     "why_irma_item": "Waarom bestaat IRMA?",
-    "why_irma_explanation": "**IRMA bestaat omdat jij het recht hebt op een online identiteit die echt van jou is.** IRMA is geen commerciële app die gebruikt wordt om jou te volgen, te profileren en om jouw persoonsgegevens te verkopen aan derden.\n\nIRMA is ontworpen in de geest van de [Algemene Verordening Persoonsgegevens (AVG)](https://wetten.overheid.nl/BWBR0040940/2019-02-19). Je laat via de IRMA-app alleen die gegevens van jezelf zien die in een bepaalde situatie relevant en nodig zijn.\n\n**Met de IRMA-app heb je jouw identiteit zelf in de hand, in de beveiligde IRMA-app op je eigen mobiel.** De IRMA-app is een krachtig middel om jezelf (online) bekend te maken en om digitaal je handtekening te zetten. Met respect voor jouw privacy.",
+    "why_irma_explanation": "**IRMA bestaat omdat jij het recht hebt op een online identiteit die echt van jou is.** IRMA is geen commerciële app die gebruikt wordt om jou te volgen, te profileren en om jouw persoonsgegevens te verkopen aan derden.\n\nIRMA is ontworpen in de geest van de [Algemene Verordening Persoonsgegevens (AVG)](https://wetten.overheid.nl/BWBR0040940/2019-02-19). Je laat via de IRMA-app alleen die gegevens van jezelf zien die in een bepaalde situatie relevant en nodig zijn.\n\n**Met de IRMA-app heb je jouw identiteit zelf in de hand, in de beveiligde IRMA-app op je eigen mobiel.** De IRMA-app is een krachtig middel om jezelf (online) bekend te maken en om digitaal je handtekening te zetten. Met respect voor jouw privacy.",
     "privacy_item": "IRMA, privacy en veiligheid",
     "privacy_explanation": "De IRMA-app is zo gemaakt dat jij en jij alleen je persoonsgegevens in de app kunt zien en gebruiken. Je persoonsgegevens staan alleen op jouw mobiel en niet ergens in de cloud.\n\nDe IRMA-app is zo gemaakt dat een website of winkel waar je jezelf bekend maakt (cryptografisch) kan controleren dat de gegevens die je toont echt zijn.\n\nDe IRMA-app toont jouw gegevens vanuit je mobiel rechtstreeks aan een website. Niemand anders kan zien dat jij jezelf daar bekendmaakt. Ook de organisatie achter IRMA kan niet meekijken. \n\nMet het gebruik van IRMA ga je akkoord met de privacy policy [link].",
     "responsibility_item": "Eigen verantwoordelijkheid",
@@ -452,7 +452,7 @@
     },
     "scanning": {
       "title": "{id} scannen",
-      "body": "Je {id} wordt gescand…"
+      "body": "Je {id} wordt gescand…\n(dit kan enige tijd duren)"
     },
     "succeeded": {
       "title": "{id} scannen",
@@ -466,12 +466,16 @@
       "yes": "Ja"
     },
     "submitting": {
-      "title": "Communiceren met de IRMA server",
-      "body": "Er wordt een sessie aangemaakt voor je IRMA-app"
+      "title": "Voorbereiden van overzetten",
+      "body": "Er wordt een QR-code aangemaakt…"
+    },
+    "approval": {
+      "title": "Wacht op goedkeuring",
+      "body": "Wacht tot de medewerker je verzoek goedkeurt…"
     },
     "transfer_in_progress": {
       "title": "{id} overzetten",
-      "body": "Het overzetten van je {id} gaat verder via je IRMA-app"
+      "body": "Gebruik je IRMA-app om je {id} als kaartje toe te voegen"
     },
     "qr_scan": {
       "title": "{id} overzetten",
