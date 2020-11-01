@@ -58,7 +58,8 @@ func main() {
 	app := App{Cfg: cfg}
 
 	externalMux := http.NewServeMux()
-	// externalMux.HandleFunc("/", app.handleStatus)
+	externalMux.HandleFunc("/", app.handleStatus)
+	externalMux.HandleFunc("/status", app.handleStatus)
 	externalMux.HandleFunc("/create", app.handleCreate)
 	externalMux.HandleFunc("/submit", app.handleSubmit)
 	externalMux.HandleFunc("/session", app.handleSession)

@@ -206,3 +206,40 @@ func (app App) handleSession(w http.ResponseWriter, r *http.Request) {
 
 	io.WriteString(w, strings.Trim(status, `"`))
 }
+
+func (app App) getUpstreamStatus() bool {
+	transport := irma.NewHTTPTransport(app.Cfg.IrmaServer, false)
+	_, err := transport.GetBytes("publickey")
+
+	return err == nil
+}
+
+func (app App) getClockStatus() bool {
+	return time.Now().After(time.Date(2000, time.January, 0, 0, 0, 0, 0, time.UTC))
+}
+
+type statusResponse struct {
+	Upstream bool `json:"upstream"`
+	Clock    bool `json:"clock"`
+}
+
+func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
+	response := statusResponse{
+		Upstream: app.getUpstreamStatus(),
+		Clock:    app.getClockStatus(),
+	}
+	allOk := response.Upstream && response.Clock
+
+	responseJSON, err := json.Marshal(response)
+
+	if err != nil {
+		http.Error(w, "500 marshal failed", http.StatusInternalServerError)
+		return
+	}
+
+	if !allOk {
+		w.WriteHeader(http.StatusTooEarly)
+	}
+
+	w.Write(responseJSON)
+}
