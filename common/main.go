@@ -92,7 +92,7 @@ func UnpackMrtd(mrtdCmd string, request MrtdRequest) (string, error) {
 		return "", err
 	}
 
-	return runMrtd(10*time.Second, mrtdCmd, requestBytes, false)
+	return runMrtd(30*time.Second, mrtdCmd, requestBytes, false)
 }
 
 // TestMrtd runs the external mrtd-unpack utility, without any input, to verify the functionality.
