@@ -112,7 +112,7 @@ class ScanPayload {
   @JsonKey(name: 'nationality')
   final String nationality;
 
-  @JsonKey(name: 'number')
+  @JsonKey(name: 'documentnumber')
   final String documentNumber;
 
   @JsonKey(name: 'over12', fromJson: _stringToBool)

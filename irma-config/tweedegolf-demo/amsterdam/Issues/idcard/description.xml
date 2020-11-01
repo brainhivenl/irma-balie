@@ -1,23 +1,23 @@
 <IssueSpecification version="4">
 	<Name>
-		<en>Demo Travel Document</en>
-		<nl>Demo Reisdocument</nl>
+		<en>Demo ID card data</en>
+		<nl>Demo ID-kaartgegevens</nl>
 	</Name>
 	<ShortName>
-		<en>Demo Travel Document</en>
-		<nl>Demo Reisdocument</nl>
+		<en>Demo ID card data</en>
+		<nl>Demo ID-kaartgegevens</nl>
 	</ShortName>
 	<SchemeManager>tweedegolf-demo</SchemeManager>
 	<IssuerID>amsterdam</IssuerID>
-	<CredentialID>travelDocument</CredentialID>
+	<CredentialID>idcard</CredentialID>
 	<Description>
-		<en>Your Dutch passport or identity card</en>
-		<nl>Uw Nederlandse paspoort of identiteitskaart, uitgelezen via de IRMA balie</nl>
+		<en>Your ID card read from the IRMA desk</en>
+		<nl>Je Nederlandse ID-kaart, uitgelezen via de IRMA-balie</nl>
 	</Description>
-	<ShouldBeSingleton>false</ShouldBeSingleton>
-	<ForegroundColor>#ffffff</ForegroundColor>
-	<BackgroundGradientStart>#014483</BackgroundGradientStart>
-	<BackgroundGradientEnd>#2574A6</BackgroundGradientEnd>
+	<ShouldBeSingleton>true</ShouldBeSingleton>
+	<ForegroundColor>#15222E</ForegroundColor>
+	<BackgroundGradientStart>#C5E6D3</BackgroundGradientStart>
+	<BackgroundGradientEnd>#F5E19C</BackgroundGradientEnd>
 	<IsInCredentialStore>true</IsInCredentialStore>
 	<Category>
 		<en>Personal</en>
@@ -25,34 +25,14 @@
 	</Category>
 
 	<Attributes>
-		<Attribute id="kind">
-			<Name>
-				<en>Document kind</en>
-				<nl>Soort document</nl>
-			</Name>
-			<Description>
-				<en>The document kind (passport or identity card)</en>
-				<nl>Het soort reisdocument (paspoort of identiteitskaart)</nl>
-			</Description>
-		</Attribute>
-		<Attribute id="number">
+		<Attribute id="documentnumber">
 			<Name>
 				<en>Document number</en>
 				<nl>Documentnummer</nl>
 			</Name>
 			<Description>
-				<en>The travel document number</en>
-				<nl>Het documentnummer</nl>
-			</Description>
-		</Attribute>
-		<Attribute id="dateofexpiry">
-			<Name>
-				<en>Expiry date</en>
-				<nl>Verloopdatum</nl>
-			</Name>
-			<Description>
-				<en>Expiry date of the travel document</en>
-				<nl>Verloopdatum van het reisdocument</nl>
+				<en>The document number of your passport</en>
+				<nl>Het documentnummer van je paspoort</nl>
 			</Description>
 		</Attribute>
 		<Attribute id="personalnumber">
@@ -63,6 +43,16 @@
 			<Description>
 				<en>Your Personal Identification Number. For Dutch travel documents your Dutch Citizen service number (BSN)</en>
 				<nl>Je persoonlijk identificatienummber. Voor Nederlandse reisdocumenten je Burgerservicenummer (BSN)</nl>
+			</Description>
+		</Attribute>
+		<Attribute id="assurancelevel">
+			<Name>
+				<en>Assurance level</en>
+				<nl>Betrouwbaarheidsniveau</nl>
+			</Name>
+			<Description>
+				<en>The level of assurance according to eIDAS </en>
+				<nl>Het betrouwbaarheidsniveau volgens eIDAS</nl>
 			</Description>
 		</Attribute>
 		<Attribute id="firstnames">
@@ -171,8 +161,8 @@
 				<nl>Foto</nl>
 			</Name>
 			<Description>
-				<en>The portrait photo as included in your travel document</en>
-				<nl>De portretfoto zoals deze bij uw reisdocument is gevoegd</nl>
+				<en>The portrait photo as included in your passport</en>
+				<nl>De portretfoto die in je paspoort is opgenomen</nl>
 			</Description>
 		</Attribute>
 	</Attributes>

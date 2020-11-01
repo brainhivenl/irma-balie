@@ -131,16 +131,15 @@ func overAge(now time.Time, dateOfBirth time.Time, years int) string {
 
 // ToCredentialAttributes converts an UnpackedPrototype to the attributes intended for an IRMA credential.
 func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]string, error) {
-
 	dateOfBirth, err := time.Parse(UniversalDateLayout, up.DateOfBirth)
 	if err != nil {
 		return nil, err
 	}
 
 	result := map[string]string{
-		"kind":           up.DocumentCode,
-		"number":         up.DocumentNumber,
 		"dateofexpiry":   up.DateOfExpiry,
+		"assurancelevel": "Substantial",
+		"documentnumber": up.DocumentNumber,
 		"gender":         up.Gender,
 		"firstnames":     up.FirstNames,
 		"surname":        up.LastName,

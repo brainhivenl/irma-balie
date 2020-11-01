@@ -267,6 +267,9 @@ func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
 
 func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
+	defer func() {
+		ws.Close()
+	}()
 	if err != nil {
 		log.Println("failed to upgrade session status connection:", err)
 		return
@@ -298,7 +301,6 @@ func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 	ticker := time.NewTicker(waitDuration)
 	defer func() {
 		ticker.Stop()
-		ws.Close()
 	}()
 
 	for {

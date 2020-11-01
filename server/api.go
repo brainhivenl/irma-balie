@@ -120,9 +120,12 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "500 failed to convert to attributes", http.StatusInternalServerError)
 		return
 	}
+
+	validity := irma.Timestamp(dateOfExpiry)
 	credentialRequest := irma.CredentialRequest{
 		CredentialTypeID: irma.NewCredentialTypeIdentifier(app.Cfg.CredentialID),
 		Attributes:       attributes,
+		Validity:         &validity,
 	}
 
 	issuanceRequest := irma.NewIssuanceRequest([]*irma.CredentialRequest{&credentialRequest})
