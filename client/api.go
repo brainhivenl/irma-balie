@@ -76,6 +76,11 @@ func (app *App) handleReinsert(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
+	if !app.getStatus().IsOK() {
+		http.Error(w, "425 not ready", http.StatusTooEarly)
+		return
+	}
+
 	resp, err := http.Get(fmt.Sprintf("%s/create", app.Cfg.ServerAddress))
 	if err != nil {
 		log.Printf("failed to create new session: %v", err)
