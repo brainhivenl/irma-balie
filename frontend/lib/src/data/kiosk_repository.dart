@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:irmabalie/src/kiosk/screens/detected.dart';
 import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
+import 'package:irmabalie/src/kiosk/screens/initial.dart';
 import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
 import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
 import 'package:irmabalie/src/kiosk/screens/qr_scan.dart';
@@ -39,6 +40,7 @@ class KioskRepository {
 
   final Map<String, EventUnmarshaller> _eventUnmarshallers = {
     WebsocketConnectedEvent.type: (j) => WebsocketConnectedEvent.fromJson(j),
+    WebsocketNotReadyEvent.type: (j) => WebsocketNotReadyEvent.fromJson(j),
     DetectedEvent.type: (j) => DetectedEvent.fromJson(j),
     ReinsertEvent.type: (j) => ReinsertEvent.fromJson(j),
     SessionCreatedEvent.type: (j) => SessionCreatedEvent.fromJson(j),
@@ -79,6 +81,9 @@ class KioskRepository {
     }
 
     if (_websocketChannel != null) {
+      try {
+        _websocketChannel.sink.close(1, "");
+      } catch(e) {}
       // wait a little while before we retry
       await Future.delayed(Duration(seconds: 3));
     }
@@ -166,17 +171,25 @@ class KioskRepository {
         });
       } else if (event is WebsocketConnectedEvent) {
         // only if the UI is loaded (because the UI assumes that it is connected by default)
+        websocketState.setIsConnected(true);
         if (navigatorKey.currentState != null) {
-          websocketState.setIsConnected(true);
           navigatorKey.currentState
-              .popUntil(ModalRoute.withName(Welcome.routeName));
+              .pushNamed(Welcome.routeName);
         }
+      } else if (event is WebsocketNotReadyEvent) {
+        websocketState.setIsConnected(false);
+        if (navigatorKey.currentState != null) {
+          navigatorKey.currentState
+                .popUntil(ModalRoute.withName(Initial.routeName));
+        }
+        Future.delayed(const Duration(milliseconds: 500)).then((_) {
+          _connectWebsocket();
+        });
       } else if (event is WebsocketDisconnectedEvent) {
         // wait for the UI to load before we handle this event
-        if (navigatorKey.currentState != null) {
-          websocketState.setIsConnected(false);
-          navigatorKey.currentState.pushNamed(NoInternet.routeName);
-        }
+        websocketState.setIsConnected(false);
+        navigatorKey.currentState
+            .pushNamed(NoInternet.routeName);
       }
     });
   }

@@ -12,7 +12,11 @@ func statusPollerDaemon(app *App) {
 
 		if !status.IsOK() {
 			app.Broadcaster.Notify(Message{
-				Type: NotReady,
+				Type: TerminateBus,
+			})
+		} else {
+			app.Broadcaster.Notify(Message{
+				Type: Connected,
 			})
 		}
 	}

@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
 import 'package:irmabalie/src/kiosk/screens/detected.dart';
 import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
+import 'package:irmabalie/src/kiosk/screens/initial.dart';
 import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
 import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
 import 'package:irmabalie/src/kiosk/screens/qr_scan.dart';
@@ -56,6 +57,7 @@ class KioskRouting {
     QrScan.routeName: (context) => QrScan(),
     NoTransfer.routeName: (context) => NoTransfer(),
     Transferred.routeName: (context) => Transferred(),
+    Initial.routeName: (context) => Initial(),
     NoInternet.routeName: (context) => NoInternet(),
     ScanFail.routeName: (context) => ScanFail(),
     ScanHelp.routeName: (context) => ScanHelp(),
@@ -131,7 +133,7 @@ class AppState extends State<App> {
               defaultLocalizationsDelegates(const Locale('nl', 'NL')),
           supportedLocales: defaultSupportedLocales(),
           navigatorKey: _navigatorKey,
-          initialRoute: Welcome.routeName,
+          initialRoute: Initial.routeName,
           onGenerateRoute: KioskRouting.generateRoute,
 
           // Set showSemanticsDebugger to true to view semantics in emulator.

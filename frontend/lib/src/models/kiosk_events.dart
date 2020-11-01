@@ -14,6 +14,16 @@ class WebsocketConnectedEvent extends Event {
       _$WebsocketConnectedEventFromJson(json);
 }
 
+@JsonSerializable(createToJson: false)
+class WebsocketNotReadyEvent extends Event {
+  WebsocketNotReadyEvent();
+
+  static String type = "not-ready";
+
+  factory WebsocketNotReadyEvent.fromJson(Map<String, dynamic> json) =>
+      _$WebsocketNotReadyEventFromJson(json);
+}
+
 class WebsocketDisconnectedEvent extends Event {}
 
 @JsonSerializable(createToJson: false)

@@ -504,6 +504,11 @@
       "bullet2": "• Geef de volgende code door: ",
       "bullet2_bold": "Leiden-09"
     },
+    "initial": {
+      "title": "Balie aan het opstarten",
+      "header": "Opstarten",
+      "body": "De balie is aan het opstarten. Een moment geduld a.u.b."
+    },
     "scan_fail": {
       "title": "Scannen niet gelukt",
       "body": "Helaas, het is niet gelukt om je identiteitsdocument te scannen.\nHaal je document uit de gleuf en kies ‘Probeer opnieuw’.",

@@ -11,6 +11,11 @@ WebsocketConnectedEvent _$WebsocketConnectedEventFromJson(
   return WebsocketConnectedEvent();
 }
 
+WebsocketNotReadyEvent _$WebsocketNotReadyEventFromJson(
+    Map<String, dynamic> json) {
+  return WebsocketNotReadyEvent();
+}
+
 DetectedEvent _$DetectedEventFromJson(Map<String, dynamic> json) {
   return DetectedEvent();
 }
