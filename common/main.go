@@ -137,6 +137,7 @@ func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]st
 	}
 
 	result := map[string]string{
+		"kind":           up.DocumentCode,
 		"dateofexpiry":   up.DateOfExpiry,
 		"assurancelevel": "Substantial",
 		"documentnumber": up.DocumentNumber,

@@ -14,10 +14,6 @@ func statusPollerDaemon(app *App) {
 			app.Broadcaster.Notify(Message{
 				Type: TerminateBus,
 			})
-		} else {
-			app.Broadcaster.Notify(Message{
-				Type: Connected,
-			})
 		}
 	}
 }

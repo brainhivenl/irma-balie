@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:irmabalie/src/kiosk/screens/detected.dart';
@@ -53,6 +54,7 @@ class KioskRepository {
   final _eventSubject = PublishSubject<Event>();
 
   WebSocketChannel _websocketChannel;
+  StreamSubscription _websocketSubscription;
 
   KioskRepository._internal() {
     _hostBase = "localhost:8080";
@@ -67,8 +69,11 @@ class KioskRepository {
       print("Loading IRMA session details from client");
       final result = await http.get(
           Uri.parse('${_hostSecure ? 'https' : 'http'}://$_hostBase/submit'));
-      print(result.body);
-      dispatch(IrmaSessionReceivedEvent(data: result.body));
+      if (result.statusCode == 200) {
+        dispatch(IrmaSessionReceivedEvent(data: result.body));
+      } else {
+        dispatch(IrmaSessionSubmitFailedEvent());
+      }
     } catch (e) {
       dispatch(IrmaSessionSubmitFailedEvent());
     }
@@ -80,21 +85,23 @@ class KioskRepository {
       dispatch(WebsocketDisconnectedEvent());
     }
 
+    final connectionString =
+        '${_hostSecure ? 'wss' : 'ws'}://$_hostBase/socket';
+    print("Attempting websocket connection with '$connectionString'...");
     if (_websocketChannel != null) {
       try {
         _websocketChannel.sink.close(1, "");
+        _websocketSubscription.cancel();
       } catch(e) {}
       // wait a little while before we retry
       await Future.delayed(Duration(seconds: 3));
     }
-    final connectionString =
-        '${_hostSecure ? 'wss' : 'ws'}://$_hostBase/socket';
-    print("Attempting websocket connection with '$connectionString'...");
+
     _websocketChannel = WebSocketChannel.connect(Uri.parse(connectionString));
-    _websocketChannel.stream.listen(_processWebsocketMessage,
+    _websocketSubscription = _websocketChannel.stream.listen(_processWebsocketMessage,
         onDone: _connectWebsocket,
         onError: _processWebsocketError,
-        cancelOnError: true);
+        cancelOnError: false);
   }
 
   Future<void> _processWebsocketError(dynamic error) async {
@@ -161,6 +168,8 @@ class KioskRepository {
         navigatorKey.currentState.pushNamed(Scanning.routeName);
       } else if (event is DetectedEvent) {
         navigatorKey.currentState.pushNamed(Detected.routeName);
+      } else if (event is IrmaSessionSubmitFailedEvent) {
+        navigatorKey.currentState.pushNamed(NoTransfer.routeName);
       } else if (event is ReinsertEvent) {
         navigatorKey.currentState.pushNamed(ScanFail.routeName);
       } else if (event is ScannedEvent) {
@@ -172,9 +181,15 @@ class KioskRepository {
       } else if (event is WebsocketConnectedEvent) {
         // only if the UI is loaded (because the UI assumes that it is connected by default)
         websocketState.setIsConnected(true);
+        debugPrint("Connected");
         if (navigatorKey.currentState != null) {
           navigatorKey.currentState
               .pushNamed(Welcome.routeName);
+        } else {
+          Future.delayed(const Duration(milliseconds: 500)).then((_) {
+            navigatorKey.currentState
+              .pushNamed(Welcome.routeName);
+          });
         }
       } else if (event is WebsocketNotReadyEvent) {
         websocketState.setIsConnected(false);
@@ -188,8 +203,10 @@ class KioskRepository {
       } else if (event is WebsocketDisconnectedEvent) {
         // wait for the UI to load before we handle this event
         websocketState.setIsConnected(false);
-        navigatorKey.currentState
-            .pushNamed(NoInternet.routeName);
+        if (navigatorKey.currentState != null) {
+          navigatorKey.currentState
+              .pushNamed(NoInternet.routeName);
+        }
       }
     });
   }

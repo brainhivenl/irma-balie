@@ -122,8 +122,18 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	validity := irma.Timestamp(dateOfExpiry)
+	var credentialID *string
+	if up.DocumentCode == "P" {
+		credentialID = &app.Cfg.PassportCredentialID
+	} else if up.DocumentCode == "I" {
+		credentialID = &app.Cfg.IdcardCredentialID
+	} else {
+		log.Println("failed to convert DocumentCode")
+		http.Error(w, "500 failed to convert DocumentCode", http.StatusInternalServerError)
+		return
+	}
 	credentialRequest := irma.CredentialRequest{
-		CredentialTypeID: irma.NewCredentialTypeIdentifier(app.Cfg.CredentialID),
+		CredentialTypeID: irma.NewCredentialTypeIdentifier(*credentialID),
 		Attributes:       attributes,
 		Validity:         &validity,
 	}

@@ -19,6 +19,7 @@ services:
       - "--schemes-path=/app/.docker-irma-configuration"
       - "--schemes-assets-path=/app/irma-config"
       - "--schemes-update=0"
+      - "--jwt-privkey-file=/app/irma-config/jwt_privkey.dev.pem"
       - "--url=${IRMA_URL}"
 
   nginx:
@@ -60,7 +61,8 @@ services:
       BALIE_SERVER_IRMASERVER: http://irma:8088
       BALIE_SERVER_JWTSECRET: foo
       BALIE_SERVER_MRTDUNPACK: ../mrtd-unpack/run.dev.sh
-      BALIE_SERVER_CREDENTIALID: "tweedegolf-demo.amsterdam.travelDocument"
+      BALIE_SERVER_PASSPORTCREDENTIALID: "tweedegolf-demo.amsterdam.passport"
+      BALIE_SERVER_IDCARDCREDENTIALID: "tweedegolf-demo.amsterdam.idcard"
       TZ: Europe/Amsterdam
     expose: [8081]
 

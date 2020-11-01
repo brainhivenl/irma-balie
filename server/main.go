@@ -14,12 +14,13 @@ import (
 )
 
 type Configuration struct {
-	ListenAddress string
-	IrmaServer    string
-	JwtSecret     string
-	MrtdUnpack    string
-	CredentialID  string
-	DebugMode     bool
+	ListenAddress        string
+	IrmaServer           string
+	JwtSecret            string
+	MrtdUnpack           string
+	PassportCredentialID string
+	IdcardCredentialID   string
+	DebugMode            bool
 }
 
 type App struct {
@@ -45,8 +46,11 @@ func main() {
 	if cfg.JwtSecret == "" {
 		panic("option required: BALIE_SERVER_JWTSECRET")
 	}
-	if cfg.CredentialID == "" {
-		panic("option required: BALIE_SERVER_CREDENTIALID")
+	if cfg.PassportCredentialID == "" {
+		panic("option required: BALIE_SERVER_PASSPORTCREDENTIALID")
+	}
+	if cfg.IdcardCredentialID == "" {
+		panic("option required: BALIE_SERVER_IDCARDCREDENTIALID")
 	}
 
 	if err := common.TestMrtd(cfg.MrtdUnpack); err != nil {
