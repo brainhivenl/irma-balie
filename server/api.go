@@ -170,7 +170,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, response)
 }
 
-func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
+func (app App) handleSession(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "400 could not get bytes", http.StatusBadRequest)

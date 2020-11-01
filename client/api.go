@@ -228,11 +228,6 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
-	msgPipe := make(chan Message, 2)
-
-	app.Broadcaster.Subscribe(msgPipe)
-	defer app.Broadcaster.Unsubscribe(msgPipe)
-
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("failed to upgrade session status connection:", err)
@@ -248,6 +243,10 @@ func (app App) handleSocket(w http.ResponseWriter, r *http.Request) {
 		log.Println("failed to send connected message", err)
 		return
 	}
+
+	msgPipe := make(chan Message, 2)
+	app.Broadcaster.Subscribe(msgPipe)
+	defer app.Broadcaster.Unsubscribe(msgPipe)
 
 	waitDuration := 100 * time.Millisecond
 	ticker := time.NewTicker(waitDuration)

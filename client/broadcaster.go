@@ -8,6 +8,9 @@ import (
 type MessageType string
 
 const (
+	// NotReady indicates to the frontend that a websocket connection is established, but that other processes have not yet finished booting.
+	NotReady = "not-ready"
+
 	// Connected indicates to the frontend that a websocket connection is established.
 	Connected = "connected"
 
