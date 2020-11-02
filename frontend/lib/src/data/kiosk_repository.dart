@@ -89,12 +89,14 @@ class KioskRepository {
         '${_hostSecure ? 'wss' : 'ws'}://$_hostBase/socket';
     print("Attempting websocket connection with '$connectionString'...");
     if (_websocketChannel != null) {
-      try {
-        _websocketChannel.sink.close(1, "");
-        _websocketSubscription.cancel();
-      } catch(e) {}
       // wait a little while before we retry
       await Future.delayed(Duration(seconds: 3));
+    }
+
+    if (_websocketChannel != null) {
+      try {
+        _websocketSubscription.cancel();
+      } catch(e) {}
     }
 
     _websocketChannel = WebSocketChannel.connect(Uri.parse(connectionString));
@@ -106,7 +108,6 @@ class KioskRepository {
 
   Future<void> _processWebsocketError(dynamic error) async {
     print("Websocket connection error: $error");
-    await _connectWebsocket();
   }
 
   void _processWebsocketMessage(dynamic json) {
@@ -197,9 +198,6 @@ class KioskRepository {
           navigatorKey.currentState
                 .popUntil(ModalRoute.withName(Initial.routeName));
         }
-        Future.delayed(const Duration(milliseconds: 500)).then((_) {
-          _connectWebsocket();
-        });
       } else if (event is WebsocketDisconnectedEvent) {
         // wait for the UI to load before we handle this event
         websocketState.setIsConnected(false);
