@@ -132,6 +132,8 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "500 failed to convert DocumentCode", http.StatusInternalServerError)
 		return
 	}
+
+	common.StripCredentialAttributes(&attributes)
 	credentialRequest := irma.CredentialRequest{
 		CredentialTypeID: irma.NewCredentialTypeIdentifier(*credentialID),
 		Attributes:       attributes,

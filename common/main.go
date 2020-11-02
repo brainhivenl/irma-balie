@@ -157,3 +157,9 @@ func (up UnpackedPrototype) ToCredentialAttributes(now time.Time) (map[string]st
 
 	return result, nil
 }
+
+// StripCredentialAttributes removes attributes that are not actually defined in the IRMA credential.
+func StripCredentialAttributes(attrs *map[string]string) {
+	delete(*attrs, "kind")
+	delete(*attrs, "dateofexpiry")
+}
