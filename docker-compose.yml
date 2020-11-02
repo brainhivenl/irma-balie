@@ -4,12 +4,14 @@ services:
     build:
       dockerfile: './irmago.Dockerfile'
       context: 'docker'
-    expose: [8088]
+    expose: [8088, 8089]
     environment:
       TZ: Europe/Amsterdam
     networks:
       - default
-    ports: ["0.0.0.0:8088:8088"]
+    ports:
+      - "0.0.0.0:8088:8088"
+      - "0.0.0.0:8089:8089"
     volumes:
       - ".:/app"
     command:
@@ -19,8 +21,14 @@ services:
       - "--schemes-path=/app/.docker-irma-configuration"
       - "--schemes-assets-path=/app/irma-config"
       - "--schemes-update=0"
+      - "--port=8088"
+      - "--client-port=8089"
+      - "--config=/app/irma-config/config.json"
       - "--jwt-privkey-file=/app/irma-config/jwt_privkey.dev.pem"
       - "--url=${IRMA_URL}"
+      - "--no-email"
+      - "--no-tls"
+      - "--no-auth"
 
   nginx:
     image: nginx:1.19
