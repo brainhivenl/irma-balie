@@ -47,11 +47,13 @@ popd > /dev/null
 echo "-- Building frontend"
 pushd frontend > /dev/null
 rm -rf build
-flutter build bundle
-pushd build/flutter_assets/ > /dev/null
-tar -cf ../../../dist/frontend.tar *
+bin/build.sh --release --clean
+pushd build/ > /dev/null
+tar -cf ../../dist/frontend.tar app.so
+pushd flutter_assets/ > /dev/null
+tar -rf ../../../dist/frontend.tar *
 popd > /dev/null
-tar -rf ../dist/frontend.tar app.so
+popd > /dev/null
 popd > /dev/null
 
 echo "-- Compressing artifacts"
