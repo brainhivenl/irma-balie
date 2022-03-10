@@ -51,12 +51,12 @@ class IrmaDialog extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   FlutterI18n.translate(context, title),
-                                  style: IrmaTheme.of(context).textTheme.display2,
+                                  style: IrmaTheme.of(context).textTheme.headline3,
                                 ),
                                 SizedBox(height: IrmaTheme.of(context).tinySpacing),
                                 Text(
                                   FlutterI18n.translate(context, content),
-                                  style: IrmaTheme.of(context).textTheme.body1,
+                                  style: IrmaTheme.of(context).textTheme.bodyText2,
                                 ),
                                 if (image != null) ...[
                                   SizedBox(height: IrmaTheme.of(context).defaultSpacing),

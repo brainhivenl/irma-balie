@@ -85,7 +85,7 @@ class IrmaCard extends StatelessWidget {
                           ? IrmaTheme.of(context).subheadLarge.copyWith(
                                 color: cardTheme.foregroundColor,
                               )
-                          : Theme.of(context).textTheme.subhead.copyWith(
+                          : Theme.of(context).textTheme.subtitle1.copyWith(
                                 color: cardTheme.foregroundColor,
                               ),
                     ),
