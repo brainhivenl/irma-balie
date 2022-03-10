@@ -96,7 +96,7 @@ class IrmaThemeData extends Equatable {
       // display4 is used for extremely large text
       //
       // md2018: headline1
-      display4: TextStyle(
+      headline1: TextStyle(
         fontFamily: fontFamilyKarla,
         fontSize: 18.0,
         height: 28.0 / 18.0,
@@ -107,7 +107,7 @@ class IrmaThemeData extends Equatable {
       // display3 is used for very, very large text
       //
       // md2018: headline2
-      display3: TextStyle(
+      headline2: TextStyle(
         fontFamily: fontFamilyKarla,
         fontSize: 24.0,
         height: 28.0 / 24.0,
@@ -118,7 +118,7 @@ class IrmaThemeData extends Equatable {
       // display2 is used for very large text
       //
       // md2018: headline3
-      display2: TextStyle(
+      headline3: TextStyle(
         fontFamily: fontFamilyKarla,
         fontSize: 18.0,
         height: 24.0 / 18.0,
@@ -129,7 +129,7 @@ class IrmaThemeData extends Equatable {
       // display1 is used for large text
       //
       // md2018: headline4
-      display1: TextStyle(
+      headline4: TextStyle(
         fontFamily: fontFamilyKarla,
         fontSize: 16.0,
         height: 24.0 / 16.0,
@@ -142,7 +142,7 @@ class IrmaThemeData extends Equatable {
       // body2 is used for emphasizing text that would otherwise be body1
       //
       // md2018: body1
-      body2: TextStyle(
+      bodyText1: TextStyle(
         fontFamily: fontFamilyMontserrat,
         fontSize: 16.0,
         height: 24.0 / 16.0,
@@ -154,7 +154,7 @@ class IrmaThemeData extends Equatable {
       // body1 is the default text style
       //
       // md2018: body2
-      body1: TextStyle(
+      bodyText2: TextStyle(
         fontFamily: fontFamilyMontserrat,
         fontSize: 16.0,
         height: 24.0 / 16.0,
@@ -167,7 +167,7 @@ class IrmaThemeData extends Equatable {
       // headline is used for large text in dialogs
       //
       // md2018: headline5
-      headline: TextStyle(
+      headline5: TextStyle(
         // TODO: Misisng in designs
         fontFamily: fontFamilyKarla,
         fontSize: 24.0,
@@ -179,7 +179,7 @@ class IrmaThemeData extends Equatable {
       // title is used for the primary text in app bars and dialogs
       //
       // md2018: headline6
-      title: TextStyle(
+      headline6: TextStyle(
         fontFamily: fontFamilyKarla,
         fontSize: 18.0,
         height: 28.0 / 18.0,
@@ -191,7 +191,7 @@ class IrmaThemeData extends Equatable {
       // also used in textfield inputs' text style
       //
       // md2018: subtitle1
-      subhead: TextStyle(
+      subtitle1: TextStyle(
         fontFamily: fontFamilyMontserrat,
         fontSize: 18.0,
         height: 22.0 / 18.0,
@@ -202,7 +202,7 @@ class IrmaThemeData extends Equatable {
       // subtitle is used for medium emphasis text that's a little smaller than subhead.
       //
       // md2018: subtitle2
-      subtitle: TextStyle(
+      subtitle2: TextStyle(
         fontFamily: fontFamilyMontserrat,
         fontSize: 16.0,
         height: 22.0 / 16.0,
@@ -453,7 +453,7 @@ class IrmaThemeData extends Equatable {
               width: 1.0,
             ),
           ),
-          errorStyle: textTheme.body1.copyWith(color: interactionInvalid),
+          errorStyle: textTheme.bodyText2.copyWith(color: interactionInvalid),
         ));
   }
 

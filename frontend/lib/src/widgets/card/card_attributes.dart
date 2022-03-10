@@ -83,7 +83,7 @@ class CardAttributes extends StatelessWidget {
                               ..._buildAttributes(
                                 context,
                                 body1Theme.copyWith(fontSize: largeFonts ? 24 : 14),
-                                IrmaTheme.of(context).textTheme.body2.copyWith(
+                                IrmaTheme.of(context).textTheme.bodyText1.copyWith(
                                       color: irmaCardTheme.foregroundColor,
                                       fontSize: largeFonts ? 24 : 16,
                                     ),
