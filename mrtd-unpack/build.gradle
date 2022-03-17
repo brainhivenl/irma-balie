@@ -30,4 +30,8 @@ jar {
     }
 }
 
+application {
+    mainClass = 'mrtdunpack.App'
+}
+
 mainClassName = 'mrtdunpack.App'
