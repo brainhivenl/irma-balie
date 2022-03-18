@@ -4,8 +4,6 @@ ENTRYPOINT []
 
 WORKDIR /root
 
-#RUN go get -u github.com/canthefason/go-watcher/cmd/watcher
-
 RUN set -eux; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y; \
@@ -31,7 +29,7 @@ WORKDIR /go/src/app/server
 RUN go build .
 
 WORKDIR /go/src/app/mrtd-unpack
-RUN ./run.dev.sh version
+# RUN ./run.dev.sh version
 RUN gradle installDist
 
 
@@ -41,13 +39,12 @@ FROM openjdk:11-jre-slim
 ENV BALIE_SERVER_DEBUGMODE="true"
 ENV BALIE_SERVER_IRMASERVER=http://irma:8088
 ENV BALIE_SERVER_JWTSECRET=foo
-ENV BALIE_SERVER_MRTDUNPACK=mrtdunpack
+ENV BALIE_SERVER_MRTDUNPACK=/opt/mrtdunpack/bin/mrtdunpack
 ENV BALIE_SERVER_PASSPORTCREDENTIALID="tweedegolf-demo.amsterdam.passport"
 ENV BALIE_SERVER_IDCARDCREDENTIALID="tweedegolf-demo.amsterdam.idcard"
 
 COPY --from=build /go/src/app/server/server /root/server
-COPY --from=build /go/src/app/mrtd-unpack/build/install/mrtdunpack/bin /usr/local/bin
-COPY --from=build /go/src/app/mrtd-unpack/build/install/mrtdunpack/lib /usr/local/lib
+COPY --from=build /go/src/app/mrtd-unpack/build/install/mrtdunpack /opt/mrtdunpack
 
 WORKDIR /root
 CMD ["./server"]
