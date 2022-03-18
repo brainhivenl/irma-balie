@@ -1,7 +1,5 @@
 FROM golang:latest AS build
 
-ENTRYPOINT []
-
 WORKDIR /root
 
 RUN set -eux; \
@@ -24,27 +22,23 @@ ENV HOME=/root \
     GRADLE_HOME=/root/.gradle \
     PATH="/opt/gradle/gradle-6.6.1/bin:${PATH}"
 
-COPY . /go/src/app
-WORKDIR /go/src/app/server
-RUN go build .
-
+COPY mrtd-unpack /go/src/app/mrtd-unpack
 WORKDIR /go/src/app/mrtd-unpack
-# RUN ./run.dev.sh version
 RUN gradle installDist
 
+COPY go.mod go.sum /go/src/app/
+COPY common /go/src/app/common
+COPY balie-server /go/src/app/balie-server
+WORKDIR /go/src/app/balie-server
+RUN go build .
 
-# FROM golang:latest
-FROM openjdk:11-jre-slim
 
-ENV BALIE_SERVER_DEBUGMODE="true"
-ENV BALIE_SERVER_IRMASERVER=http://irma:8088
-ENV BALIE_SERVER_JWTSECRET=foo
-ENV BALIE_SERVER_MRTDUNPACK=/opt/mrtdunpack/bin/mrtdunpack
-ENV BALIE_SERVER_PASSPORTCREDENTIALID="tweedegolf-demo.amsterdam.passport"
-ENV BALIE_SERVER_IDCARDCREDENTIALID="tweedegolf-demo.amsterdam.idcard"
+FROM openjdk:11-jre-slim AS release
 
-COPY --from=build /go/src/app/server/server /root/server
 COPY --from=build /go/src/app/mrtd-unpack/build/install/mrtdunpack /opt/mrtdunpack
+ENV BALIE_SERVER_MRTDUNPACK=/opt/mrtdunpack/bin/mrtdunpack
+
+COPY --from=build /go/src/app/balie-server/balie-server /root/balie-server
 
 WORKDIR /root
-CMD ["./server"]
+CMD ["./balie-server"]

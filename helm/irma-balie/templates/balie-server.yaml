@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balie-server
+  labels:
+    {{- include "irmaBalie.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: balie-server
+  template:
+    metadata:
+      labels:
+        app: balie-server
+    spec:
+      # securityContext:
+      #   runAsUser: 1001 # TODO: enable
+      containers:
+        - name: balie-server
+          image: {{$.Values.imageBalieServer}}
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 800m
+          env:
+            - name: BALIE_SERVER_DEBUGMODE
+              value: "{{$.Values.balieServer.debugMode}}"
+            - name: BALIE_SERVER_LISTENADDRESS
+              value: ":8080"
+            - name: BALIE_SERVER_IRMASERVER
+              value: http://irma-server-internal:80
+            - name: BALIE_SERVER_JWTSECRET
+              value: TODO
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: secretName
+              #     key: username
+            - name: BALIE_SERVER_PASSPORTCREDENTIALID
+              value: "tweedegolf-demo.amsterdam.passport"
+            - name: BALIE_SERVER_IDCARDCREDENTIALID
+              value: "tweedegolf-demo.amsterdam.idcard"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 1
+      imagePullSecrets:
+      - name: gitlab-regcred
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: balie-server
+spec:
+  type: ClusterIP
+  selector:
+    app: balie-server
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080

@@ -225,6 +225,9 @@ func (app App) handleSession(w http.ResponseWriter, r *http.Request) {
 func (app App) getUpstreamStatus() bool {
 	transport := irma.NewHTTPTransport(app.Cfg.IrmaServer, false)
 	_, err := transport.GetBytes("publickey")
+	if err != nil {
+		log.Printf("getbytes pubkey: %v\n", err)
+	}
 
 	return err == nil
 }
@@ -252,4 +255,11 @@ func (app App) handleStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(responseJSON)
+}
+
+func (app App) handleHealth(w http.ResponseWriter, r *http.Request) {
+	r.Body.Close()
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
+	return
 }
