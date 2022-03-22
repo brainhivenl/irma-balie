@@ -127,3 +127,39 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8089
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: irma-server
+spec:
+  secretName: tls-cert-irma-server
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - irma-server.{{ .Values.env }}.company.stack11.net
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: irma-server
+spec:
+  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  tlsSecret:
+    name: tls-cert-irma-server
+  requestPolicy:
+    insecure:
+      action: Route
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: irma-server
+spec:
+  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  prefix: /
+  service: irma-server-public

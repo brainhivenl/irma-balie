@@ -82,3 +82,39 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8080
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: balie-server
+spec:
+  secretName: tls-cert-balie-server
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - balie-server.{{ .Values.env }}.company.stack11.net
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: balie-server
+spec:
+  hostname: balie-server.{{ .Values.env }}.company.stack11.net
+  tlsSecret:
+    name: tls-cert-balie-server
+  requestPolicy:
+    insecure:
+      action: Route
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: balie-server
+spec:
+  hostname: balie-server.{{ .Values.env }}.company.stack11.net
+  prefix: /
+  service: balie-server
