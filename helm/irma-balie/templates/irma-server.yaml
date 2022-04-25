@@ -60,7 +60,7 @@ spec:
             "--email",       "hello@stack11.io",
             "--no-auth",     "true",
             "--issue-perms", "*",
-            "--url",         "https://irma-server.{{$.Values.env}}.company.stack11.net",
+            "--url",         "https://irma-server.{{$.Values.env}}.company.gcp.stack11.net",
             "--schemes-assets-path", "/root/irma-assets",
             "--jwt-privkey-file", "/root/jwt/jwt_privkey"
           ]
@@ -137,17 +137,19 @@ spec:
   secretName: tls-cert-irma-server
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-prod
+    name: letsencrypt-prod-dns
   dnsNames:
-    - irma-server.{{ .Values.env }}.company.stack11.net
+    - irma-server.{{ .Values.env }}.company.gcp.stack11.net
 
 ---
 apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: irma-server
+  annotations:
+    external-dns.ambassador-service: emissary/emissary-ingress
 spec:
-  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  hostname: irma-server.{{ .Values.env }}.company.gcp.stack11.net
   tlsSecret:
     name: tls-cert-irma-server
   requestPolicy:
@@ -160,6 +162,6 @@ kind: Mapping
 metadata:
   name: irma-server
 spec:
-  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  hostname: irma-server.{{ .Values.env }}.company.gcp.stack11.net
   prefix: /
   service: irma-server-public
