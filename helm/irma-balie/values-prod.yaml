@@ -1,0 +1,7 @@
+env: test
+
+balieServer:
+  debugMode: "false"
+
+irmaServer:
+  production: true

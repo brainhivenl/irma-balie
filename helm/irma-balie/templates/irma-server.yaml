@@ -1,0 +1,165 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: irma-server
+  labels:
+    {{- include "irmaBalie.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: irma-server
+  template:
+    metadata:
+      labels:
+        app: irma-server
+    spec:
+      # securityContext:
+      #   runAsUser: 1001 # TODO
+      initContainers:
+        - name: copy-privkeys
+          image: alpine:latest
+          command: ["cp"]
+          args: [
+            "/privkeys-secret/0.xml",
+            "/privkeys-secret/1.xml",
+            "/privkeys"
+          ]
+          volumeMounts:
+            - name: pilot-amsterdam-privkeys-secret
+              mountPath: /privkeys-secret
+              readOnly: true
+            - name: pilot-amsterdam-privkeys
+              mountPath: /privkeys
+      containers:
+        - name: irma-server
+          image: {{$.Values.imageIrmaServer}}
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 800m
+          env: []
+          command: ["irma"]
+          args: [
+            "server",
+            "--port",        "8088",
+            "--client-port", "8089",
+            "--verbose",
+            "--production",
+            "--email",       "hello@stack11.io",
+            "--no-auth",     "true",
+            "--issue-perms", "*",
+            "--url",         "https://irma-server.{{$.Values.env}}.company.stack11.net",
+            "--schemes-assets-path", "/root/irma-assets",
+            "--jwt-privkey-file", "/root/jwt/jwt_privkey"
+          ]
+          volumeMounts:
+            - name: jwt
+              mountPath: /root/jwt
+              readOnly: true
+            - name: pilot-amsterdam-privkeys
+              mountPath: /root/irma-assets/pbdf/pilot-amsterdam/PrivateKeys
+              readOnly: true
+          ports:
+            - name: http
+              containerPort: 8080
+          # readinessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 8080
+          #   initialDelaySeconds: 1
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 8080
+          #   initialDelaySeconds: 1
+
+      imagePullSecrets:
+        - name: gitlab-regcred
+      volumes:
+        - name: jwt
+          secret:
+            secretName: irma-server-jwt
+        - name: pilot-amsterdam-privkeys
+          emptyDir: {}
+        - name: pilot-amsterdam-privkeys-secret
+          secret:
+            secretName: irma-server-pilot-amsterdam-privkeys
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: irma-server-internal
+spec:
+  type: ClusterIP
+  selector:
+    app: irma-server
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8088
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: irma-server-public
+spec:
+  type: ClusterIP
+  selector:
+    app: irma-server
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8089
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: irma-server
+spec:
+  secretName: tls-cert-irma-server
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - irma-server.{{ .Values.env }}.company.stack11.net
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Host
+metadata:
+  name: irma-server
+spec:
+  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  tlsSecret:
+    name: tls-cert-irma-server
+  requestPolicy:
+    insecure:
+      action: Route
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: irma-server
+spec:
+  hostname: irma-server.{{ .Values.env }}.company.stack11.net
+  prefix: /
+  service: irma-server-public
