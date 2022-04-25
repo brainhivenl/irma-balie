@@ -199,15 +199,18 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Post(fmt.Sprintf("%s/submit", app.Cfg.ServerAddress), "application/json", bytes.NewBuffer(marshalledRequest))
 	if err != nil {
+		log.Printf("failed to submit: %s", err)
 		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Printf("failed to read response body: %s", err)
 		http.Error(w, "503 upstream problem", http.StatusServiceUnavailable)
 		return
 	}
 	if resp.StatusCode != 200 {
+		log.Printf("received non-200 response from server (%s): %s", resp.Status, string(bodyBytes))
 		http.Error(w, string(bodyBytes), http.StatusServiceUnavailable)
 		return
 	}
@@ -218,7 +221,6 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	parser := jwt.Parser{}
 	// We do not need to verify the claim; we will pass the original JWT back to the server.
 	issuanceSession, _, err := parser.ParseUnverified(sessionJwt, &common.IssuanceClaims{})
-
 	if err != nil {
 		log.Printf("failed to parse issuanceSession JWT: %s", err)
 		http.Error(w, "500 failed to parse issuance session", http.StatusInternalServerError)
@@ -230,6 +232,7 @@ func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	})
 
 	io.WriteString(w, string(issuanceSession.Claims.(*common.IssuanceClaims).SessionPtr))
+	log.Printf("Successfully handled submit request")
 }
 
 func (app App) getUpstreamStatus() bool {

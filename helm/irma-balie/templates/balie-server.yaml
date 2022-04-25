@@ -40,17 +40,17 @@ spec:
             - name: BALIE_SERVER_LISTENADDRESS
               value: ":8080"
             - name: BALIE_SERVER_IRMASERVER
-              value: http://irma-server-internal:80
+              value: http://irma-server-internal
             - name: BALIE_SERVER_JWTSECRET
-              value: TODO
+              value: 2eEaV5z1oNQMqxobuvTrkAo
               # valueFrom:
               #   secretKeyRef:
               #     name: secretName
               #     key: username
             - name: BALIE_SERVER_PASSPORTCREDENTIALID
-              value: "tweedegolf-demo.amsterdam.passport"
+              value: "pbdf.pilot-amsterdam.passport"
             - name: BALIE_SERVER_IDCARDCREDENTIALID
-              value: "tweedegolf-demo.amsterdam.idcard"
+              value: "pbdf.pilot-amsterdam.idcard"
           ports:
             - name: http
               containerPort: 8080
@@ -118,3 +118,4 @@ spec:
   hostname: balie-server.{{ .Values.env }}.company.stack11.net
   prefix: /
   service: balie-server
+  timeout_ms: 30000 # 30 seconds

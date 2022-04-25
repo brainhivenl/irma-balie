@@ -29,7 +29,7 @@ spec:
           command: ["cp"]
           args: [
             "/privkeys-secret/0.xml",
-            # "/privkeys-secret/1.xml", # TODO: enable when new key has been merged by pdbf-schememanager (Sietse)
+            "/privkeys-secret/1.xml",
             "/privkeys"
           ]
           volumeMounts:
@@ -56,7 +56,7 @@ spec:
             "--port",        "8088",
             "--client-port", "8089",
             "--verbose",
-            {{if $.Values.irmaServer.production}}"--production",{{end}}
+            "--production",
             "--email",       "hello@stack11.io",
             "--no-auth",     "true",
             "--issue-perms", "*",
