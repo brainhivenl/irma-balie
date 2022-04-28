@@ -22,28 +22,21 @@ ENV HOME=/root \
     GRADLE_HOME=/root/.gradle \
     PATH="/opt/gradle/gradle-6.6.1/bin:${PATH}"
 
-COPY mrtd-unpack /go/src/app/mrtd-unpack
-WORKDIR /go/src/app/mrtd-unpack
+COPY mrtd-scanner /go/src/app/mrtd-scanner
+WORKDIR /go/src/app/mrtd-scanner
 RUN gradle installDist
-
-COPY go.mod go.sum /go/src/app/
-COPY common /go/src/app/common
-COPY balie-server /go/src/app/balie-server
-WORKDIR /go/src/app/balie-server
-RUN go build .
 
 
 FROM openjdk:11-jre-slim AS release
 
-# Install libopenjp2-tools for opj_decompress
-RUN apt-get update && apt-get install -y \
-    libopenjp2-tools \
- && rm -rf /var/lib/apt/lists/*
+COPY --from=build /go/src/app/mrtd-scanner/build/install/mrtdscanner /opt/mrtdscanner
 
-COPY --from=build /go/src/app/mrtd-unpack/build/install/mrtdunpack /opt/mrtdunpack
-ENV BALIE_SERVER_MRTDUNPACK=/opt/mrtdunpack/bin/mrtdunpack
+RUN set -eux; \
+    apt-get update; \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        pcsc-tools \
+    ; \
+    rm -rf /var/lib/apt/lists/*;
 
-COPY --from=build /go/src/app/balie-server/balie-server /root/balie-server
-
-WORKDIR /root
-CMD ["./balie-server"]
+CMD ["/opt/mrtdscanner/bin/mrtdscanner"]

@@ -1,7 +1,7 @@
-env: test
+env: prod
 
 balieServer:
-  debugMode: "false"
+  debugMode: "true" # TODO: needs to be disabled for actual prod use.
 
 irmaServer:
-  production: true
+  production: false # TODO: needs to move to production for actual prod use.

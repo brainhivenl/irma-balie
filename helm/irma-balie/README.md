@@ -41,12 +41,12 @@ kubectl \
     --context ${COMPANY_CONTEXT} \
     --namespace ${IRMA_BALIE_NAMESPACE} \
     create secret generic irma-server-jwt \
-    --from-literal "jwt_privkey=$(op --vault 6tt5i3krs7owek3rva4p3txhvm  get document nk2qwmxw2c3sfblbnncxiytleu)"
+    --from-literal "jwt_privkey=$(op --vault 6tt5i3krs7owek3rva4p3txhvm document get nk2qwmxw2c3sfblbnncxiytleu)"
 
 kubectl \
     --context ${COMPANY_CONTEXT} \
     --namespace ${IRMA_BALIE_NAMESPACE} \
     create secret generic irma-server-pilot-amsterdam-privkeys \
-    --from-literal "0.xml=$(op --vault 6tt5i3krs7owek3rva4p3txhvm  get document 54bt2gicviicifgswkbxtxhp4u)"\
-    --from-literal "1.xml=$(op --vault 6tt5i3krs7owek3rva4p3txhvm  get document hsu62qmcjtakumk7ipphtp343y)"
+    --from-literal "0.xml=$(op --vault 6tt5i3krs7owek3rva4p3txhvm document get 54bt2gicviicifgswkbxtxhp4u)"\
+    --from-literal "1.xml=$(op --vault 6tt5i3krs7owek3rva4p3txhvm document get hsu62qmcjtakumk7ipphtp343y)"
 ```
