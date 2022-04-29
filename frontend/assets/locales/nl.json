@@ -509,6 +509,12 @@
       "header": "Opstarten",
       "body": "De balie is aan het opstarten. Een moment geduld a.u.b."
     },
+    "fingerprint": {
+      "title": "Vingerafdrukverificatiedoorlichting",
+      "header": "",
+      "body": "Medewerker verifieert vingerafdruk.",
+      "button": "Terug of skip ofzo"
+    },
     "scan_fail": {
       "title": "Scannen niet gelukt",
       "body": "Helaas, het is niet gelukt om je identiteitsdocument te scannen.\nHaal je document uit de gleuf en kies ‘Probeer opnieuw’.",

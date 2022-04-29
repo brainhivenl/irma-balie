@@ -32,8 +32,6 @@ class KioskRepository {
   IdState idState = IdState();
   QrState qrState = QrState();
   WebsocketState websocketState = WebsocketState();
-  String _hostBase;
-  bool _hostSecure;
 
   factory KioskRepository() {
     return _instance ??= KioskRepository._internal();
@@ -57,18 +55,23 @@ class KioskRepository {
   StreamSubscription _websocketSubscription;
 
   KioskRepository._internal() {
-    _hostBase = "localhost:8080";
-    _hostSecure = false;
-
     _connectWebsocket();
   }
 
-  Future<void> submitId() async {
+  Future<void> submitId(String otp) async {
     dispatch(IrmaTransferRequestedEvent());
     try {
       print("Loading IRMA session details from client");
-      final result = await http.get(
-          Uri.parse('${_hostSecure ? 'https' : 'http'}://$_hostBase/submit'));
+      final submitUri = Uri(
+        scheme: "http",
+        host: "localhost",
+        port: 8080,
+        path: "/submit",
+        queryParameters: {
+          "otp": otp,
+        },
+      );
+      final result = await http.get(submitUri);
       if (result.statusCode == 200) {
         dispatch(IrmaSessionReceivedEvent(data: result.body));
       } else {
@@ -85,9 +88,14 @@ class KioskRepository {
       dispatch(WebsocketDisconnectedEvent());
     }
 
-    final connectionString =
-        '${_hostSecure ? 'wss' : 'ws'}://$_hostBase/socket';
-    print("Attempting websocket connection with '$connectionString'...");
+    final websocketUri = Uri(
+      scheme: "ws",
+      host: "localhost",
+      port: 8080,
+      path: "/socket",
+    );
+    print(
+        "Attempting websocket connection with '${websocketUri.toString()}'...");
     if (_websocketChannel != null) {
       // wait a little while before we retry
       await Future.delayed(Duration(seconds: 3));
@@ -96,11 +104,12 @@ class KioskRepository {
     if (_websocketChannel != null) {
       try {
         _websocketSubscription.cancel();
-      } catch(e) {}
+      } catch (e) {}
     }
 
-    _websocketChannel = WebSocketChannel.connect(Uri.parse(connectionString));
-    _websocketSubscription = _websocketChannel.stream.listen(_processWebsocketMessage,
+    _websocketChannel = WebSocketChannel.connect(websocketUri);
+    _websocketSubscription = _websocketChannel.stream.listen(
+        _processWebsocketMessage,
         onDone: _connectWebsocket,
         onError: _processWebsocketError,
         cancelOnError: false);
@@ -184,26 +193,23 @@ class KioskRepository {
         websocketState.setIsConnected(true);
         debugPrint("Connected");
         if (navigatorKey.currentState != null) {
-          navigatorKey.currentState
-              .pushNamed(Welcome.routeName);
+          navigatorKey.currentState.pushNamed(Welcome.routeName);
         } else {
           Future.delayed(const Duration(milliseconds: 500)).then((_) {
-            navigatorKey.currentState
-              .pushNamed(Welcome.routeName);
+            navigatorKey.currentState.pushNamed(Welcome.routeName);
           });
         }
       } else if (event is WebsocketNotReadyEvent) {
         websocketState.setIsConnected(false);
         if (navigatorKey.currentState != null) {
           navigatorKey.currentState
-                .popUntil(ModalRoute.withName(Initial.routeName));
+              .popUntil(ModalRoute.withName(Initial.routeName));
         }
       } else if (event is WebsocketDisconnectedEvent) {
         // wait for the UI to load before we handle this event
         websocketState.setIsConnected(false);
         if (navigatorKey.currentState != null) {
-          navigatorKey.currentState
-              .pushNamed(NoInternet.routeName);
+          navigatorKey.currentState.pushNamed(NoInternet.routeName);
         }
       }
     });

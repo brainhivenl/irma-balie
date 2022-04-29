@@ -6,6 +6,7 @@ import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
 import 'package:irmabalie/src/kiosk/screens/detected.dart';
+import 'package:irmabalie/src/kiosk/screens/fingerprint.dart';
 import 'package:irmabalie/src/kiosk/screens/invalid_id.dart';
 import 'package:irmabalie/src/kiosk/screens/initial.dart';
 import 'package:irmabalie/src/kiosk/screens/no_internet.dart';
@@ -64,6 +65,7 @@ class KioskRouting {
     InvalidId.routeName: (context) => InvalidId(),
     Submitting.routeName: (context) => Submitting(),
     TransferInProgress.routeName: (context) => TransferInProgress(),
+    Fingerprint.routeName: (context) => Fingerprint(),
   };
 
   static Route generateRoute(RouteSettings settings) {
@@ -96,6 +98,7 @@ class AppState extends State<App> {
 
   @override
   void initState() {
+    super.initState();
     kioskRepository.handleEvents(_navigatorKey);
   }
 

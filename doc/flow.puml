@@ -1,38 +1,57 @@
 @startuml
-participant passport
-participant scanner
+participant irma_app #lightgray
+actor user
 participant frontend
+entity passport
+entity scanner
 participant client
-participant yubikey
-participant server
-participant revocationlist
-participant irmago
+entity yubikey
+actor trusted_clerk
+participant balie_server
+database revocationlist
+participant irma_server #lightgray
+participant yubico #lightgray
 
-passport->scanner: elo
+
+user->frontend: select 'passport'
+frontend->user: instruct 'insert'
+user->passport: insert
+passport->scanner: NFC presence
 scanner->client: challenge?
-client->server: challenge?
-server->client: JWT(challenge)!
+client->balie_server: challenge?
+client<--balie_server: JWT(challenge)!
 client->scanner: challenge!
 scanner->passport: sign challenge!
-passport->scanner: AA(challenge)
+scanner<--passport: AA(challenge)
 scanner->passport: files?
-passport->scanner: files!
-scanner->client: AA(challenge), files!
+scanner<--passport: files
+client<--scanner: AA(challenge), files!
 client->frontend: unpacked files!
+frontend->user: instruct 'retrieve'
+user->passport: retrieve
+user<--passport: retrieved
+user->frontend: submit!
+frontend->trusted_clerk: instruct 'finger'
+yubikey<--trusted_clerk: finger
+frontend<--yubikey: OTP
 frontend->client: submit!
-client->yubikey: sign AA(challenge)?
-yubikey->yubikey: finger!
-yubikey->client: Sign(AA(challenge))
-client->server: JWT(challenge), AA(challenge), files, Sign(AA(challenge))!
-server->server: is challenge timely?
-server->server: is AA(challenge) correct?
-server->server: are files signed by state?
-server->server: is Sign(AA(challenge)) by employee?
-server->revocationlist: document nr?
-revocationlist->server: document nr OK!
-server->irmago: issue credentials!
-irmago->server: irma session!
-server->client: irma session!
-client->frontend: irma session!
-
+client->balie_server: JWT(challenge), AA(challenge), files, OTP!
+balie_server->yubico: valid OTP?
+balie_server<--yubico: 
+balie_server->balie_server: is challenge timely?
+balie_server->balie_server: is AA(challenge) correct?
+balie_server->balie_server: are files signed by state?
+balie_server->balie_server: is Sign(AA(challenge)) by employee?
+balie_server->revocationlist: document nr?
+balie_server<--revocationlist: document nr OK!
+balie_server->irma_server: issue credentials!
+balie_server<--irma_server: irma session!
+client<--balie_server: irma session!
+frontend<--client: irma session!
+frontend->user: instruct 'scan QR'
+user->irma_app: scan QR
+irma_app->frontend: QR?
+irma_app<--frontend: QR
+irma_app->irma_server: retrieve credentials
+irma_app<--irma_server: credentials
 @enduml
