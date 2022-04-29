@@ -115,6 +115,7 @@ func (app *App) handleCreate(w http.ResponseWriter, r *http.Request) {
 
 func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	if app.State.Challenge == nil {
+		log.Printf("state challenge unset")
 		http.Error(w, "400 state challenge unset", http.StatusBadRequest)
 		return
 	}
@@ -138,6 +139,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 	unpackedPrototype := common.UnpackedPrototype{}
 	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
+		log.Printf("unmarshall failed %v", err)
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
 	}
@@ -146,6 +148,7 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 		if app.Cfg.DebugMode {
 			log.Println("WARNING: scanned document is not valid, but disregarding due to debug mode")
 		} else {
+			log.Println("scanned document is not valid")
 			http.Error(w, "400 invalid document", http.StatusBadRequest)
 			return
 		}
@@ -181,7 +184,8 @@ func (app *App) handleScanned(w http.ResponseWriter, r *http.Request) {
 func (app *App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	state := app.State
 	if state.Challenge == nil || state.ScannedDocument == nil {
-		http.Error(w, "400 state unset", http.StatusBadRequest)
+		log.Printf("missing state")
+		http.Error(w, "400 missing state", http.StatusBadRequest)
 		return
 	}
 

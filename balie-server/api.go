@@ -50,6 +50,7 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		log.Printf("could not get bytes")
 		http.Error(w, "400 could not get bytes", http.StatusBadRequest)
 		return
 	}
@@ -57,6 +58,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	request := common.IssuanceRequest{}
 	err = json.Unmarshal(bodyBytes, &request)
 	if err != nil {
+		log.Printf("failed to unmarshal")
 		http.Error(w, "400 failed to unmarshal", http.StatusBadRequest)
 		return
 	}
@@ -71,8 +73,10 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		if verr, ok := err.(*jwt.ValidationError); ok && verr.Errors == jwt.ValidationErrorExpired {
+			log.Printf("challenge expired")
 			http.Error(w, "403 challenge expired", http.StatusForbidden)
 		} else {
+			log.Printf("challenge not valid")
 			http.Error(w, "403 challenge not valid", http.StatusForbidden)
 		}
 		return
@@ -85,6 +89,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	unpacked, err := common.UnpackMrtd(app.Cfg.MrtdUnpack, mrtdRequest)
 	if err != nil {
+		log.Printf(" unpack failed")
 		http.Error(w, "400 unpack failed", http.StatusBadRequest)
 		return
 	}
@@ -92,6 +97,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	unpackedPrototype := common.UnpackedPrototype{}
 	err = json.Unmarshal([]byte(unpacked), &unpackedPrototype)
 	if err != nil {
+		log.Printf("failed to unmarshall")
 		http.Error(w, "400 failed to unmarshall", http.StatusBadRequest)
 		return
 	}
@@ -100,6 +106,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 		if app.Cfg.DebugMode {
 			log.Println("WARNING: scanned document is not valid, but disregarding due to debug mode")
 		} else {
+			log.Printf("invalid document")
 			http.Error(w, "400 invalid document", http.StatusBadRequest)
 			return
 		}
@@ -110,6 +117,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 
 	dateOfExpiry, err := time.Parse("2006-01-02", up.DateOfExpiry)
 	if err != nil || now.After(dateOfExpiry) {
+		log.Printf("invalid dateofexpiry")
 		http.Error(w, "400 invalid dateofexpiry", http.StatusBadRequest)
 		return
 	}
