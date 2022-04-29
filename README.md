@@ -59,3 +59,5 @@ irma_1    | fatal error: mlock failed
 
 This happens on older kernels, in combination with Docker. However, we have tested that it does not happen on some machines running the exact same kernel.
 A solution might be to use a newer Ubuntu 20.04.
+
+
