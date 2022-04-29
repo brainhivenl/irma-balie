@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:irmabalie/src/data/kiosk_repository.dart';
+import 'package:irmabalie/src/kiosk/screens/fingerprint.dart';
 import 'package:irmabalie/src/kiosk/screens/no_transfer.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/kiosk/screens/transfer/mock.dart';
@@ -130,7 +131,8 @@ class _TransferState extends State<Transfer> {
                                   textStyle: IrmaTheme.of(context)
                                       .kioskButtonTextLarge,
                                   onPressed: () {
-                                    KioskRepository().submitId();
+                                    Navigator.pushNamed(
+                                        context, Fingerprint.routeName);
                                   },
                                 ),
                               )
