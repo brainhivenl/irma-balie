@@ -17,6 +17,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/tweedegolf/irma-balie/common"
+
+	"github.com/GeertJohan/yubigo"
 )
 
 func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +50,23 @@ func (app App) handleCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
+	//  Verify agent presence through One Time Password with a registered Yubikey
+	yubiAuth, err := yubigo.NewYubiAuth("74315", "B+4GHHAOJaubmqfQh60hPl/cGxc=")
+	if err != nil {
+		// probably an invalid key was given
+		log.Fatalln(err)
+	}
+	otp := r.FormValue("otp")
+	result, ok, err := yubiAuth.Verify(otp)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if !ok || !result.IsValidOTP() {
+		log.Printf("failed to verify OTP")
+		http.Error(w, "403 failed to verify OTP", http.StatusBadRequest)
+		return
+	}
+
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("could not get bytes")

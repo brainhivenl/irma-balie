@@ -3,6 +3,7 @@ module github.com/tweedegolf/irma-balie
 go 1.14
 
 require (
+	github.com/GeertJohan/yubigo v0.0.0-20190917122436-175bc097e60e // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-flutter-desktop/hover v0.47.0 // indirect
 	github.com/gorilla/websocket v1.4.2
