@@ -50,7 +50,6 @@ spec:
               memory: 128Mi
               cpu: 800m
           env: []
-          command: ["irma"]
           args: [
             "server",
             "--port",        "8088",
@@ -61,15 +60,15 @@ spec:
             "--no-auth",     "true",
             "--issue-perms", "*",
             "--url",         "https://irma-server.{{$.Values.env}}.company.gcp.stack11.net",
-            "--schemes-assets-path", "/root/irma-assets",
-            "--jwt-privkey-file", "/root/jwt/jwt_privkey"
+            "--schemes-assets-path", "/dist/irma-assets",
+            "--jwt-privkey-file", "/dist/jwt/jwt_privkey"
           ]
           volumeMounts:
             - name: jwt
-              mountPath: /root/jwt
+              mountPath: /dist/jwt
               readOnly: true
             - name: pilot-amsterdam-privkeys
-              mountPath: /root/irma-assets/pbdf/pilot-amsterdam/PrivateKeys
+              mountPath: /dist/irma-assets/pbdf/pilot-amsterdam/PrivateKeys
               readOnly: true
           ports:
             - name: http

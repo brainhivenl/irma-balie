@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/golang-jwt/jwt"
 	irma "github.com/privacybydesign/irmago"
 	"github.com/privacybydesign/irmago/server"
 
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/tweedegolf/irma-balie/common"
 )
 
@@ -166,7 +166,7 @@ func (app App) handleSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	claims := common.IssuanceClaims{
 		SessionPtr: sessionPtr,
-		Token:      pkg.Token,
+		Token:      string(pkg.Token),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(duration).Unix(),
 		},
