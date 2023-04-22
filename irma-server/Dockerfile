@@ -4,17 +4,32 @@ RUN apk add git
 
 RUN git clone https://github.com/privacybydesign/pbdf-schememanager.git /pbdf-schememanager && \
 	cd /pbdf-schememanager && \
-	git checkout e92268845aa4c3b45397082b5b58cd4c5ff50cc5
+	git checkout 91da3bc8b1e64910b5966a0cf444b1508a1d02fa
 
 
-FROM alpine:latest
+FROM golang:1.20-bullseye as build
 
-WORKDIR /root
+RUN apt-get update && \
+    apt-get install -y unzip && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY --from=scheme /pbdf-schememanager /root/irma-assets/pbdf
+WORKDIR /build
 
-# TODO: update irma server version
-RUN wget https://github.com/privacybydesign/irmago/releases/download/v0.5.0/irma-master-linux-amd64 -O /usr/local/bin/irma
-RUN chmod +x /usr/local/bin/irma
+ENV IRMA_VERSION=0.12.2
+ENV CGO_ENABLED=0
 
-CMD ["/usr/local/bin/irma"]
+RUN curl -LO https://github.com/privacybydesign/irmago/archive/refs/tags/v${IRMA_VERSION}.zip && \
+	unzip v${IRMA_VERSION}.zip && \
+	cd irmago-${IRMA_VERSION} && \
+	go build -ldflags '-extldflags "-static"' -o /build/irma ./irma && \
+	cd .. && \
+	rm -fr irmago-${IRMA_VERSION} v${IRMA_VERSION}.zip
+
+FROM gcr.io/distroless/base
+
+WORKDIR /dist
+
+COPY --from=scheme /pbdf-schememanager /dist/irma-assets/pbdf
+COPY --from=build /build/irma ./irma
+
+CMD ["/dist/irma"]

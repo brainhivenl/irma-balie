@@ -11,8 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
-
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/websocket"
 	"github.com/tweedegolf/irma-balie/common"
 )

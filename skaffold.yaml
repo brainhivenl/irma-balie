@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta9
+apiVersion: skaffold/v3
 kind: Config
 
 build:
@@ -21,7 +21,7 @@ deploy:
     - name: irma-balie
       namespace: ""
       chartPath: helm/irma-balie
-      artifactOverrides:
+      setValueTemplates:
         imageBalieServer: registry.gitlab.com/stack11/commonground/irma-balie/balie-server
         imageIrmaServer: registry.gitlab.com/stack11/commonground/irma-balie/irma-server
 
