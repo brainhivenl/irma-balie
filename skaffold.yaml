@@ -27,9 +27,9 @@ deploy:
 
 profiles:
 
-- name: prod
+- name: dev-cloud
   deploy:
-    kubeContext: gke_s11-company-prod_europe-west4_companycluster-prod
+    kubeContext: dev-cloud
   patches:
   - op: add
     path: /deploy/helm/releases/0/valuesFiles
@@ -37,21 +37,16 @@ profiles:
     - helm/irma-balie/values-prod.yaml
   - op: add
     path: /deploy/helm/releases/0/namespace
-    value: irma-balie-prod
+    value: irma-balie
 
-- name: test
-  deploy:
-    kubeContext: gke_s11-company-test_europe-west4-a_companycluster-test
-  patches:
-  - op: add
-    path: /deploy/helm/releases/0/valuesFiles
-    value:
-    - helm/irma-balie/values-test.yaml
-  - op: add
-    path: /deploy/helm/releases/0/namespace
-    value: irma-balie-test
-
-- name: cicd
-  build:
-    local:
-      useBuildkit: false
+#- name: test
+#  deploy:
+#    kubeContext: gke_s11-company-test_europe-west4-a_companycluster-test
+#  patches:
+#  - op: add
+#    path: /deploy/helm/releases/0/valuesFiles
+#    value:
+#    - helm/irma-balie/values-test.yaml
+#  - op: add
+#    path: /deploy/helm/releases/0/namespace
+#    value: irma-balie-test

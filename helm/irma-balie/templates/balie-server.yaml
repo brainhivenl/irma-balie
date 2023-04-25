@@ -65,7 +65,7 @@ spec:
               port: 8080
             initialDelaySeconds: 1
       imagePullSecrets:
-      - name: gitlab-regcred
+      - name: github-registry
       restartPolicy: Always
 
 ---
@@ -82,42 +82,27 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8080
-
 ---
-apiVersion: cert-manager.io/v1
-kind: Certificate
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: balie-server
-spec:
-  secretName: tls-cert-balie-server
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-prod-dns
-  dnsNames:
-    - balie-server.{{ .Values.env }}.company.gcp.stack11.net
-
----
-apiVersion: getambassador.io/v3alpha1
-kind: Host
-metadata:
-  name: balie-server
+  name: irma-balie
   annotations:
-    external-dns.ambassador-service: emissary/emissary-ingress
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  hostname: balie-server.{{ .Values.env }}.company.gcp.stack11.net
-  tlsSecret:
-    name: tls-cert-balie-server
-  requestPolicy:
-    insecure:
-      action: Route
-
----
-apiVersion: getambassador.io/v3alpha1
-kind: Mapping
-metadata:
-  name: balie-server
-spec:
-  hostname: balie-server.{{ .Values.env }}.company.gcp.stack11.net
-  prefix: /
-  service: balie-server
-  timeout_ms: 30000 # 30 seconds
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - balie-server.{{$.Values.env}}.company.gcp.stack11.net
+      secretName: balie-server.{{$.Values.env}}.company.gcp.stack11.net
+  rules:
+    - host: balie-server.{{$.Values.env}}.company.gcp.stack11.net
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: balie-server
+                port:
+                  number: 80
