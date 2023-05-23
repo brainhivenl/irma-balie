@@ -3,11 +3,11 @@ kind: Config
 
 build:
   artifacts:
-  - image: registry.gitlab.com/stack11/commonground/irma-balie/balie-server
+  - image: ghcr.io/dillendev/irma/irma-balie/balie-server
     context: .
     docker:
       dockerfile: balie-server/Dockerfile
-  - image: registry.gitlab.com/stack11/commonground/irma-balie/irma-server
+  - image: ghcr.io/dillendev/irma/irma-balie/irma-server
     context: irma-server
   local:
     useBuildkit: true
@@ -22,14 +22,14 @@ deploy:
       namespace: ""
       chartPath: helm/irma-balie
       setValueTemplates:
-        imageBalieServer: registry.gitlab.com/stack11/commonground/irma-balie/balie-server
-        imageIrmaServer: registry.gitlab.com/stack11/commonground/irma-balie/irma-server
+        imageBalieServer: ghcr.io/dillendev/irma/irma-balie/balie-server
+        imageIrmaServer: ghcr.io/dillendev/irma/irma-balie/irma-server
 
 profiles:
 
-- name: prod
+- name: dev-cloud
   deploy:
-    kubeContext: gke_s11-company-prod_europe-west4_companycluster-prod
+    kubeContext: dev-cloud
   patches:
   - op: add
     path: /deploy/helm/releases/0/valuesFiles
@@ -37,21 +37,16 @@ profiles:
     - helm/irma-balie/values-prod.yaml
   - op: add
     path: /deploy/helm/releases/0/namespace
-    value: irma-balie-prod
+    value: irma-balie
 
-- name: test
-  deploy:
-    kubeContext: gke_s11-company-test_europe-west4-a_companycluster-test
-  patches:
-  - op: add
-    path: /deploy/helm/releases/0/valuesFiles
-    value:
-    - helm/irma-balie/values-test.yaml
-  - op: add
-    path: /deploy/helm/releases/0/namespace
-    value: irma-balie-test
-
-- name: cicd
-  build:
-    local:
-      useBuildkit: false
+#- name: test
+#  deploy:
+#    kubeContext: gke_s11-company-test_europe-west4-a_companycluster-test
+#  patches:
+#  - op: add
+#    path: /deploy/helm/releases/0/valuesFiles
+#    value:
+#    - helm/irma-balie/values-test.yaml
+#  - op: add
+#    path: /deploy/helm/releases/0/namespace
+#    value: irma-balie-test

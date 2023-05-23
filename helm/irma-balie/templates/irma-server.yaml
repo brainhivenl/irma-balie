@@ -30,6 +30,7 @@ spec:
           args: [
             "/privkeys-secret/0.xml",
             "/privkeys-secret/1.xml",
+            "/privkeys-secret/2.xml",
             "/privkeys"
           ]
           volumeMounts:
@@ -51,12 +52,13 @@ spec:
               cpu: 800m
           env: []
           args: [
+            "/dist/irma",
             "server",
             "--port",        "8088",
             "--client-port", "8089",
             "--verbose",
             "--production",
-            "--email",       "hello@stack11.io",
+            "--email",       "dillen@stack11.io",
             "--no-auth",     "true",
             "--issue-perms", "*",
             "--url",         "https://irma-server.{{$.Values.env}}.company.gcp.stack11.net",
@@ -85,7 +87,7 @@ spec:
           #   initialDelaySeconds: 1
 
       imagePullSecrets:
-        - name: gitlab-regcred
+        - name: github-registry
       volumes:
         - name: jwt
           secret:
@@ -126,41 +128,27 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8089
-
 ---
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: irma-server
-spec:
-  secretName: tls-cert-irma-server
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-prod-dns
-  dnsNames:
-    - irma-server.{{ .Values.env }}.company.gcp.stack11.net
-
----
-apiVersion: getambassador.io/v3alpha1
-kind: Host
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: irma-server
   annotations:
-    external-dns.ambassador-service: emissary/emissary-ingress
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  hostname: irma-server.{{ .Values.env }}.company.gcp.stack11.net
-  tlsSecret:
-    name: tls-cert-irma-server
-  requestPolicy:
-    insecure:
-      action: Route
-
----
-apiVersion: getambassador.io/v3alpha1
-kind: Mapping
-metadata:
-  name: irma-server
-spec:
-  hostname: irma-server.{{ .Values.env }}.company.gcp.stack11.net
-  prefix: /
-  service: irma-server-public
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - irma-server.{{$.Values.env}}.company.gcp.stack11.net
+      secretName: irma-server.{{$.Values.env}}.company.gcp.stack11.net
+  rules:
+    - host: irma-server.{{$.Values.env}}.company.gcp.stack11.net
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: irma-server-public
+                port:
+                  number: 80
