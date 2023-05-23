@@ -3,11 +3,11 @@ kind: Config
 
 build:
   artifacts:
-  - image: registry.gitlab.com/stack11/commonground/irma-balie/balie-server
+  - image: ghcr.io/dillendev/irma/irma-balie/balie-server
     context: .
     docker:
       dockerfile: balie-server/Dockerfile
-  - image: registry.gitlab.com/stack11/commonground/irma-balie/irma-server
+  - image: ghcr.io/dillendev/irma/irma-balie/irma-server
     context: irma-server
   local:
     useBuildkit: true
@@ -22,8 +22,8 @@ deploy:
       namespace: ""
       chartPath: helm/irma-balie
       setValueTemplates:
-        imageBalieServer: registry.gitlab.com/stack11/commonground/irma-balie/balie-server
-        imageIrmaServer: registry.gitlab.com/stack11/commonground/irma-balie/irma-server
+        imageBalieServer: ghcr.io/dillendev/irma/irma-balie/balie-server
+        imageIrmaServer: ghcr.io/dillendev/irma/irma-balie/irma-server
 
 profiles:
 

@@ -30,6 +30,7 @@ spec:
           args: [
             "/privkeys-secret/0.xml",
             "/privkeys-secret/1.xml",
+            "/privkeys-secret/2.xml",
             "/privkeys"
           ]
           volumeMounts:
@@ -51,6 +52,7 @@ spec:
               cpu: 800m
           env: []
           args: [
+            "/dist/irma",
             "server",
             "--port",        "8088",
             "--client-port", "8089",
@@ -147,6 +149,6 @@ spec:
             path: /
             backend:
               service:
-                name: irma-server
+                name: irma-server-public
                 port:
                   number: 80
