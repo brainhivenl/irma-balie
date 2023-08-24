@@ -31,7 +31,7 @@ services:
       - "--no-auth"
 
   nginx:
-    image: nginx:1.19
+    image: nginx:1.25
     depends_on:
       - client
       - irma

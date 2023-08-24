@@ -7,7 +7,7 @@ RUN git clone https://github.com/privacybydesign/pbdf-schememanager.git /pbdf-sc
 	git checkout b7e8ed683e2152a31e1d914056cda95fba68629b
 
 
-FROM golang:1.20-bullseye as build
+FROM golang:1.21-bullseye as build
 
 RUN apt-get update && \
     apt-get install -y unzip && \
