@@ -1,4 +1,4 @@
-FROM gradle:8.1.0 as java-build
+FROM gradle:8.3.0 as java-build
 
 WORKDIR /source
 
@@ -6,7 +6,7 @@ COPY mrtd-unpack ./
 
 RUN gradle installDist
 
-FROM golang:1.20-bullseye AS build
+FROM golang:1.21-bullseye AS build
 
 WORKDIR /build
 
