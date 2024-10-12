@@ -3,12 +3,12 @@ kind: Config
 
 build:
   artifacts:
-  - image: ghcr.io/dillendev/irma/irma-balie/balie-server
-    context: .
-    docker:
-      dockerfile: balie-server/Dockerfile
-  - image: ghcr.io/dillendev/irma/irma-balie/irma-server
-    context: irma-server
+    - image: balie-server
+      context: .
+      docker:
+        dockerfile: balie-server/Dockerfile
+    - image: irma-server
+      context: irma-server
   local:
     useBuildkit: true
     concurrency: 0
@@ -18,35 +18,22 @@ deploy:
   statusCheckDeadlineSeconds: 300
   helm:
     releases:
-    - name: irma-balie
-      namespace: ""
-      chartPath: helm/irma-balie
-      setValueTemplates:
-        imageBalieServer: ghcr.io/dillendev/irma/irma-balie/balie-server
-        imageIrmaServer: ghcr.io/dillendev/irma/irma-balie/irma-server
+      - name: irma-balie
+        namespace: ""
+        chartPath: helm/irma-balie
+        setValueTemplates:
+          imageBalieServer: "{{.IMAGE_FULLY_QUALIFIED_balie_server}}"
+          imageIrmaServer: "{{.IMAGE_FULLY_QUALIFIED_irma_server}}"
 
 profiles:
-
-- name: dev-cloud
-  deploy:
-    kubeContext: dev-cloud
-  patches:
-  - op: add
-    path: /deploy/helm/releases/0/valuesFiles
-    value:
-    - helm/irma-balie/values-prod.yaml
-  - op: add
-    path: /deploy/helm/releases/0/namespace
-    value: irma-balie
-
-#- name: test
-#  deploy:
-#    kubeContext: gke_s11-company-test_europe-west4-a_companycluster-test
-#  patches:
-#  - op: add
-#    path: /deploy/helm/releases/0/valuesFiles
-#    value:
-#    - helm/irma-balie/values-test.yaml
-#  - op: add
-#    path: /deploy/helm/releases/0/namespace
-#    value: irma-balie-test
+  - name: prod
+    deploy:
+      kubeContext: cluster-k8d4w
+    patches:
+      - op: add
+        path: /deploy/helm/releases/0/valuesFiles
+        value:
+          - helm/irma-balie/values-prod.yaml
+      - op: add
+        path: /deploy/helm/releases/0/namespace
+        value: irma-balie
