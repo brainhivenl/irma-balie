@@ -69,28 +69,31 @@ spec:
     protocol: TCP
     targetPort: 8080
 
-#---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  name: irma-balie
-#  annotations:
-#    cert-manager.io/cluster-issuer: letsencrypt-prod
-#spec:
-#  ingressClassName: nginx
-#  tls:
-#    - hosts:
-#        - balie-server.{{$.Values.env}}.company.gcp.stack11.net
-#      secretName: balie-server.{{$.Values.env}}.company.gcp.stack11.net
-#  rules:
-#    - host: balie-server.{{$.Values.env}}.company.gcp.stack11.net
-#      http:
-#        paths:
-#          - pathType: Prefix
-#            path: /
-#            backend:
-#              service:
-#                name: balie-server
-#                port:
-#                  number: 80
-#
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: balie-server
+spec:
+  secretName: tls-cert-balie-server
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod-http
+  dnsNames:
+    - balie-server.{{ $.Values.env }}.company.gcp.stack11.net
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: balie-server
+spec:
+  parentRefs:
+    - name: gateway
+      namespace: envoy-gateway-system
+  hostnames:
+    - balie-server.{{ $.Values.env }}.company.gcp.stack11.net
+  rules:
+    - backendRefs:
+      - name: balie-server
+        port: 80
