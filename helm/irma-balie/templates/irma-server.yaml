@@ -28,6 +28,7 @@ spec:
             "/privkeys-secret/0.xml",
             "/privkeys-secret/1.xml",
             "/privkeys-secret/2.xml",
+            "/privkeys-secret/3.xml",
             "/privkeys"
           ]
           volumeMounts:
@@ -48,7 +49,7 @@ spec:
             "--client-port", "8089",
             "--verbose",
             "--production",
-            "--email",       "dillen@stack11.io",
+            "--email",       "dillen@brainhive.nl",
             "--no-auth",     "true",
             "--issue-perms", "*",
             "--url",         "https://irma-server.{{$.Values.env}}.company.gcp.stack11.net",
