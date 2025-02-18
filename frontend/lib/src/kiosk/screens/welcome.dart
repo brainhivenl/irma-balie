@@ -35,7 +35,7 @@ class Welcome extends StatelessWidget {
                 children: <Widget>[
                   const Spacer(flex: 1),
                   PlatformSvg.asset(
-                    'assets/irma_logo.svg',
+                    'assets/yivi_logo.svg',
                     excludeFromSemantics: true,
                     width: 169,
                   ),

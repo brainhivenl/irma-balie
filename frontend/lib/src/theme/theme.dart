@@ -14,7 +14,7 @@ class IrmaThemeData extends Equatable {
   final double hugeSpacing = _spaceBase * 4; // 64
 
   // Primary colors
-  final Color primaryBlue = const Color(0xFF004C92);
+  final Color primaryBlue = const Color(0xFFA03352);
   final Color primaryDark = const Color(0xFF15222E);
   final Color primaryLight = const Color(0xFFF2F5F8);
 
@@ -61,6 +61,7 @@ class IrmaThemeData extends Equatable {
 
   final String fontFamilyKarla = "Karla";
   final String fontFamilyMontserrat = "Montserrat";
+  final String fontFamilyAlexandria = "Alexandria";
 
   TextTheme textTheme;
   TextStyle collapseTextStyle;
@@ -97,7 +98,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: headline1
       headline1: TextStyle(
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 18.0,
         height: 28.0 / 18.0,
         fontWeight: FontWeight.bold,
@@ -108,7 +109,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: headline2
       headline2: TextStyle(
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 24.0,
         height: 28.0 / 24.0,
         fontWeight: FontWeight.bold,
@@ -119,7 +120,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: headline3
       headline3: TextStyle(
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 18.0,
         height: 24.0 / 18.0,
         fontWeight: FontWeight.bold,
@@ -130,7 +131,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: headline4
       headline4: TextStyle(
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 16.0,
         height: 24.0 / 16.0,
         fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: body1
       bodyText1: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 16.0,
         height: 24.0 / 16.0,
         fontWeight: FontWeight.w500,
@@ -155,7 +156,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: body2
       bodyText2: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 16.0,
         height: 24.0 / 16.0,
         fontWeight: FontWeight.normal,
@@ -169,7 +170,7 @@ class IrmaThemeData extends Equatable {
       // md2018: headline5
       headline5: TextStyle(
         // TODO: Misisng in designs
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 24.0,
         height: 28.0 / 24.0,
         fontWeight: FontWeight.bold,
@@ -180,7 +181,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: headline6
       headline6: TextStyle(
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 18.0,
         height: 28.0 / 18.0,
         fontWeight: FontWeight.bold,
@@ -192,7 +193,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: subtitle1
       subtitle1: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 18.0,
         height: 22.0 / 18.0,
         fontWeight: FontWeight.normal,
@@ -203,7 +204,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: subtitle2
       subtitle2: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 16.0,
         height: 22.0 / 16.0,
         fontWeight: FontWeight.w500,
@@ -214,7 +215,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: caption
       caption: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 14.0,
         height: 20.0 / 14.0,
         fontWeight: FontWeight.normal,
@@ -225,7 +226,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: button
       button: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 16.0,
         height: 19.0 / 16.0,
         fontWeight: FontWeight.w600,
@@ -236,7 +237,7 @@ class IrmaThemeData extends Equatable {
       //
       // md2018: overline
       overline: TextStyle(
-        fontFamily: fontFamilyMontserrat,
+        fontFamily: fontFamilyAlexandria,
         fontSize: 12.0,
         height: 16.0 / 12.0,
         fontWeight: FontWeight.w600,
@@ -246,7 +247,7 @@ class IrmaThemeData extends Equatable {
 
     // Additional text styles that are not defined by Material Design
     issuerNameTextStyle = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 16.0,
       height: 19.0 / 16.0,
       fontWeight: FontWeight.normal,
@@ -254,7 +255,7 @@ class IrmaThemeData extends Equatable {
     );
 
     collapseTextStyle = TextStyle(
-      fontFamily: fontFamilyKarla,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 18.0,
       height: 22.0 / 18.0,
       fontWeight: FontWeight.normal,
@@ -262,7 +263,7 @@ class IrmaThemeData extends Equatable {
     );
 
     textButtonTextStyle = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 16.0,
       height: 19.0 / 16.0,
       fontWeight: FontWeight.w600,
@@ -270,7 +271,7 @@ class IrmaThemeData extends Equatable {
     );
 
     newCardButtonTextStyle = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 18.0,
       height: 22.0 / 18.0,
       fontWeight: FontWeight.w500,
@@ -278,7 +279,7 @@ class IrmaThemeData extends Equatable {
     );
 
     hyperlinkTextStyle = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 16.0,
       height: 24.0 / 16.0,
       fontWeight: FontWeight.normal,
@@ -287,7 +288,7 @@ class IrmaThemeData extends Equatable {
     );
 
     hyperlinkVisitedTextStyle = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 16.0,
       height: 19.0 / 16.0,
       fontWeight: FontWeight.normal,
@@ -295,7 +296,7 @@ class IrmaThemeData extends Equatable {
     );
 
     boldBody = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 16.0,
       height: 24.0 / 16.0,
       fontWeight: FontWeight.w600,
@@ -303,7 +304,7 @@ class IrmaThemeData extends Equatable {
     );
 
     kioskHeader = TextStyle(
-      fontFamily: fontFamilyKarla,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 72.0,
       height: 84.0 / 72.0,
       fontWeight: FontWeight.w600,
@@ -311,7 +312,7 @@ class IrmaThemeData extends Equatable {
     );
 
     kioskTitle = TextStyle(
-      fontFamily: fontFamilyKarla,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 48.0,
       height: 56.0 / 48.0,
       fontWeight: FontWeight.w800,
@@ -323,7 +324,7 @@ class IrmaThemeData extends Equatable {
     );
 
     kioskBody = TextStyle(
-      fontFamily: fontFamilyKarla,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 48.0,
       height: 56.0 / 48.0,
       fontWeight: FontWeight.w500,
@@ -345,7 +346,7 @@ class IrmaThemeData extends Equatable {
     );
 
     kioskButtonTextNormal = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 40.0,
       height: 49.0 / 40.0,
       fontWeight: FontWeight.w500,
@@ -353,7 +354,7 @@ class IrmaThemeData extends Equatable {
     );
 
     kioskButtonTextLarge = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 48.0,
       height: 58.0 / 48.0,
       fontWeight: FontWeight.w600,
@@ -369,7 +370,7 @@ class IrmaThemeData extends Equatable {
     );
 
     subheadLarge = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 26.0,
       height: 30.0 / 26.0,
       fontWeight: FontWeight.normal,
@@ -377,7 +378,7 @@ class IrmaThemeData extends Equatable {
     );
 
     cardAttrName = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 14.0,
       height: 22.0 / 14.0,
       fontWeight: FontWeight.normal,
@@ -385,7 +386,7 @@ class IrmaThemeData extends Equatable {
     );
 
     cardAttrValue = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 14.0,
       height: 22.0 / 14.0,
       fontWeight: FontWeight.normal,
@@ -393,7 +394,7 @@ class IrmaThemeData extends Equatable {
     );
 
     cardAttrNameLarge = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 14.0,
       height: 22.0 / 14.0,
       fontWeight: FontWeight.normal,
@@ -401,7 +402,7 @@ class IrmaThemeData extends Equatable {
     );
 
     cardAttrValueLarge = TextStyle(
-      fontFamily: fontFamilyMontserrat,
+      fontFamily: fontFamilyAlexandria,
       fontSize: 14.0,
       height: 22.0 / 14.0,
       fontWeight: FontWeight.normal,
@@ -415,7 +416,7 @@ class IrmaThemeData extends Equatable {
         accentColor: cardRed,
         disabledColor: disabled,
         scaffoldBackgroundColor: primaryLight,
-        fontFamily: fontFamilyKarla,
+        fontFamily: fontFamilyAlexandria,
         textTheme: textTheme,
         appBarTheme: AppBarTheme(
           elevation: 0,
@@ -507,6 +508,7 @@ class IrmaThemeData extends Equatable {
 
     fontFamilyKarla,
     fontFamilyMontserrat,
+    fontFamilyAlexandria,
 
     textTheme,
     collapseTextStyle,

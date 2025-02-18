@@ -118,6 +118,26 @@ flutter:
         - asset: fonts/montserrat/Montserrat-BoldItalic.ttf
           weight: 700
           style: italic
+    - family: Alexandria
+      fonts:
+        - asset: fonts/alexandria/Alexandria-Thin.ttf
+          weight: 100
+        - asset: fonts/alexandria/Alexandria-ExtraLight.ttf
+          weight: 200
+        - asset: fonts/alexandria/Alexandria-Light.ttf
+          weight: 300
+        - asset: fonts/alexandria/Alexandria-Regular.ttf
+          weight: 400
+        - asset: fonts/alexandria/Alexandria-Medium.ttf
+          weight: 500
+        - asset: fonts/alexandria/Alexandria-SemiBold.ttf
+          weight: 600
+        - asset: fonts/alexandria/Alexandria-Bold.ttf
+          weight: 700
+        - asset: fonts/alexandria/Alexandria-ExtraBold.ttf
+          weight: 800
+        - asset: fonts/alexandria/Alexandria-Black.ttf
+          weight: 900
     - family: IrmaIcons
       fonts:
         - asset: fonts/irma-icons/IrmaIcons.ttf
