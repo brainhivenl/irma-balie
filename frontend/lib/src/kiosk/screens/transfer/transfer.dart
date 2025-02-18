@@ -92,7 +92,7 @@ class _TransferState extends State<Transfer> {
                       Column(
                         children: <Widget>[
                           PlatformSvg.asset(
-                            'assets/irma_logo.svg',
+                            'assets/yivi_logo.svg',
                             excludeFromSemantics: true,
                             width: 220,
                           ),
