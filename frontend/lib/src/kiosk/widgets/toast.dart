@@ -33,7 +33,9 @@ class KioskToast extends StatelessWidget {
           ),
           Text(
             text,
-            style: IrmaTheme.of(context).kioskBodyDark,
+            style: IrmaTheme.of(context).kioskBodyDark.copyWith(
+              fontSize: 36.0
+            ),
           ),
         ],
       ),

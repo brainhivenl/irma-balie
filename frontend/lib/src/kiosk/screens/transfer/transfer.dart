@@ -92,7 +92,7 @@ class _TransferState extends State<Transfer> {
                       Column(
                         children: <Widget>[
                           PlatformSvg.asset(
-                            'assets/irma_logo.svg',
+                            'assets/yivi_logo.svg',
                             excludeFromSemantics: true,
                             width: 220,
                           ),
@@ -105,7 +105,7 @@ class _TransferState extends State<Transfer> {
                                     "id": FlutterI18n.translate(context,
                                         'kiosk.id_type.${idState.getCode()}.name')
                                   }),
-                              style: IrmaTheme.of(context).kioskBody,
+                              style: IrmaTheme.of(context).kioskBody.copyWith(fontSize: 36.0),
                             ),
                           ),
                           Row(

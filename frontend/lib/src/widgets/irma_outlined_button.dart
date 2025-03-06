@@ -34,11 +34,11 @@ class IrmaOutlinedButton extends StatelessWidget {
       icon: icon,
       color: Colors.transparent,
       disabledColor: Colors.white,
-      textColor: IrmaTheme.of(context).primaryBlue,
+      textColor: IrmaTheme.of(context).primaryGray,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100.0),
+        borderRadius: BorderRadius.circular(20.0),
         side: BorderSide(
-          color: onPressed != null ? IrmaTheme.of(context).primaryBlue : IrmaTheme.of(context).disabled,
+          color: onPressed != null ? IrmaTheme.of(context).primaryGray : IrmaTheme.of(context).disabled,
           width: 2,
         ),
       ),

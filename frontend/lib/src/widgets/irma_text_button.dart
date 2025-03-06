@@ -28,7 +28,7 @@ class IrmaTextButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       child: FlatButton(
         onPressed: onPressed,
-        textColor: IrmaTheme.of(context).primaryBlue,
+        textColor: IrmaTheme.of(context).primaryGray,
         // splashColor: Colors.transparent,
         focusColor: Colors.transparent,
         // highlightColor: Colors.transparent,

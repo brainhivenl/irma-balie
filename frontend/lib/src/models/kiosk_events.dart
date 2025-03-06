@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:irmabalie/src/kiosk/state/id_state.dart';
 import 'package:irmabalie/src/models/event.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -219,6 +220,8 @@ Gender _genderFromKey(String gender) {
     case 'M':
       return Gender.male;
     case 'F':
+      return Gender.female;
+    case 'V':
       return Gender.female;
     case 'X':
       return Gender.unspecified;
