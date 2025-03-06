@@ -36,7 +36,7 @@ class IrmaButton extends StatelessWidget {
       disabledColor: IrmaTheme.of(context).disabled,
       textColor: IrmaTheme.of(context).grayscaleWhite,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(20),
       ),
     );
   }

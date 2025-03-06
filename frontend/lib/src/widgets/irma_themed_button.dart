@@ -80,5 +80,5 @@ class IrmaButtonSize {
   static const large = IrmaButtonSize._internal(54);
   static const medium = IrmaButtonSize._internal(48);
   static const small = IrmaButtonSize._internal(40);
-  static const kioskBig = IrmaButtonSize._internal(100);
+  static const kioskBig = IrmaButtonSize._internal(80);
 }
