@@ -7,8 +7,8 @@ build:
       context: .
       docker:
         dockerfile: balie-server/Dockerfile
-    - image: irma-server
-      context: irma-server
+    - image: yivi-server
+      context: yivi-server
   local:
     useBuildkit: true
     concurrency: 0
@@ -18,22 +18,21 @@ deploy:
   statusCheckDeadlineSeconds: 300
   helm:
     releases:
-      - name: irma-balie
-        namespace: ""
-        chartPath: helm/irma-balie
+      - name: yivi-balie
+        namespace: "yivi-balie"
+        chartPath: helm/yivi-balie
+        createNamespace: true
         setValueTemplates:
           imageBalieServer: "{{.IMAGE_FULLY_QUALIFIED_balie_server}}"
-          imageIrmaServer: "{{.IMAGE_FULLY_QUALIFIED_irma_server}}"
+          imageYiviServer: "{{.IMAGE_FULLY_QUALIFIED_yivi_server}}"
 
 profiles:
   - name: prod
-    deploy:
-      kubeContext: cluster-k8d4w
     patches:
       - op: add
         path: /deploy/helm/releases/0/valuesFiles
         value:
-          - helm/irma-balie/values-prod.yaml
+          - helm/yivi-balie/values-prod.yaml
       - op: add
         path: /deploy/helm/releases/0/namespace
-        value: irma-balie
+        value: yivi-balie

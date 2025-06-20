@@ -1,6 +1,6 @@
 apiVersion: v2
-name: irma-balie
-description: Chart for deployment of IRMA Balie
+name: yivi-balie
+description: Chart for deployment of YIVI Balie
 
 type: application
 

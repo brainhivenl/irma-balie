@@ -39,7 +39,7 @@ spec:
               mountPath: /privkeys
       containers:
         - name: irma-server
-          image: {{$.Values.imageIrmaServer}}
+          image: {{$.Values.imageYiviServer}}
           imagePullPolicy: IfNotPresent
           env: []
           args: [
@@ -71,12 +71,12 @@ spec:
       volumes:
         - name: jwt
           secret:
-            secretName: irma-server-jwt
+            secretName: yifi-server-jwt
         - name: pilot-amsterdam-privkeys
           emptyDir: {}
         - name: pilot-amsterdam-privkeys-secret
           secret:
-            secretName: irma-server-pilot-amsterdam-privkeys
+            secretName: yivi-server-pilot-amsterdam-privkeys
       restartPolicy: Always
 
 ---
