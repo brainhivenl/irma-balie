@@ -3,5 +3,5 @@ env: prod
 balieServer:
   debugMode: "true" # TODO: needs to be disabled for actual prod use.
 
-irmaServer:
+yiviServer:
   production: false # TODO: needs to move to production for actual prod use.

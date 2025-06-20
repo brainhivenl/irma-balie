@@ -39,7 +39,7 @@ spec:
               mountPath: /privkeys
       containers:
         - name: irma-server
-          image: {{$.Values.imageIrmaServer}}
+          image: {{$.Values.imageYiviServer}}
           imagePullPolicy: IfNotPresent
           env: []
           args: [

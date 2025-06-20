@@ -3,5 +3,5 @@ env: test
 balieServer:
   debugMode: "true"
 
-irmaServer:
+yiviServer:
   production: false
