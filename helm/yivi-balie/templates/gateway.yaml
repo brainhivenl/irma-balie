@@ -1,12 +1,31 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: ReferenceGrant
+apiVersion: cert-manager.io/v1
+kind: Certificate
 metadata:
-  name: allow-gateway
+  name: yivi
 spec:
-  from:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    namespace: envoy-gateway-system
-  to:
-  - group: ""
-    kind: Secret
+  secretName: yivi-gateway-tls-secret
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-dns
+  dnsNames:
+    - "irma-server.prod.company.gcp.stack11.net"
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: yivi-gateway
+spec:
+  gatewayClassName: envoy
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+  - name: https
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: yivi-gateway-tls-secret
