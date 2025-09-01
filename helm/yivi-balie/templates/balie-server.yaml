@@ -89,8 +89,8 @@ metadata:
   name: balie-server
 spec:
   parentRefs:
-    - name: gateway
-      namespace: envoy-gateway-system
+    - name: yivi-gateway
+      namespace: yivi-balie
   hostnames:
     - balie-server.{{ $.Values.env }}.company.gcp.stack11.net
   rules:
