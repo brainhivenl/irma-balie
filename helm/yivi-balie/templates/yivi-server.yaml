@@ -52,7 +52,7 @@ spec:
             "--email",       "dillen@brainhive.nl",
             "--no-auth",     "true",
             "--issue-perms", "*",
-            "--url",         "https://irma-server.{{$.Values.env}}.company.gcp.stack11.net",
+            "--url",         "https://yivi-server.{{$.Values.env}}.brainhive.nl",
             "--schemes-assets-path", "/dist/irma-assets",
             "--jwt-privkey-file", "/dist/jwt/jwt_privkey"
           ]
@@ -71,7 +71,7 @@ spec:
       volumes:
         - name: jwt
           secret:
-            secretName: yifi-server-jwt
+            secretName: yivi-server-jwt
         - name: pilot-amsterdam-privkeys
           emptyDir: {}
         - name: pilot-amsterdam-privkeys-secret
@@ -118,9 +118,9 @@ spec:
   secretName: tls-cert-irma-server
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-prod-http
+    name: letsencrypt-prod
   dnsNames:
-    - irma-server.{{ $.Values.env }}.company.gcp.stack11.net
+    - yivi-server.{{ $.Values.env }}.brainhive.nl
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -132,7 +132,7 @@ spec:
     - name: yivi-gateway
       namespace: yivi-balie
   hostnames:
-    - irma-server.{{ $.Values.env }}.company.gcp.stack11.net
+    - yivi-server.{{ $.Values.env }}.brainhive.nl
   rules:
     - backendRefs:
       - name: irma-server-public

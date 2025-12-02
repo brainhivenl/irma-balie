@@ -18,7 +18,7 @@ ENV CGO_ENABLED=0
 
 RUN go build -o /build/server ./balie-server
 
-FROM openjdk:11-jre-slim AS release
+FROM eclipse-temurin:11-jre AS release
 
 WORKDIR /dist
 

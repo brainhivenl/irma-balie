@@ -27,7 +27,7 @@ WORKDIR /go/src/app/mrtd-scanner
 RUN gradle installDist
 
 
-FROM openjdk:11-jre-slim AS release
+FROM eclipse-temurin:11-jre AS release
 
 COPY --from=build /go/src/app/mrtd-scanner/build/install/mrtdscanner /opt/mrtdscanner
 
