@@ -78,9 +78,9 @@ spec:
   secretName: tls-cert-balie-server
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-prod-http
+    name: letsencrypt-prod
   dnsNames:
-    - balie-server.{{ $.Values.env }}.company.gcp.stack11.net
+    - balie-server.{{ $.Values.env }}.brainhive.nl
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -89,10 +89,10 @@ metadata:
   name: balie-server
 spec:
   parentRefs:
-    - name: gateway
-      namespace: envoy-gateway-system
+    - name: yivi-gateway
+      namespace: yivi-balie
   hostnames:
-    - balie-server.{{ $.Values.env }}.company.gcp.stack11.net
+    - balie-server.{{ $.Values.env }}.brainhive.nl
   rules:
     - backendRefs:
       - name: balie-server
