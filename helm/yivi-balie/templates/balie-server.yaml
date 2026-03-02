@@ -89,8 +89,8 @@ metadata:
   name: balie-server
 spec:
   parentRefs:
-    - name: yivi-gateway
-      namespace: yivi-balie
+    - name: shared
+      namespace: default
   hostnames:
     - balie-server.{{ $.Values.env }}.brainhive.nl
   rules:

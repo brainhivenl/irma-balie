@@ -129,8 +129,8 @@ metadata:
   name: irma-server
 spec:
   parentRefs:
-    - name: yivi-gateway
-      namespace: yivi-balie
+    - name: shared
+      namespace: default
   hostnames:
     - yivi-server.{{ $.Values.env }}.brainhive.nl
   rules:
