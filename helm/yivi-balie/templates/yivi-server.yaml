@@ -29,6 +29,7 @@ spec:
             "/privkeys-secret/1.xml",
             "/privkeys-secret/2.xml",
             "/privkeys-secret/3.xml",
+            "/privkeys-secret/4.xml",
             "/privkeys"
           ]
           volumeMounts:
