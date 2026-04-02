@@ -4,7 +4,7 @@ RUN apk add git
 
 RUN git clone https://github.com/privacybydesign/pbdf-schememanager.git /pbdf-schememanager && \
 	cd /pbdf-schememanager && \
-	git checkout 8cfecb5dfc7bfe6a7a639526faba2b57a5e438f4
+	git checkout 8940ea3a7540fdefc653503cafe1e93db719ebbb
 
 
 FROM golang:1.20-bullseye as build
