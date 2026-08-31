@@ -2,6 +2,23 @@ env: test
 
 balieServer:
   debugMode: "true"
+  # mrtd-unpack is a short-lived JVM spawned per request; cap heap so multiple
+  # concurrent unpacks can't collectively OOM the container.
+  javaOptions: "-Xmx256m -XX:MaxMetaspaceSize=128m"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
 
 yiviServer:
   production: false
+  # Long-lived JVM; size heap relative to the container memory limit.
+  javaOptions: "-XX:MaxRAMPercentage=75.0"
+  resources:
+    requests:
+      cpu: 150m
+      memory: 384Mi
+    limits:
+      memory: 1Gi

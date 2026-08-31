@@ -37,6 +37,10 @@ spec:
               value: "pbdf.pilot-amsterdam.passport"
             - name: BALIE_SERVER_IDCARDCREDENTIALID
               value: "pbdf.pilot-amsterdam.idcard"
+            - name: _JAVA_OPTIONS
+              value: "{{ $.Values.balieServer.javaOptions }}"
+          resources:
+            {{- toYaml $.Values.balieServer.resources | nindent 12 }}
           ports:
             - name: http
               containerPort: 8080

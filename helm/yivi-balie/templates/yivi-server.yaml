@@ -42,7 +42,11 @@ spec:
         - name: irma-server
           image: {{$.Values.imageYiviServer}}
           imagePullPolicy: IfNotPresent
-          env: []
+          env:
+            - name: _JAVA_OPTIONS
+              value: "{{ $.Values.yiviServer.javaOptions }}"
+          resources:
+            {{- toYaml $.Values.yiviServer.resources | nindent 12 }}
           args: [
             "/dist/irma",
             "server",
