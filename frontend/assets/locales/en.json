@@ -4,28 +4,28 @@
   },
   "enrollment": {
     "welcome": {
-      "header": "Temporary start-up screen",
-      "abstract": "This screen needs to be cleaned-up.",
+      "header": "Temporary start screen",
+      "abstract": "This screen still needs to be cleaned up.",
       "intro_button": "Introduction screen",
       "choose_pin_button": "Choose PIN",
       "not_now": "Not now"
     },
     "introduction": {
-      "button_text": "Choose a PIN",
+      "button_text": "Choose your PIN",
       "screen1": {
-        "title": "Yivi is your mobile identity",
-        "text": "Your official name, date of birth, address, and more. All safely stored in your Yivi app."
+        "title": "Yivi is your identity on your mobile",
+        "text": "Your official name, date of birth, address, BSN and more. All together in your Yivi app."
       },
       "screen2": {
-        "title": "Reveal your identity with Yivi",
-        "text": "Easy, safe, and fast. Only you have control."
+        "title": "Use Yivi to identify yourself",
+        "text": "Simple and fast. You are in control."
       },
       "screen3": {
-        "title": "Yivi provides certainty, to you and to others",
-        "text": "Your data are stored solely within the Yivi app. Only you have access.",
+        "title": "Yivi gives you and others certainty",
+        "text": "Your data is stored only in your Yivi app. Only you can access it.",
         "privacy": {
           "text": "Read the privacy rules",
-          "url": "https://privacybydesign.foundation/privacy-policy-en/"
+          "url": "https://privacybydesign.foundation/privacy-policy/"
         }
       }
     },
@@ -34,61 +34,61 @@
       "insert_pin": "Choose a 5-digit PIN",
       "confirm_title": "Repeat your PIN",
       "instruction": "Choose a 5-digit PIN",
-      "confirm_instruction": "Enter your PIN again",
+      "confirm_instruction": "Enter your PIN once more",
       "next": "Next",
       "error_title": "Wrong PIN",
-      "error": "PINs do not match. Choose a new PIN.",
+      "error": "The PINs do not match. Please choose a PIN again.",
       "error_action": "OK"
     },
     "provide_email": {
-      "title": "Add an email address",
-      "instruction": "An email address allows you to disable your Yivi app when your mobile has been lost or stolen.",
+      "title": "Add email address",
+      "instruction": "With an email address you can block your Yivi app if your mobile is lost or stolen.",
       "skip": "Skip",
       "next": "Next",
       "error": "This is not a valid email address",
       "skip_title": "Are you sure?",
-      "skip_content": "Protect your data. When you enter an email address, you can to disable your Yivi app when your mobile has been lost or stolen.",
-      "insert_email": "Enter an email address"
+      "skip_content": "Protect yourself. If you enter an email address, you can block your Yivi app after losing your mobile.",
+      "insert_email": "Enter email address"
     },
     "submit": {
-      "title": "Logging in",
-      "progress_enrollment": "You're being logged in"
+      "title": "Registering",
+      "progress_enrollment": "You are being registered"
     }
   },
   "about": {
     "title": "About Yivi",
     "header": "Identify yourself",
-    "slogan": "With Yivi only you have control over your data.",
-    "who_is_behind_yivi_item": "Who is behind the Yivi app?",
-    "who_is_behind_yivi_explanation": "Yivi is produced by the **Privacy by Design** foundation. In 2016 this foundation grew out of the Digital Security research group at Radboud University Nijmegen. This foundation is independent and non-profit.\n\nThe Yivi app is open source and is developed jointly with SIDN, the manager of the .nl-domain. This development is done jointly with local government and health care. Some 30 municipalities are involved, including Nijmegen, Amsterdam and Leiden. Yivi is recipient of the Dutch Privacy Awards 2018.",
-    "check_out": "See also: ",
+    "slogan": "With Yivi, you are in control.",
+    "who_is_behind_Yivi_item": "Who is behind the Yivi app?",
+    "who_is_behind_Yivi_explanation": "Yivi is made by the **Privacy by Design** foundation.  This foundation emerged in 2016 from the Digital Security research group at Radboud University in Nijmegen. The foundation is independent and non-profit.\n\nThe Yivi app is developed as open source in collaboration with SIDN, the registry of the .nl domain. Development also involves cooperation with various government bodies and with the healthcare sector. Around 30 municipalities are involved, including Nijmegen, Amsterdam and Leiden. Yivi won the Dutch Privacy Awards 2018.",
+    "check_out": "Also see: ",
     "award": "Dutch Privacy Awards",
     "award_link": "https://privacyawards.nl/2018-2/",
-    "why_yivi_item": "Why does Yivi exist?",
-    "why_yivi_explanation": "**Yivi exists because you have the right to an online identity that you really own.** Yivi is not a commercial app that is used to track you, to profile you and to sell your personal data to third parties.\n\nYivi is in the spirit of the [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/). Via the Yivi app you disclose only these data about yourself that are relevant and necessary in a particular situation.\n\n**With the Yivi app your identity is in your own hands, within the secured Yivi app on your own phone.** The Yivi app is is a powerful means for making yourself known (online) and for digital signing. With respect for your privacy.",
+    "why_Yivi_item": "Why does Yivi exist?",
+    "why_Yivi_explanation": "**Yivi exists because you have the right to an online identity that truly belongs to you.** Yivi is not a commercial app used to track you, profile you and sell your personal data to third parties.\n\nYivi is designed in the spirit of the [General Data Protection Regulation (GDPR)](https://wetten.overheid.nl/BWBR0040940/2019-02-19). With the Yivi app, you only show those details about yourself that are relevant and necessary in a given situation.\n\n**With the Yivi app, you keep your identity in your own hands, in the secure Yivi app on your own mobile.** The Yivi app is a powerful tool for identifying yourself (online) and for signing digitally. With respect for your privacy.",
     "privacy_item": "Yivi, privacy and security",
-    "privacy_explanation": "The Yivi app has been developed in such a way that you and only you can see and use your personal data. Your personal data are stored only on your phone and not in the cloud.\n\nThe Yivi app is designed so that a website or shop where you make yourself known can (cryptographically) check that the data that you disclose are genuine.\n\nThe Yivi app discloses your data directly from your phone to the website. No-one else can see that you identify yourself there. Even the organisation behind Yivi cannot observe such disclosures. \n\nWhen using Yivi, you agree with the privacy policy [link].",
-    "responsibility_item": "Own responsibility",
-    "responsibility_explanation": "A website that offers an Yivi long asks data that are needed for this login. Within the Yivi app you decide whether you agree (or not) with the requested disclosure.\nDoes the website ask too much data? Then it is wise not to agree. You can consider filing a complaint. You can do so at the website itself or at the [Data Protection Authorities](https://autoriteitpersoonsgegevens.nl/nl/zelf-doen/gebruik-uw-privacyrechten/klacht-melden-bij-de-ap).\n\nWith the Yivi app you can also put a digital signatures. Such a signature can have (legal) consequences. Hence, putting a digital signature with the Yivi app requires care.\n\nIf you put a digital signature with the Yivi app, you agree that the Privacy by Design foundation is in no way a party in any agreement that you enter into via an Yivi signature. The foundation is neither responsible nor liable.",
+    "privacy_explanation": "The Yivi app is built so that you, and only you, can see and use your personal data in the app. Your personal data is stored only on your mobile and not somewhere in the cloud.\n\nThe Yivi app is built so that a website or shop where you identify yourself can (cryptographically) verify that the data you show is genuine.\n\nThe Yivi app shows your data directly from your mobile to a website. Nobody else can see that you are identifying yourself there. Not even the organisation behind Yivi can look along. \n\nBy using Yivi you agree to the privacy policy [link].",
+    "responsibility_item": "Your own responsibility",
+    "responsibility_explanation": "The website that offers a Yivi login asks for the data needed to log in. In the Yivi app, you decide whether to agree to share the requested data.\nDoes a website ask for too much data? Then it is wise not to agree. You can also consider filing a complaint. You do that with the website itself or with the [Dutch Data Protection Authority](https://autoriteitpersoonsgegevens.nl/nl/zelf-doen/gebruik-uw-privacyrechten/klacht-melden-bij-de-ap).\n\nWith the Yivi app you can also place a digital signature. Such a signature can have (legal) consequences. So think carefully before you place a signature with the Yivi app.\n\nWhen you place a signature with the Yivi app, you acknowledge that the Privacy by Design foundation is in no way a party to any agreement you enter into via a Yivi signature. The foundation is not responsible or liable.",
     "learn_more": "Learn more",
     "more_information": "Yivi website",
-    "yivi_website_link": "https://Yivi.app",
+    "Yivi_website_link": "https://Yivi.app",
     "source_code": "Source code",
     "source_code_link": "https://github.com/privacybydesign",
-    "contact": "Contact",
+    "contact": "Get in touch",
     "contact_link": "mailto:app@privacybydesign.foundation",
     "privacy_policy": "Yivi's privacy rules",
     "privacy_policy_link": "https://privacybydesign.foundation/privacy-policy",
-    "demo": "Frequently asked questions & demos",
+    "demo": "FAQ & demos",
     "demo_link": "in app link",
-    "get_involved": "Stay informed and get involved",
+    "get_involved": "Stay informed and join the conversation",
     "meetups": "Yivi meetups",
     "meetups_link": "https://privacybydesign.foundation/meetings/",
-    "twitter": "@yivi_privacy",
-    "twitter_link": "https://twitter.com/yivi_privacy",
+    "twitter": "@Yivi_privacy",
+    "twitter_link": "https://twitter.com/Yivi_privacy",
     "github": "GitHub",
     "github_link": "https://github.com/privacybydesign",
-    "share_slogan": "Share Yivi with others",
+    "share_slogan": "Give everyone privacy, share Yivi",
     "share_text": "Check out the Yivi app: https://www.Yivi.app",
     "share": "Share Yivi",
     "version": "Version number",
@@ -98,54 +98,54 @@
   },
   "manual": {
     "faq": "Manual",
-    "faq_info": "How to use Yivi? See the explanations below.",
-    "question_1": "How to use Yivi for logging onto a mobile website?",
+    "faq_info": "How do you use Yivi? See the explanation below.",
+    "question_1": "How can I log in to a mobile website with Yivi?",
     "answer_1": {
-      "step_1": "Open the website on your mobile and select logging in with Yivi.",
+      "step_1": "Open the website on your mobile and choose to log in with Yivi.",
       "step_2": "The Yivi app starts automatically.\nEnter your PIN.",
-      "step_3": "Agree (or disagree) to disclose your personal data.",
-      "step_4": "After disclosing you are logged in.\nYou can now use the website."
+      "step_3": "Give permission (or not) to share your data.",
+      "step_4": "After sharing, you are logged in.\nYou can now use the website."
     },
-    "question_2": "How to use Yivi for logging onto a website on my computer?",
+    "question_2": "How can I log in to a website on my computer with Yivi?",
     "answer_2": {
-      "step_1": "Open the website on your computer and select logging in with Yivi.",
+      "step_1": "Open the website on your computer and choose to log in with Yivi.",
       "step_2": "Open the Yivi app on your mobile and enter your PIN.",
-      "step_3": "Start the QR code scanner in the Yivi app. Scan the QR code on the screen of your computer.",
-      "step_4": "Agree (or not) to disclose your personal data.",
-      "step_5": "After disclosing you are logged in.\nYou can now use the website."
+      "step_3": "Start the QR code scanner in the Yivi app. Scan the QR code on your computer screen.",
+      "step_4": "Give permission (or not) to share your data.",
+      "step_5": "After sharing, you are logged in.\nFrom now on you can use the website."
     }
   },
   "help": {
     "title": "Help",
     "faq": "Frequently asked questions",
-    "faq_info": "Check if your question is listed here",
+    "faq_info": "See whether your question is listed here.",
     "question_1": "What can I do with Yivi?",
-    "answer_1": "With Yivi it's easy to log in and make yourself known. You disclose only the necessary attributes of yourself. For instance, in order to watch a certain movie, you disclose that you are over 16 years old and nothing else. With Yivi you can digitally sign documents too. You only use relevant characteristics of of yourself, in some sort of digital stamp. In this way Yivi allows you to sign as medical doctor, as citizen, or in some other role.\n\nMore and more websites support logging in with Yivi. For instance, doctors in The Netherlands can access medical dossiers via the website [helder](https://www.helder.health/). Yivi support is growing especially at municipalities and health care providers. To get an idea of the possibilities, you can try out yourself some of the available Yivi [demo's](https://privacybydesign.foundation/demo-en/).",
-    "question_2": "What to do if I lose my mobile?",
-    "answer_2": "If you lose your mobile, nobody can use your Yivi app, at least if you have chosen a non-trivial PIN.\n\nYou can protect yourself even more: upon installing Yivi you have been given the choice to enter an email address. If you have done so, you can block your Yivi app altogether via [MyYivi](https://privacybydesign.foundation/myYivi/). The Yivi app on your old (lost) mobile is then completely unusable.\n\nIf you have not yet added an email address in [MyYivi](https://privacybydesign.foundation/myYivi/) you can still do so now. This is recommended.\n\nOn your new mobile you can re-install the Yivi app and re-fill it with your data. Then you are good to go again.",
+    "answer_1": "With Yivi you can easily log in and identify yourself. You only show the details about yourself that are needed. For example, to watch a certain film, you prove that you are over 16, and nothing more. You can also sign documents digitally with Yivi. You only use relevant attributes of yourself, in a kind of digital stamp. This way you can sign with Yivi as a doctor, as a citizen or in another role.\n\nMore and more websites let you log in with Yivi. Doctors, for example, can use Yivi to access medical records on the website [helder](https://www.helder.health/). Especially municipalities and the healthcare sector are now working on further use of Yivi so that you can log in there with Yivi. To get an impression of the possibilities, you can try out a number of Yivi [demos](https://privacybydesign.foundation/demo/) yourself.",
+    "question_2": "What do I do if I lose my mobile?",
+    "answer_2": "If you lose your mobile, nobody can get into your Yivi app, provided you chose a good PIN.\n\nYou can protect yourself even better: when installing Yivi you were given the option to provide an email address. If you did, you can block the use of your Yivi app via [MyYivi](https://privacybydesign.foundation/mijnYivi/). Then absolutely nothing can happen with the Yivi app on your old, lost mobile.\n\nIf you have not yet added an email address in [MyYivi](https://privacybydesign.foundation/mijnYivi/), you can still do so. It is wise to do that now.\n\nOn your new mobile you can reinstall the Yivi app and fill it again with your data. After that you can simply carry on.",
     "question_3": "What makes Yivi privacy-friendly and secure?",
-    "answer_3": "Your personal data are protected via your personal PIN. Your data are stored exclusively in the Yivi app and not in the cloud.\n\nThe data in your Yivi app are digitally signed by the source (issuer) where the data come from (such as the local authorities).\n\nIn this way a website or shop, where you make yourself known, can cryptographically verify that your data are genuine.\nThis exchange of personal data happens directly between your mobile and the website. No one else can see that you make yourself known there, not even the organisation behind Yivi.",
-    "question_4": "Where are my Yivi data stored?",
-    "answer_4": "Your data are stored in the Yivi app on your mobile and not in the cloud.\n\nYou explicitly agree (or not) to reveal your personal data from your Yivi app to a website.\nWhen you remove your data from the Yivi app, they are really gone from Yivi.",
-    "question_5": "Why do the data in the Yivi app have limited validity?",
-    "answer_5": "Every card in Yivi shows its validity. The validity period depends on the kind of data on the card and how stable these data are. Your name and date of birth data are valid for five years, but your address data only one year. The source (issuer) of the data determines this validity period. The cards in your Yivi app may thus expire. The Yivi app then gives you a warning.\n\nYou can always, also without such a warning, refresh your cards by reloading them from the source. For instance, after year 18th birthday you can reload your data from your municipality so that you can prove that you are older than 18 now.",
-    "question_6": "Can I install Yivi on a second mobile or tablet?",
-    "answer_6": "Yes, on every (Android of iOS) device you can open a separate Yivi account fill it with cards with your data. It is wise to do so. If you lose one device, you can still log on with your other device.",
+    "answer_3": "Your personal data is protected with your PIN. Your data is stored in the Yivi app on your mobile and not in the cloud.\n\nIn the Yivi app, your personal data has been digitally signed by the source (issuer) the data comes from (for example the national government or the municipality).\n\nAs a result, when you identify yourself, a website or shop can cryptographically verify that the data is genuine. \nThis exchange of personal data takes place directly between your mobile and that website. Nobody else can see that you are identifying yourself there. Not even the organisation behind Yivi can look along.",
+    "question_4": "Where is my Yivi data stored?",
+    "answer_4": "Your data is stored in the Yivi app on your mobile and *not* in the cloud.\n\nYou always give explicit permission (or not) yourself to pass your personal data from the Yivi app to a website.\nIf you delete your data from the Yivi app, it is really gone from Yivi.",
+    "question_5": "Why is data in the Yivi app only valid for a limited time?",
+    "answer_5": "In Yivi you can see on each card how long it is valid. That validity period depends on the type of data and how changeable it is. Your name and date of birth are valid for five years, but your address only for one year. The source (issuer) of the data determines the validity period. So the validity of data can expire. The Yivi app warns you about this.\n\nYou can always refresh your data, even without a warning, by retrieving it again from the source. For example, after your 18th birthday you can retrieve your data from your municipality again and use the Yivi app to prove that you are over 18.",
+    "question_6": "Can I put Yivi on a second mobile or tablet?",
+    "answer_6": "Yes, on every device (Android or iOS) you can open a separate Yivi account and fill it with cards containing your data. It is wise to do so. If you lose one device, you can still log in with the other device.",
     "ask": "Ask a question",
     "more": "More questions and answers",
-    "more_link": "https://Yivi.app/?lang=en#faqs",
-    "send": "Do you have other/more questions? Send an email. It may take a couple of days before you get a reply.",
+    "more_link": "https://Yivi.app/?lang=nl#faqs",
+    "send": "Do you have another question? Send an email. Please note that it may take a few days before you receive an answer.",
     "back_button": "Back to Yivi cards",
     "email": "Send an email",
     "contact": "app@privacybydesign.foundation",
-    "mail_subject": "Assistance with the Yivi app",
+    "mail_subject": "Help with the Yivi app",
     "mail_error_title": "Sorry",
-    "mail_error": "Mail app cannot be opened",
+    "mail_error": "The mail application cannot be opened",
     "mail_error_button": "OK"
   },
   "drawer": {
-    "lock_wallet": "Logout",
-    "add_cards": "Adding cards",
+    "lock_wallet": "Log out",
+    "add_cards": "Add cards",
     "settings": "Settings",
     "help": "Help",
     "history": "History",
@@ -157,17 +157,17 @@
     "cancel": "Cancel",
     "select": "Select",
     "alert_title": "Website not secure",
-    "alert_message": "The website that you wish to visit is not secure. You cannot view it within Yivi. Open another (browser) app if you still wish to visit this website.",
+    "alert_message": "The website you want to visit is not secure. You cannot view this website within Yivi. Open another app if you still want to visit the website.",
     "alert_button": "Close"
   },
   "accessibility": {
-    "yivi_logo": "Yivi Logo",
+    "Yivi_logo": "Yivi Logo",
     "menu": "Menu",
     "back": "Back",
     "close": "Close",
     "next": "Next",
     "previous": "Previous",
-    "unfold": "Expand",
+    "unfold": "Unfold",
     "update": "Update",
     "remove": "Remove",
     "expand": "Expand",
@@ -175,29 +175,29 @@
   },
   "card": {
     "personaldata": "Personal data",
-    "expiresAt": "Card valid until",
+    "expiresAt": "Valid until",
     "delete": "Delete card",
     "refresh": "Refresh card",
     "delete_title": "Are you sure?",
-    "delete_content": "If you proceed, this card will be deleted from your Yivi app.",
+    "delete_content": "If you continue, you will remove this card from your Yivi app.",
     "delete_confirm": "Delete card",
     "delete_deny": "Cancel"
   },
   "card_store": {
-    "app_bar": "Adding cards",
+    "app_bar": "Add cards",
     "choose": "Choose the data you want to add.",
     "search": "Search...",
     "personal_data": "Personal data",
-    "identity_cards": "Identity cards",
+    "identity_cards": "Proof of identity",
     "education": "Education",
     "health": "Healthcare",
     "card_info": {
-      "app_bar": "Adding data",
-      "header_credential_type": "Adding {credential_type}",
-      "obtain": "Add",
+      "app_bar": "Add data",
+      "header_credential_type": "Add {credential_type}",
+      "obtain": "add",
       "issuer": "Source",
-      "purpose_question": "What can you do with these data?",
-      "content_question": "Which data is loaded?",
+      "purpose_question": "What can you do with this data?",
+      "content_question": "Which data do you retrieve?",
       "howto_question": "How does it work?",
       "back_button": "Cancel",
       "get_button": "Add"
@@ -205,24 +205,24 @@
   },
   "settings": {
     "title": "Settings",
-    "start_qr": "Open QR scanner automatically after start-up",
+    "start_qr": "Open QR scanner automatically after startup",
     "change_pin": "Change your PIN",
     "advanced": {
       "header": "Advanced",
-      "experimental_data": "Enable loading of experimental data.",
-      "report_errors": "Send error reports to Yivi",
+      "experimental_data": "Allow adding experimental data.",
+      "report_errors": "Send errors to Yivi",
       "delete": "Delete everything and start over",
       "delete_title": "Are you sure?",
-      "delete_content": "If you proceed, all your cards will be deleted from your Yivi app. Do you wish to use Yivi again later? You will have to reload cards first.",
-      "delete_confirm": "Yes, delete everything",
+      "delete_content": "If you continue, you will delete all your cards and your access to the Yivi app. Want to use the Yivi app again? Choose a new PIN and retrieve your cards again.",
+      "delete_confirm": "Delete everything",
       "delete_deny": "Cancel"
     }
   },
   "change_pin": {
     "enter_pin": {
       "title": "Change PIN",
-      "instruction": "Enter your current PIN",
-      "error_title": "PIN incorrect",
+      "instruction": "First enter your current PIN",
+      "error_title": "Wrong PIN",
       "error": "Enter your current PIN",
       "error_action": "OK"
     },
@@ -236,12 +236,12 @@
       "switch_long": "Prefer a longer PIN?",
       "switch_short": "Prefer a shorter PIN?",
       "error_title": "Wrong PIN",
-      "error": "Different PINs. Choose a new PIN.",
+      "error": "The PINs do not match. Please choose a PIN again.",
       "error_action": "OK"
     },
     "confirm_pin": {
       "title": "Change PIN",
-      "instruction": "Enter your PIN one more time."
+      "instruction": "Enter your new PIN once more."
     },
     "success": {
       "title": "Success",
@@ -252,69 +252,69 @@
   "qr_scanner": {
     "instruction": {
       "title": "Start scanning",
-      "message": "Aim the camera of your mobile at the Yivi QR code"
+      "message": "Point your mobile at a Yivi QR code"
     },
     "success": {
       "title": "Success",
-      "message": "QR code scanned"
+      "message": "The QR code has been scanned"
     },
     "error": {
       "title": "Sorry",
-      "message": "This is not an Yivi QR code"
+      "message": "This is not a Yivi QR code"
     }
   },
   "pin": {
-    "title": "Login",
+    "title": "Log in",
     "subtitle": "Enter your PIN",
-    "button_forgot": "PIN forgotten",
+    "button_forgot": "Forgot PIN",
     "view": "Show PIN",
     "hide": "Hide PIN",
     "button_block": "Block Yivi",
-    "blocked_title": "To many wrong pass tries",
-    "blocked_body": "Your account has been blocked for a few minutes.\n\nPlease try again later",
-    "invalid_pin_dialog_title": "Wrong PIN entered.",
+    "blocked_title": "Wrong PIN entered too many times",
+    "blocked_body": "Your account is blocked for a few minutes.\n\nTry again later",
+    "invalid_pin_dialog_title": "The PIN you entered is incorrect.",
     "invalid_pin_dialog_close": "Try again.",
     "invalid_pin": {
-      "attempts-0": "This PIN is not correct. You have {attemps} attempts left before your Yivi app will be blocked temporarily.",
-      "attempts-1": "This PIN is not correct. You have {attemps} attempts left before your Yivi app will be blocked temporarily.",
-      "attempts-2": "This PIN is not correct. You have {attemps} attempts left before your Yivi app will be blocked temporarily."
+      "attempts-0": "This PIN is incorrect. You have {attemps} attempts left before your Yivi app is temporarily blocked.",
+      "attempts-1": "This PIN is incorrect. You have {attemps} attempt left before your Yivi app is temporarily blocked.",
+      "attempts-2": "This PIN is incorrect. You have {attemps} attempts left before your Yivi app is temporarily blocked."
     }
   },
   "error": {
-    "title": "Something goes wrong",
+    "title": "Something went wrong",
     "button_ok": "OK",
-    "button_send_to_Yivi": "Send to Yivi's technical team",
+    "button_send_to_Yivi": "Send to the Yivi technical team",
     "button_show_error": "Show technical details",
-    "button_retry": "Please try again",
+    "button_retry": "Try again",
     "types": {
-      "general": "Something went wrong.\n\nWhen this happens again, please inform Yivi's technical team.",
-      "no_internet": "Something went wrong. The connection to the Yivi server has failed.\n\nPlease check your internet connection."
+      "general": "Something went wrong.\n\nIf the problem keeps occurring, please let the Yivi technical team know.",
+      "no_internet": "Something went wrong. A connection to the Yivi server cannot be made.\n\nCheck your internet connection. Yivi does not work without internet."
     }
   },
   "wallet": {
     "title": "Yivi cards",
     "scan_qr_code": "Scan QR code",
-    "open_menu": "Open Menu",
-    "close_menu": "Close Menu",
-    "toggle": "Change display",
-    "issuer": "Source",
-    "expiration": "Card valid until",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "toggle": "Switch view",
+    "issuer": "Issuer:",
+    "expiration": "Valid in Yivi until:",
     "help": "Help",
-    "caption": "Your data securely on your mobile",
+    "caption": "Your data safe on your mobile",
     "pbdf_gemeente_personalData": {
       "nudge": "Add your personal data"
     },
     "pbdf_bzkpilot_personalData": {
       "nudge": "Add your personal data",
-      "not_installed_dialog_title": "The Sesam ID app is not installed.",
-      "not_installed_dialog_content": "Install the Sesam ID app first. You can install it through Apple TestFlight.",
+      "not_installed_dialog_title": "Sesam ID app not found",
+      "not_installed_dialog_content": "Install the Sesam ID app first. You can get it via Apple TestFlight.",
       "not_installed_dialog_primary": "Open TestFlight",
       "not_installed_dialog_secondary": "Cancel"
     },
     "launch_testflight": {
-      "not_installed_dialog_title": "Cannot launch the app",
-      "not_installed_dialog_content": "Install TestFlight from the App Store and try again.",
-      "not_installed_dialog_primary": "Install Testflight",
+      "not_installed_dialog_title": "The app cannot be launched",
+      "not_installed_dialog_content": "First install the TestFlight app from the App Store. Then you can try again.",
+      "not_installed_dialog_primary": "Install TestFlight",
       "not_installed_dialog_secondary": "Cancel"
     },
     "add_data": "Add more data",
@@ -326,77 +326,211 @@
     "type": {
       "removal": "Card deleted",
       "issuing": {
-        "header": "Cards issued by",
-        "subtitle": "Issued cards",
-        "data-0": "{data} card issued by",
-        "data-1": "{data} card issued by",
-        "data-2": "{data} cards issued by"
+        "header": "Cards received from",
+        "subtitle": "Received cards",
+        "data-0": "{data} card received from",
+        "data-1": "{data} card received from",
+        "data-2": "{data} cards received from"
       },
-      "disclosing_header": "Data disclosed to",
+      "disclosing_header": "Data shared with",
       "disclosing": {
-        "header": "Data disclosed to",
-        "subtitle": "Disclosed data",
-        "data-0": "{data} disclosed to",
-        "data-1": "{data} disclosed to",
-        "data-2": "{data} disclosed to"
+        "header": "Data shared with",
+        "subtitle": "Shared data",
+        "data-0": "{data} data item shared with",
+        "data-1": "{data} data item shared with",
+        "data-2": "{data} data items shared with"
       },
-      "siging_header": "Signed messages",
+      "siging_header": "Signed with data for",
       "signing": {
-        "header": "Message signed upon request of",
+        "header": "Data signed at the request of",
         "subtitle": "Signed message",
-        "subtitle_used_data": "Message signed with personal data",
-        "data-0": "Signed with {data} upon request of",
-        "data-1": "Signed with {data} upon request of",
-        "data-2": "Signed with {data} upon request of"
+        "subtitle_used_data": "Signed with the personal data",
+        "data-0": "Signed with {data} data item at the request of",
+        "data-1": "Signed with {data} data item at the request of",
+        "data-2": "Signed with {data} data items at the request of"
       }
     }
   },
   "disclosure": {
     "title": "Identify yourself",
     "disclosure_header": {
-      "start": "Do you wish to disclose this to ",
-      "end": " ?"
+      "start": "Do you want to share this with ",
+      "end": "?"
     },
     "signing_header": " asks you to sign a message",
     "issuer": "Source",
     "choices": "{choices} choices",
-    "next": "next choices",
-    "previous": "previous choices",
+    "next": "choose next",
+    "previous": "choose previous",
     "explanation": {
-      "title": "You can choose",
-      "body": "Select which data you disclose. Use the arrow or swipe and choose.",
+      "title": "How to make a choice",
+      "body": "Choose which data you share. Use the arrow or swipe and make your choice.",
       "dismiss": "OK",
-      "dismiss-remember": "Do not show anymore"
+      "dismiss-remember": "Don't show again"
     },
     "navigation_bar": {
       "yes": "Yes",
-      "no": "No, rather not"
+      "no": "No, I'd rather not"
     },
-    "redirect": "You are being redirected back to the webpage...",
+    "redirect": "You are being redirected to the web page...",
     "feedback": {
       "header": {
         "true": "Success",
-        "false": "Failed"
+        "false": "Nothing shared"
       },
       "text": {
-        "true": "Your attributes are provided to {otherParty}",
-        "false": "Your attributes are NOT provided to {otherParty}"
+        "true": "Your data has been shared with {otherParty}",
+        "false": "Your data has not been shared with {otherParty}"
       },
       "ok": "OK"
     }
   },
   "reset_pin": {
-    "title": "Lost PIN",
-    "message": "Lost your PIN? We're sorry but the Yivi organization does not keep record of your PIN. If you wish to continue using Yivi, you will have to enter a new PIN and re-enter all data.",
-    "existing_data_title": "What happens with my old cards?",
-    "existing_data_message": "Your old cards will be deleted from your phone. If you like, you can collect new cards and start using Yivi again.",
+    "title": "Forgot PIN",
+    "message": "Forgot your PIN? That's annoying. The organisation behind Yivi doesn't know your PIN either and so cannot help you with it. If you want to keep using Yivi, you unfortunately have to start over: choose a new PIN and retrieve new cards.",
+    "existing_data_title": "What happens to my old cards?",
+    "existing_data_message": "Your old cards will be removed from your mobile. You can retrieve new cards and use Yivi again with them.",
     "back": "Cancel",
-    "reset": "Start all over",
-    "existing_data_removed": "All cards in your Yivi app are deleted."
+    "reset": "Start over",
+    "existing_data_removed": "All cards in your Yivi app will be deleted."
   },
   "arrow_back": {
-    "info_1": "Done, your data have been disclosed.\n\n",
-    "safari": "Tap on the name of the application (e.g., Safari, Chrome, Firefox) ",
-    "info_2": "in the top left corner to return to the application you came from."
+    "info_1": "Success, your data has been shared.\n\n",
+    "safari": "Tap the name of the program at the top ",
+    "info_2": "(for example Safari, Chrome, Firefox) to go back to the program you were using."
+  },
+  "kiosk": {
+    "id_type": {
+      "idCard": {
+        "name": "identity card",
+        "nameCapitalized": "Identity card",
+        "property": "identity card",
+        "propertyCapitalized": "Identity card",
+        "image": "assets/kiosk/id-kaart-front.png",
+        "animation": "assets/kiosk/id_kaart.webm"
+      },
+      "passport": {
+        "name": "passport",
+        "nameCapitalized": "Passport",
+        "property": "passport",
+        "propertyCapitalized": "Passport",
+        "image": "assets/kiosk/paspoort.png",
+        "animation": "assets/kiosk/paspoort.webm"
+      },
+      "driversLicense": {
+        "name": "driver's license",
+        "nameCapitalized": "Driver's license",
+        "property": "driving proficiency",
+        "propertyCapitalized": "Driving proficiency",
+        "image": "assets/kiosk/rijbewijs-front.png",
+        "animation": "assets/kiosk/rijbewijs.webm"
+      }
+    },
+    "main": {
+      "start_heading": "Put the data from your identity document into your Yivi app",
+      "start_button": "Start"
+    },
+    "select": {
+      "title": "Choose identity document",
+      "body": "Which identity document do you want to put the data from into your Yivi app?",
+      "driver": "Driver's license",
+      "id": "Identity card",
+      "passport": "Passport"
+    },
+    "scan": {
+      "title": "Scan {id}",
+      "header": "Place your {id} in the slot",
+      "instruction": {
+        "idCard": "1. Hold your identity card with the photo facing up\n\n2. Place your identity card in the slot.\n\n3. Wait until the scan is finished.",
+        "passport": "1. Open your passport.\n\n2. Place your passport in the slot with the photo facing down.\n\n3. Wait until the scan is finished.",
+        "driversLicense": "1. Hold your driver's license with the photo facing down.\n\n2. Place your driver's license in the slot.\n\n3. Wait until the scan is finished."
+      }
+    },
+    "detected": {
+      "title": "Reading {id}",
+      "body": "Your {id} is being read…"
+    },
+    "scanning": {
+      "title": "Scan {id}",
+      "body": "Your {id} is being scanned…\n(this may take some time)"
+    },
+    "succeeded": {
+      "title": "Scan {id}",
+      "body": "Success",
+      "button": "Close"
+    },
+    "transfer": {
+      "title": "Transfer {id}",
+      "body": "Do you want to put your {id} data in your Yivi app?",
+      "no": "No",
+      "yes": "Yes"
+    },
+    "submitting": {
+      "title": "Preparing transfer",
+      "body": "A QR code is being created…"
+    },
+    "approval": {
+      "title": "Waiting for approval",
+      "body": "Wait until the staff member approves your request…"
+    },
+    "transfer_in_progress": {
+      "title": "Transfer {id}",
+      "body": "Use your Yivi app to add your {id} as a card"
+    },
+    "qr_scan": {
+      "title": "Transfer {id}",
+      "body": "Scan this QR code with your Yivi app"
+    },
+    "no_transfer": {
+      "title": "{id} not transferred",
+      "body": "Your {id} has not been transferred",
+      "button": "Close",
+      "warning": "Don't forget to take your {id}"
+    },
+    "transferred": {
+      "title": "{id} transferred",
+      "body": "Success, your {id} has been transferred to your Yivi app",
+      "button": "Close",
+      "warning": "Don't forget to take your {id}"
+    },
+    "no_internet": {
+      "title": "No internet connection",
+      "header": "No internet",
+      "body1": "This service is currently unavailable.\nAsk a staff member to restore the internet connection.",
+      "body2": "Is no staff member available?\n",
+      "button": "Back to start screen",
+      "bullet1": "• Call: ",
+      "bullet1_bold": "06-18525259 (Mike Alders)",
+      "bullet2": "• Give the following code: ",
+      "bullet2_bold": "Zaandam-09"
+    },
+    "initial": {
+      "title": "Counter starting up",
+      "header": "Starting up",
+      "body": "The counter is starting up. One moment please."
+    },
+    "scan_fail": {
+      "title": "Scan failed",
+      "body": "Unfortunately, scanning your identity document failed.\nTake your document out of the slot and choose ‘Try again’.",
+      "button_help": "Help with scanning",
+      "button_again": "Try again"
+    },
+    "scan_help": {
+      "title": "Help with scanning",
+      "header": "Is scanning not working?",
+      "body1": "Ask a municipal staff member to help you.\n",
+      "body2": "Is no staff member available?\n",
+      "button": "Back to start screen",
+      "bullet1": "• Call the helpdesk: ",
+      "bullet1_bold": "+316-18525259 (Mike Alders)",
+      "bullet2": "• Give the following code: ",
+      "bullet2_bold": "Zaandam-09"
+    },
+    "invalid_id": {
+      "title": "Identity document not valid",
+      "body": "Your identity document is not valid.\nTake your document out of the slot.",
+      "button_help": "Help with scanning",
+      "button_close": "Close"
+    }
   }
 }
