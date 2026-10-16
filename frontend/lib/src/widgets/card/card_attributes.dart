@@ -5,9 +5,9 @@ import 'package:irmabalie/src/models/attributes.dart';
 import 'package:irmabalie/src/models/credentials.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/widgets/card/irma_card_theme.dart';
+import 'package:irmabalie/src/util/language.dart';
 
 class CardAttributes extends StatelessWidget {
-  final _lang = 'nl';
   final _indent = 100.0;
   final _indentLarge = 200.0;
 
@@ -30,7 +30,9 @@ class CardAttributes extends StatelessWidget {
         ? IrmaTheme.of(context).subheadLarge.copyWith(
               color: irmaCardTheme.foregroundColor,
             )
-        : IrmaTheme.of(context).cardAttrName.copyWith(color: irmaCardTheme.foregroundColor);
+        : IrmaTheme.of(context)
+            .cardAttrName
+            .copyWith(color: irmaCardTheme.foregroundColor);
 
     final ScrollController scrollController = ScrollController();
     scrollController.addListener(() {
@@ -48,7 +50,9 @@ class CardAttributes extends StatelessWidget {
     final double width = size.width;
     final double _maxHeight = 650;
     const creditCardAspectRatio = 5398 / 8560;
-    final double _minHeight = (width - IrmaTheme.of(context).smallSpacing * 2) * creditCardAspectRatio - 90;
+    final double _minHeight = (width - IrmaTheme.of(context).smallSpacing * 2) *
+            creditCardAspectRatio -
+        90;
 
     return Column(
       children: [
@@ -78,16 +82,23 @@ class CardAttributes extends StatelessWidget {
                             shrinkWrap: true,
                             controller: scrollController,
                             physics: const BouncingScrollPhysics(),
-                            padding: EdgeInsets.only(left: IrmaTheme.of(context).defaultSpacing),
+                            padding: EdgeInsets.only(
+                                left: IrmaTheme.of(context).defaultSpacing),
                             children: [
                               ..._buildAttributes(
                                 context,
-                                body1Theme.copyWith(fontSize: largeFonts ? 24 : 14),
-                                IrmaTheme.of(context).textTheme.bodyText1.copyWith(
+                                body1Theme.copyWith(
+                                    fontSize: largeFonts ? 24 : 14),
+                                IrmaTheme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
                                       color: irmaCardTheme.foregroundColor,
                                       fontSize: largeFonts ? 24 : 16,
                                     ),
-                                largeFonts ? IrmaTheme.of(context).defaultSpacing : IrmaTheme.of(context).smallSpacing,
+                                largeFonts
+                                    ? IrmaTheme.of(context).defaultSpacing
+                                    : IrmaTheme.of(context).smallSpacing,
                               ),
                               SizedBox(
                                 height: IrmaTheme.of(context).defaultSpacing,
@@ -107,7 +118,8 @@ class CardAttributes extends StatelessWidget {
           height: 8.0,
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(width: 1.0, color: irmaCardTheme.backgroundGradientEnd),
+              bottom: BorderSide(
+                  width: 1.0, color: irmaCardTheme.backgroundGradientEnd),
             ),
             gradient: const LinearGradient(
               colors: [
@@ -125,8 +137,10 @@ class CardAttributes extends StatelessWidget {
               color: const Color(0x11FFFFFF),
               child: Column(
                 children: <Widget>[
-                  _buildIssuer(context, body1Theme.copyWith(fontSize: largeFonts ? 20 : 12)),
-                  _buildExpiration(context, body1Theme.copyWith(fontSize: largeFonts ? 20 : 12)),
+                  _buildIssuer(context,
+                      body1Theme.copyWith(fontSize: largeFonts ? 20 : 12)),
+                  _buildExpiration(context,
+                      body1Theme.copyWith(fontSize: largeFonts ? 20 : 12)),
                 ],
               ),
             )
@@ -156,7 +170,8 @@ class CardAttributes extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildAttributes(BuildContext context, TextStyle body1Theme, TextStyle body2Theme, double spacing) {
+  List<Widget> _buildAttributes(BuildContext context, TextStyle body1Theme,
+      TextStyle body2Theme, double spacing) {
     final Attributes attributes = credential.attributes;
 
     return attributes.sortedAttributeTypes.expand<Widget>(
@@ -169,13 +184,13 @@ class CardAttributes extends StatelessWidget {
           Opacity(
             opacity: 0.8,
             child: Text(
-              attributeType.name[_lang],
+              getTranslation(context, attributeType.name),
               style: body1Theme,
               overflow: TextOverflow.ellipsis,
             ),
           ),
           Text(
-            attributes[attributeType][_lang],
+            getTranslation(context, attributes[attributeType]),
             style: body2Theme,
           ),
           SizedBox(
@@ -207,7 +222,7 @@ class CardAttributes extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              credential.issuer.name[_lang],
+              getTranslation(context, credential.issuer.name),
               style: body1Theme,
               overflow: TextOverflow.ellipsis,
             ),
@@ -238,7 +253,8 @@ class CardAttributes extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              _printableDate(credential.expires, _lang),
+              _printableDate(credential.expires,
+                  Localizations.localeOf(context).languageCode),
               style: body1Theme,
               overflow: TextOverflow.ellipsis,
             ),

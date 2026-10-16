@@ -12,8 +12,6 @@ class IrmaCard extends StatelessWidget {
   static const _transparentBlack = Color(0x77000000);
   static const _blurRadius = 4.0;
 
-  final String lang = 'nl';
-
   final Credential credential;
   final Function() onRefreshCredential;
   final Function() onDeleteCredential;
@@ -38,7 +36,8 @@ class IrmaCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: IrmaTheme.of(context).smallSpacing),
+        margin: EdgeInsets.symmetric(
+            horizontal: IrmaTheme.of(context).smallSpacing),
         decoration: BoxDecoration(
           color: cardTheme.backgroundGradientStart,
           gradient: LinearGradient(
@@ -80,7 +79,7 @@ class IrmaCard extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      getTranslation(credential.credentialType.name),
+                      getTranslation(context, credential.credentialType.name),
                       style: largeFonts
                           ? IrmaTheme.of(context).subheadLarge.copyWith(
                                 color: cardTheme.foregroundColor,

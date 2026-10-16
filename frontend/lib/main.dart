@@ -28,6 +28,7 @@ import 'package:irmabalie/src/kiosk/state/websocket_state.dart';
 import 'package:irmabalie/src/kiosk/widgets/no_animation_material_page_route.dart';
 import 'package:irmabalie/src/theme/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:irmabalie/src/kiosk/state/language_state.dart';
 
 Future<void> main() async {
   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
@@ -36,6 +37,7 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<LanguageState>(create: (_) => LanguageState()),
         ChangeNotifierProvider<IdState>(create: (_) => IdState()),
         ChangeNotifierProvider<QrState>(create: (_) => QrState()),
         ChangeNotifierProvider<WebsocketState>(create: (_) => WebsocketState()),
@@ -93,9 +95,11 @@ class AppState extends State<App> {
   AppState();
 
   KioskRepository kioskRepository = KioskRepository();
+  final _localizationsDelegates = defaultLocalizationsDelegates();
 
   @override
   void initState() {
+    super.initState();
     kioskRepository.handleEvents(_navigatorKey);
   }
 
@@ -116,9 +120,7 @@ class AppState extends State<App> {
   }
 
   static List<Locale> defaultSupportedLocales() {
-    return const [
-      Locale('nl', 'NL'),
-    ];
+    return LanguageState.supportedLocales;
   }
 
   @override
@@ -129,9 +131,9 @@ class AppState extends State<App> {
           key: const Key("app"),
           title: 'IRMA Kiosk',
           theme: IrmaTheme.of(context).themeData,
-          localizationsDelegates:
-              defaultLocalizationsDelegates(const Locale('nl', 'NL')),
-          supportedLocales: defaultSupportedLocales(),
+          locale: context.watch<LanguageState>().locale,
+          localizationsDelegates: _localizationsDelegates,
+          supportedLocales: LanguageState.supportedLocales,
           navigatorKey: _navigatorKey,
           initialRoute: Initial.routeName,
           onGenerateRoute: KioskRouting.generateRoute,
