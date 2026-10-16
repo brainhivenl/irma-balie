@@ -1,14 +1,8 @@
-String translationMissing = '[translation missing]';
+import 'package:flutter/widgets.dart';
 
-@Deprecated('Implement a proper getTranslation function that respects the user\'s locale')
-String getTranslation(Map<String, String> translations) {
-  if (translations.isEmpty) {
-    return translationMissing;
-  }
-
-  final String translation = translations['nl'];
-  if (translation == null) {
-    return translationMissing;
-  }
-  return translation;
+String getTranslation(BuildContext context, Map<String, String> translations) {
+  final language = Localizations.localeOf(context).languageCode;
+  return translations[language] ??
+      translations['nl'] ??
+      '[translation missing]';
 }

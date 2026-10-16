@@ -25,7 +25,7 @@ class IrmaClientMock {
 
   static final myPassportCredentialType = CredentialType(
     id: myCredentialTypeId,
-    name: TranslatedValue({'nl': "Paspoort"}),
+    name: TranslatedValue({'nl': "Paspoort", 'en': "Passport"}),
     shortName: TranslatedValue({'nl': "MCT"}),
     description: TranslatedValue({'nl': 'My Credential Type'}),
     schemeManagerId: mySchemeManagerId,
@@ -37,7 +37,7 @@ class IrmaClientMock {
 
   static final myIdCardCredentialType = CredentialType(
     id: myCredentialTypeId,
-    name: TranslatedValue({'nl': "Identiteitsbewijs"}),
+    name: TranslatedValue({'nl': "Identiteitsbewijs", 'en': "Identity card"}),
     shortName: TranslatedValue({'nl': "MCT"}),
     description: TranslatedValue({'nl': 'My Credential Type'}),
     schemeManagerId: mySchemeManagerId,
@@ -49,7 +49,7 @@ class IrmaClientMock {
 
   static final myDriversLicenseCredentialType = CredentialType(
     id: myCredentialTypeId,
-    name: TranslatedValue({'nl': "Rijbewijs"}),
+    name: TranslatedValue({'nl': "Rijbewijs", 'en': "Driving licence"}),
     shortName: TranslatedValue({'nl': "MCT"}),
     description: TranslatedValue({'nl': 'My Credential Type'}),
     schemeManagerId: mySchemeManagerId,
@@ -72,70 +72,71 @@ class IrmaClientMock {
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 1,
-        name: TranslatedValue({'nl': "Naam"}),
+        name: TranslatedValue({'nl': "Naam", 'en': "Name"}),
       ),
       myCredentialFoo + ".firstnames": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 1,
-        name: TranslatedValue({'nl': "Voornamen"}),
+        name: TranslatedValue({'nl': "Voornamen", 'en': "Given names"}),
       ),
       myCredentialFoo + ".surname": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 2,
-        name: TranslatedValue({'nl': "Achternaam"}),
+        name: TranslatedValue({'nl': "Achternaam", 'en': "Surname"}),
       ),
       myCredentialFoo + ".nationality": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 3,
-        name: TranslatedValue({'nl': "Nationaliteit"}),
+        name: TranslatedValue({'nl': "Nationaliteit", 'en': "Nationality"}),
       ),
       myCredentialFoo + ".dateOfBirth": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 4,
-        name: TranslatedValue({'nl': "Geboortedatum"}),
+        name: TranslatedValue({'nl': "Geboortedatum", 'en': "Date of birth"}),
       ),
       myCredentialFoo + ".personalNumber": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 5,
-        name: TranslatedValue({'nl': "BSN"}),
+        name: TranslatedValue({'nl': "BSN", 'en': "BSN"}),
       ),
       myCredentialFoo + ".licenseNumber": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 5,
-        name: TranslatedValue({'nl': "Rijbewijsnummer"}),
+        name: TranslatedValue(
+            {'nl': "Rijbewijsnummer", 'en': "Driving licence number"}),
       ),
       myCredentialFoo + ".gender": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 6,
-        name: TranslatedValue({'nl': "Geslacht"}),
+        name: TranslatedValue({'nl': "Geslacht", 'en': "Sex"}),
       ),
       myCredentialFoo + ".signedOn": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 7,
-        name: TranslatedValue({'nl': "Uitgiftedatum"}),
+        name: TranslatedValue({'nl': "Uitgiftedatum", 'en': "Date of issue"}),
       ),
       myCredentialFoo + ".expires": AttributeType(
         schemeManagerId: mySchemeManagerId,
         issuerId: myIssuerId,
         credentialTypeId: myCredentialFoo,
         displayIndex: 8,
-        name: TranslatedValue({'nl': "Verloopdatum"}),
+        name: TranslatedValue({'nl': "Verloopdatum", 'en': "Expiry date"}),
       ),
       myCredentialFoo + ".portraitPhoto": AttributeType(
         schemeManagerId: mySchemeManagerId,
@@ -143,7 +144,7 @@ class IrmaClientMock {
         credentialTypeId: myCredentialFoo,
         displayIndex: 9,
         displayHint: "portraitPhoto",
-        name: TranslatedValue({'nl': "Foto"}),
+        name: TranslatedValue({'nl': "Foto", 'en': "Photo"}),
       )
     },
   );
@@ -166,8 +167,10 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]:
             TranslatedValue({'nl': data.nationality}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue(
-                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue({
+          'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth),
+          'en': DateFormat.yMMMMd('en').format(data.dateOfBirth),
+        }),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
@@ -196,8 +199,10 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".surname"]:
             TranslatedValue({'nl': data.surname}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue(
-                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue({
+          'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth),
+          'en': DateFormat.yMMMMd('en').format(data.dateOfBirth),
+        }),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".personalNumber"]:
             TranslatedValue({'nl': data.personalNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:
@@ -226,8 +231,10 @@ class IrmaClientMock {
         irmaConfiguration.attributeTypes[myCredentialFoo + ".nationality"]:
             TranslatedValue({'nl': data.nationality}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".dateOfBirth"]:
-            TranslatedValue(
-                {'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth)}),
+            TranslatedValue({
+          'nl': DateFormat.yMMMMd('nl').format(data.dateOfBirth),
+          'en': DateFormat.yMMMMd('en').format(data.dateOfBirth),
+        }),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".licenseNumber"]:
             TranslatedValue({'nl': data.documentNumber}),
         irmaConfiguration.attributeTypes[myCredentialFoo + ".gender"]:

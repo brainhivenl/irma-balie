@@ -398,5 +398,139 @@
     "info_1": "Done, your data have been disclosed.\n\n",
     "safari": "Tap on the name of the application (e.g., Safari, Chrome, Firefox) ",
     "info_2": "in the top left corner to return to the application you came from."
+  },
+  "kiosk": {
+    "id_type": {
+      "idCard": {
+        "name": "identity card",
+        "nameCapitalized": "Identity card",
+        "property": "identity card",
+        "propertyCapitalized": "Identity card",
+        "image": "assets/kiosk/id-kaart-front.png",
+        "animation": "assets/kiosk/id_kaart.webm"
+      },
+      "passport": {
+        "name": "passport",
+        "nameCapitalized": "Passport",
+        "property": "passport",
+        "propertyCapitalized": "Passport",
+        "image": "assets/kiosk/paspoort.png",
+        "animation": "assets/kiosk/paspoort.webm"
+      },
+      "driversLicense": {
+        "name": "driving licence",
+        "nameCapitalized": "Driving licence",
+        "property": "driving licence",
+        "propertyCapitalized": "Driving licence",
+        "image": "assets/kiosk/rijbewijs-front.png",
+        "animation": "assets/kiosk/rijbewijs.webm"
+      }
+    },
+    "main": {
+      "start_heading": "Add the details from your identity document to your Yivi app",
+      "start_button": "Start"
+    },
+    "select": {
+      "title": "Choose your identity document",
+      "body": "Which identity document would you like to add to your Yivi app?",
+      "driver": "Driving licence",
+      "id": "Identity card",
+      "passport": "Passport"
+    },
+    "scan": {
+      "title": "Scan your {id}",
+      "header": "Place your {id} in the slot",
+      "instruction": {
+        "idCard": "1. Hold your identity card with the photo facing up.\n\n2. Place your identity card in the slot.\n\n3. Wait until the scan is complete.",
+        "passport": "1. Open your passport.\n\n2. Place your passport in the slot with the photo facing down.\n\n3. Wait until the scan is complete.",
+        "driversLicense": "1. Hold your driving licence with the photo facing down.\n\n2. Place your driving licence in the slot.\n\n3. Wait until the scan is complete."
+      }
+    },
+    "detected": {
+      "title": "Read your {id}",
+      "body": "Reading your {id}…"
+    },
+    "scanning": {
+      "title": "Scan your {id}",
+      "body": "Scanning your {id}…\n(this may take a while)"
+    },
+    "succeeded": {
+      "title": "Scan your {id}",
+      "body": "Success",
+      "button": "Close"
+    },
+    "transfer": {
+      "title": "Transfer your {id}",
+      "body": "Would you like to add your {id} to your Yivi app?",
+      "no": "No",
+      "yes": "Yes"
+    },
+    "submitting": {
+      "title": "Preparing the transfer",
+      "body": "Creating a QR code…"
+    },
+    "approval": {
+      "title": "Waiting for approval",
+      "body": "Please wait for a staff member to approve your request…"
+    },
+    "transfer_in_progress": {
+      "title": "Transfer your {id}",
+      "body": "Use your Yivi app to add your {id} as a card"
+    },
+    "qr_scan": {
+      "title": "Transfer your {id}",
+      "body": "Scan this QR code with your Yivi app"
+    },
+    "no_transfer": {
+      "title": "Your {id} was not transferred",
+      "body": "Your {id} was not transferred",
+      "button": "Close",
+      "warning": "Remember to take your {id} with you"
+    },
+    "transferred": {
+      "title": "Your {id} was transferred",
+      "body": "Success! Your {id} was added to your Yivi app",
+      "button": "Close",
+      "warning": "Remember to take your {id} with you"
+    },
+    "no_internet": {
+      "title": "No internet connection",
+      "header": "No internet",
+      "body1": "This service is currently unavailable.\nAsk a staff member to restore the internet connection.",
+      "body2": "No staff member available?\n",
+      "button": "Back to start",
+      "bullet1": "• Call: ",
+      "bullet1_bold": "06-18525259 (Mike Alders)",
+      "bullet2": "• Provide the following code: ",
+      "bullet2_bold": "Zaandam-09"
+    },
+    "initial": {
+      "title": "Starting the kiosk",
+      "header": "Starting up",
+      "body": "The kiosk is starting up. Please wait a moment."
+    },
+    "scan_fail": {
+      "title": "Scan unsuccessful",
+      "body": "We could not scan your identity document.\nRemove your document from the slot and select ‘Try again’.",
+      "button_help": "Help with scanning",
+      "button_again": "Try again"
+    },
+    "scan_help": {
+      "title": "Help with scanning",
+      "header": "Having trouble scanning?",
+      "body1": "Ask a member of municipal staff for help.\n",
+      "body2": "No staff member available?\n",
+      "button": "Back to start",
+      "bullet1": "• Call the helpdesk: ",
+      "bullet1_bold": "06-18525259 (Mike Alders)",
+      "bullet2": "• Provide the following code: ",
+      "bullet2_bold": "Zaandam-09"
+    },
+    "invalid_id": {
+      "title": "Invalid identity document",
+      "body": "Your identity document is not valid.\nRemove your document from the slot.",
+      "button_help": "Help with scanning",
+      "button_close": "Close"
+    }
   }
 }

@@ -6,6 +6,7 @@ import 'package:irmabalie/src/theme/theme.dart';
 import 'package:irmabalie/src/util/platform_svg.dart';
 import 'package:irmabalie/src/widgets/irma_button.dart';
 import 'package:irmabalie/src/widgets/irma_themed_button.dart';
+import 'package:irmabalie/src/kiosk/widgets/language_selector.dart';
 
 class Welcome extends StatelessWidget {
   static const routeName = '/';
@@ -56,6 +57,7 @@ class Welcome extends StatelessWidget {
                     },
                   ),
                   const Spacer(flex: 1),
+                  LanguageSelector(),
                 ],
               ),
             )
